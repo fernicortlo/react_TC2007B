@@ -9,7 +9,7 @@ import AlbumIcon from '@mui/icons-material/Album';
 import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
 import { i18nProvider } from './i18nProvider';
-
+hola perros
 
 export const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
