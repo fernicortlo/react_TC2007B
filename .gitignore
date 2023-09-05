@@ -1,9 +1,7 @@
-/node_modules
-/.pnp
-.pnp.js
-package-lock.json
-
-/coverage
-/build
-
-npm-debug.log*
+node_modules/
+.cache/
+dist/
+.env
+.DS_Store
+coverage/
+.vscode/
