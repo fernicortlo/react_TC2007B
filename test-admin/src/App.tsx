@@ -10,9 +10,10 @@ import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
 import { i18nProvider } from './i18nProvider';
 import MyLayout  from './MyLayout';
+import MyLoginPage from "./MyLoginPage";
 
 export const App = () => (
-  <Admin layout={MyLayout} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
+  <Admin loginPage={MyLoginPage} layout={MyLayout} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
         <Resource 
             name="posts"
             list={PostList}
