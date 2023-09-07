@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit, PostCreate } from "./posts";
@@ -9,10 +10,12 @@ import AlbumIcon from '@mui/icons-material/Album';
 import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
 import { i18nProvider } from './i18nProvider';
-hola lu
+import MyLoginPage from './MyLoginPage'
+
+
 
 export const App = () => (
-  <Admin authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
+  <Admin loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
         <Resource 
             name="posts"
             list={PostList}
