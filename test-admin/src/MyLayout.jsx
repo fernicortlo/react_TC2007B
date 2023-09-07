@@ -1,4 +1,4 @@
-
+//Create Layout component
 import { forwardRef } from 'react';
 import { AppBar, Layout, UserMenu, useLogout} from 'react-admin';
 import { MenuItem } from '@mui/material';

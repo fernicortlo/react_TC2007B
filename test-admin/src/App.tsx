@@ -1,3 +1,4 @@
+// Crear la App
 import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit, PostCreate } from "./posts";
