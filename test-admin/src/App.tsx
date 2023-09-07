@@ -1,4 +1,4 @@
-// Creat app element
+// Creat app element with react-admin components
 import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit, PostCreate } from "./posts";
