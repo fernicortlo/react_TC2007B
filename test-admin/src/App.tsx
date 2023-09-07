@@ -1,7 +1,7 @@
 import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit, PostCreate } from "./posts";
-import { AlbumList, AlbumEdit, AlbumCreate } from "./albums";
+import { AlbumList, AlbumEdit, AlbumCreate} from "./albums";
 import { UserList } from "./users";
 import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
