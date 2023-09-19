@@ -57,13 +57,13 @@ import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
 import { AlbumList, AlbumEdit, AlbumCreate } from "./albums";
 import MyLayout from './MyLayout';
-//import MyLoginPage from './MyLoginPage';
+import MyLoginPage from './MyLoginPage';
 
 
 
-//loginPage={MyLoginPage}
+
 export const App = () => (
-  <Admin layout= {MyLayout} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider= {i18nProvider} >
+  <Admin layout= {MyLayout} loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider= {i18nProvider} >
       <Resource 
           name="posts"
           list={PostList}
