@@ -11,20 +11,24 @@ import {
     TextInput, 
     useNotify, 
     useRefresh, 
-    useRedirect
+    useRedirect,
+    SimpleList,
 } from "react-admin";
 import { useRecordContext} from "react-admin";
 import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 import MailIcon from '@mui/icons-material/MailOutline';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
+import { useUpdate, useCreate} from 'react-admin';
+
+
 
 const PostTitle = () => {
       const record = useRecordContext();
       return <span>Post {record ? `"${record.title}"` : ''}</span>;
     };
 
-export const PostList = () => (
+export const PostList = () => {
     <List aside={<PostFilterSidebar/>}>
         <Datagrid>
             <TextField source="id" />
@@ -34,7 +38,8 @@ export const PostList = () => (
             <EditButton />
         </Datagrid>
     </List>
-);
+};
+
 
 export const PostEdit = () => {
     const notify= useNotify();
@@ -61,21 +66,23 @@ export const PostCreate = () => {
     const notify= useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
-    const onSuccess = () => {
+    const record = useRecordContext();
+    const ticket = { 
+            postId: record.id,
+            user: record.userId,
+            date: new Date().toISOString(),
+            comment: 'This is a new ticket'};
+
+    const [create, { isLoading, error }] = useCreate('ticket', { data: ticket });
+    const handleClick = () => {
+        create();
         notify('Publicación Creada', {undoable: true});
         redirect('/posts');
-        refresh();
+        refresh();   
+        };
+        if (error) { return <p>ERROR</p>; }
+        return <button disabled={isLoading} onClick={handleClick}>Like</button>;
     };
-    return(
-      <Create mutationOptions={{onSuccess}}>
-        <SimpleForm>
-          <ReferenceInput source="userId" reference="users" label="Usuario"/>
-          <TextInput source="title" label="Título" />
-          <TextInput source="body" multiline rows={5} label="Cuerpo" />
-        </SimpleForm>
-      </Create>
-      );
-};
 
     const postFilters = [
         <TextInput source="q" label="Buscar" alwaysOn />,

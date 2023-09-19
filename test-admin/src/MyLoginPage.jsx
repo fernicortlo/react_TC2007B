@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLogin, useNotify, Notification } from 'react-admin';
+import { useLogin, useNotify, Notification, Button } from 'react-admin';
 
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +10,7 @@ const MyLoginPage = () => {
     const handleSubmit = e => {
         e.preventDefault();
         // will call authProvider.login({ email, password })
-        login({ email, password }).catch(() =>
+        login({ email:"hola@hola.com", password:123 }).catch(() =>
             notify('Invalid email or password')
         );
     };
@@ -29,6 +29,7 @@ const MyLoginPage = () => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />
+            <Button variant='contained' onClick={handleSubmit}>Login</Button>
         </form>
     );
 };
