@@ -17,7 +17,7 @@ export const App = () => (
   <Admin loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
         <Resource 
             name="posts"
-            //list={PostList}
+            list={PostList}
             edit={PostEdit}
             create={PostCreate}
             icon={PostIcon}
