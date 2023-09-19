@@ -14,14 +14,14 @@ export const UserList = () => {
                 />
             ) : (
                 <Datagrid rowClick="show">
-    <TextField source="id"  />
-    <TextField source="Name" label="Nombre" />
--   <TextField source="username" label="Usuario" />
-    <EmailField source="email" label="Email" />
--   <TextField source="address.street" label="Dirección de calle" />
-    <TextField source="phone" label="Telefono" />
-    <MyUrlField source="website" label="Sitio WEB" />
-    <TextField source="company.name" label="Nombre de la compañía" />
+            <TextField source="id"  />
+            <TextField source="Name" label="Nombre" />
+        -   <TextField source="username" label="Usuario" />
+            <EmailField source="email" label="Email" />
+        -   <TextField source="address.street" label="Dirección de calle" />
+            <TextField source="phone" label="Telefono" />
+            <MyUrlField source="website" label="Sitio WEB" />
+            <TextField source="company.name" label="Nombre de la compañía" />
   </Datagrid>
             )}
         </List>
