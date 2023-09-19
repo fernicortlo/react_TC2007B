@@ -21,6 +21,7 @@ import MailIcon from '@mui/icons-material/MailOutline';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import { useUpdate, useCreate} from 'react-admin';
 
+
 const PostTitle = () => {
       const record = useRecordContext();
       return <span>Post {record ? `"${record.title}"` : ''}</span>;
