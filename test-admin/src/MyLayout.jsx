@@ -1,7 +1,5 @@
-// //Create Layout component for App element 
 // import { forwardRef } from 'react';
-// import { Layout } from 'react-admin';
-// import { AppBar, Layout, UserMenu, useLogout} from 'react-admin';
+// import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
 // import { MenuItem } from '@mui/material';
 // import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
@@ -18,15 +16,7 @@
 //             // It's important to pass the props to allow Material UI to manage the keyboard navigation
 //             {...props}
 //         >
-//             <ExitIcon/>  logiii
-//         </MenuItem>
-//         <MenuItem
-//             onClick={handleSettingsClick}
-//             ref={ref}
-//             // It's important to pass the props to allow Material UI to manage the keyboard navigation
-//             {...props}
-//         >
-//             <SettingsIcon/>  Settings
+//             <ExitIcon /> Logout
 //         </MenuItem>
         
 //     </Menu>
@@ -42,58 +32,41 @@
 //     </UserMenu>
 // );
 
-// const MyAppBar = () => <AppBar userMenu={<UserMenu />} />;
+// const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
 // const MyLayout = (props) => (
 //     <Layout {...props} appBar={MyAppBar} />
 // );
 
-// export default MyLayout
-
-//Create Layout component for App element 
+// export default MyLayout;
 import { forwardRef } from 'react';
-import { AppBar, Layout, UserMenu, useLogout} from 'react-admin';
+import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
 import { MenuItem } from '@mui/material';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 // It's important to pass the ref to allow Material UI to manage the keyboard navigation
-
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
     const handleClick = () => logout();
     return (
-        <Menu>
         <MenuItem
             onClick={handleClick}
             ref={ref}
             // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
         >
-            <ExitIcon/>  logiii
+            <ExitIcon /> Logout
         </MenuItem>
-        <MenuItem
-            onClick={handleSettingsClick}
-            ref={ref}
-            // It's important to pass the props to allow Material UI to manage the keyboard navigation
-            {...props}
-        >
-            <SettingsIcon/>  Settings
-        </MenuItem>
-        
-    </Menu>
     );
 });
 
 const MyUserMenu = () => (
     <UserMenu>
-        {/* Your custom menu items */}
-        {/* Include the logout button */}
         <MyLogoutButton />
-        <MySettings/>
     </UserMenu>
 );
 
-const MyAppBar = () => <AppBar userMenu={<UserMenu />} />;
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
 const MyLayout = (props) => (
     <Layout {...props} appBar={MyAppBar} />
