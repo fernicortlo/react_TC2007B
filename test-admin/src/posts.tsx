@@ -13,7 +13,9 @@ import {
     useRefresh, 
     useRedirect,
     SimpleList,
+    useUnique,
 } from "react-admin";
+
 import { useRecordContext} from "react-admin";
 import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
@@ -63,6 +65,7 @@ export const PostEdit = () => {
 };
     
 export const PostCreate = () => {
+    const unique = useUnique();
     const notify= useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
@@ -83,7 +86,16 @@ export const PostCreate = () => {
         if (error) { return <p>ERROR</p>; }
         return <button disabled={isLoading} onClick={handleClick}>Like</button>;
     };
-
+    return(
+      <Create mutationOptions={{onSuccess}}>
+        <SimpleForm>
+          <ReferenceInput source="userId" reference="users" label="Usuario"/>
+          <TextInput source="title" label="Título" validate={unique()} />
+          <TextInput source="body" multiline rows={5} label="Cuerpo" />
+        </SimpleForm>
+      </Create>
+      );
+};
     const postFilters = [
         <TextInput source="q" label="Buscar" alwaysOn />,
         <ReferenceInput source="userId" label="Usuario" reference="users" />,
