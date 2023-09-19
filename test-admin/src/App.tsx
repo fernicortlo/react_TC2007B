@@ -12,11 +12,12 @@ import { i18nProvider } from './i18nProvider';
 import MyLayout  from './MyLayout';
 import MyLoginPage from "./MyLoginPage";
 
+
 export const App = () => (
-  <Admin loginPage={MyLoginPage} layout={MyLayout} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
+  <Admin loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider={i18nProvider}>
         <Resource 
             name="posts"
-            list={PostList}
+            //list={PostList}
             edit={PostEdit}
             create={PostCreate}
             icon={PostIcon}
