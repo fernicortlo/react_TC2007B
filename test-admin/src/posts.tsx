@@ -47,7 +47,7 @@ const PostTitle = () => {
         const notify= useNotify();
         const refresh= useRefresh();
         const redirect= useRedirect();
-
+      
         const onSuccess=()=>{
             notify('Cambios guardados',{undoable:true});
             redirect('/posts');
@@ -101,6 +101,7 @@ export const PostCreate = () => {
                 );
     };
 
+// 
 export const PostFilterSidebar = () => (
     <Card sx={{ order: -1, mr: 2, mt: 9, width: 500 }}>
         <CardContent>
@@ -114,3 +115,4 @@ export const PostFilterSidebar = () => (
         </CardContent>
     </Card>
 )
+

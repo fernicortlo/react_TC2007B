@@ -61,8 +61,9 @@ import MyLayout from './MyLayout';
 
 
 
+//loginPage={MyLoginPage}
 export const App = () => (
-  <Admin layout={MyLayout} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider= {i18nProvider} >
+  <Admin layout= {MyLayout} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider= {i18nProvider} >
       <Resource 
           name="posts"
           list={PostList}
