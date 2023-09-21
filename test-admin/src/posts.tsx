@@ -86,7 +86,6 @@ export const PostCreate = () => {
         refresh();   
         };
         if (error) { return <p>ERROR</p>; }
-        // return <button disabled={isLoading} onClick={handleClick}>Like</button>;
         return(
                 
                 <Create mutationOptions={{handleClick}}>
