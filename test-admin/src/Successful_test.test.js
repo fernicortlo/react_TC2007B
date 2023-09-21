@@ -1,6 +1,6 @@
 import {render, fireEvent, screen} from "@testing-library/react";
 import '@testing-library/jest-dom'
-import posts from './posts'; 
+import posts from './posts'; // our fake data
 
 const Button=({onClick,children})=>{
     <button onClick={onClick}>{children}</button>
