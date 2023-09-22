@@ -9,6 +9,9 @@
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
     "format": "prettier --write ./src"
   },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
   "dependencies": {
     "ra-data-json-server": "^4.12.0",
     "react": "^18.2.0",
