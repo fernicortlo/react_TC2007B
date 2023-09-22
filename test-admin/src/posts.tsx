@@ -66,40 +66,40 @@ const PostTitle = () => {
         );
     };
 
-export const PostCreate = () => {
-    const notify= useNotify();
-    const refresh = useRefresh();
-    const redirect = useRedirect();
-    const record = useRecordContext();
-    const ticket = { 
-            // postId: record.id,
-            // user: record.userId,
-            date: new Date().toISOString()
-            // body: 'This is a new ticket'
+    export const PostCreate = () => {
+        const notify= useNotify();
+        const refresh = useRefresh();
+        const redirect = useRedirect();
+        const record = useRecordContext();
+        const ticket = { 
+                // postId: record.id,
+                // user: record.userId,
+                date: new Date().toISOString()
+                // body: 'This is a new ticket'
+            };
+    
+        const [create, { isLoading, error }] = useCreate('ticket', { data: ticket });
+        const handleClick = () => {
+            create();
+            notify('Publicación Creada', {undoable: true});
+            redirect('/posts');
+            refresh();   
+            };
+            if (error) { return <p>ERROR</p>; }
+            // return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+            return(
+                    
+                    <Create mutationOptions={{handleClick}}>
+                        <SimpleForm warnWhenUnsavedChanges>
+                            <ReferenceInput source="userId" reference="users" label="Usuarios"/>
+                            <TextInput source="title"  label="Título"/>
+                            <TextInput source="body" label="Cuerpo" multiline rows={5} />
+                        </SimpleForm>
+                        <Button disabled={isLoading} onClick={handleClick}>Like</Button>
+                     </Create>
+                    
+                    );
         };
-
-    const [create, { isLoading, error }] = useCreate('ticket', { data: ticket });
-    const handleClick = () => {
-        create();
-        notify('Publicación Creada', {undoable: true});
-        redirect('/posts');
-        refresh();   
-        };
-        if (error) { return <p>ERROR</p>; }
-        // return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-        return(
-                
-                <Create mutationOptions={{handleClick}}>
-                    <SimpleForm warnWhenUnsavedChanges>
-                        <ReferenceInput source="userId" reference="users" label="Usuarios"/>
-                        <TextInput source="title"  label="Título"/>
-                        <TextInput source="body" label="Cuerpo" multiline rows={5} />
-                    </SimpleForm>
-                    <Button disabled={isLoading} onClick={handleClick}>Like</Button>
-                 </Create>
-                
-                );
-    };
 
 // 
 export const PostFilterSidebar = () => (
