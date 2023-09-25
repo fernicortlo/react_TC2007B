@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import MyLayout, { MyLogoutButton } from './MyLayout'; // Replace with the actual import path
+import MyLayout, { MyLogoutButton } from './MyLayout'; 
 
 module.exports = {
     testEnvironment: 'jsdom',
@@ -14,16 +14,6 @@ jest.mock('react-admin', () => ({
   ...jest.requireActual('react-admin'),
   useLogout: jest.fn(),
 }));
-
-// test('Logout button triggers logout action', () => {
-//   const { getByText } = render(<MyLogoutButton />);
-
-//   // Simulate a click on the logout button
-//   fireEvent.click(getByText('Logout'));
-
-//   // Assert that the useLogout function was called
-//   expect(require('react-admin').useLogout).toHaveBeenCalled();
-// });
 
 test('Logout button triggers logout action', () => {
   const{handleClick}= jest.fn();
