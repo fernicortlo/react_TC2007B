@@ -1,6 +1,11 @@
 import { useState } from 'react';
-import { useLogin, useNotify, Notification, Button } from 'react-admin';
-
+import { useLogin, useNotify, Notification, Button} from 'react-admin';
+import { createTheme, ThemeProvider } from '@mui/material/styles'; 
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,22 +21,64 @@ const MyLoginPage = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                name="email"
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-            />
-            <input
-                name="password"
-                type="password"
-                value={password}
+        <Container component="main" maxWidth="xs" >
+       
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            alignContent: 'center'
+          }}
+        >
+          <img src='src/logoFundacion.png' alt="Your Image" width="200" height="200" />
+          <Typography component="h1" variant="h5">
+            Iniciar Sesión
+          </Typography>
+        <Box
+            component="form"
+            onSubmit={handleSubmit}  
+            sx={{
+                //'& .MuiTextField-root': { m: 1, width: '25ch' },
+                '& .MuiButton-root': {
+                    backgroundColor: 'green', // Button background color
+                    color: 'white', // Button text color
+                },
+            }}
+            noValidate
+            autoComplete="off"
+        >
+            <TextField 
+                margin='normal'
+                id="email" 
+                label="Correo electrónico"
+                autoComplete="email"
+                required
+                autoFocus
+                fullWidth
+                onChange={e => setEmail(e.target.value)}/>
+            
+            <TextField
+                margin='normal'
+                id="password" 
+                label="Contraseña" 
+                autoComplete="password"
+                required
+                fullWidth
                 onChange={e => setPassword(e.target.value)}
             />
-            <Button variant='contained' onClick={handleSubmit}>Login</Button>
-        </form>
+            <Button 
+                variant='contained' 
+                onClick={handleSubmit} 
+                type='submit' 
+                
+                fullWidth>Iniciar Sesión</Button>
+        </Box>
+        </Box>
+        </Container>
     );
 };
 
 export default MyLoginPage;
+
