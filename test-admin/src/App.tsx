@@ -58,13 +58,14 @@ import { authProvider } from './authProvider';
 import { AlbumList, AlbumEdit, AlbumCreate } from "./albums";
 import MyLayout from './MyLayout';
 import MyLoginPage from './MyLoginPage';
-
-
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import { TicketCreate,TicketList } from "./TicketSupAula";
+import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
 
 
 export const App = () => (
-  <Admin layout= {MyLayout} loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} i18nProvider= {i18nProvider} >
-      <Resource 
+  <Admin layout= {MyLayout} loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider}  i18nProvider= {i18nProvider} >
+      {/* <Resource 
           name="posts"
           list={PostList}
           edit={PostEdit}
@@ -87,6 +88,17 @@ export const App = () => (
           create={AlbumCreate}
           icon={AlbumIcon}
           options={{label:"Álbumes"}}
-      />
+      /> */}
+
+    <Resource
+        name="CrearTickets"
+        list={TicketCreate}
+        icon={PostAddIcon}
+    />
+    <Resource
+        name="EstatusTickets"
+        list={TicketList}
+        icon={PlaylistAddCheckCircleIcon}
+    />
   </Admin>
 );

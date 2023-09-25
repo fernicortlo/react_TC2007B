@@ -66,7 +66,14 @@ const MyUserMenu = () => (
     </UserMenu>
 );
 
-const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+const MyAppBar = () => 
+<AppBar 
+    sx={{
+        color: '#FF4B4B',
+        background: 'white',
+        '& .RaAppBar-toolbar': { padding: 0 },
+    }}
+    UserMenu={<MyUserMenu />} />;
 
 const MyLayout = (props) => (
     <Layout {...props} appBar={MyAppBar} />
