@@ -65,9 +65,14 @@ export const TicketList = () => (
     <List filters={TicketFilters}>
         <Datagrid>
              <TextField source="id" />
-                <ReferenceField source="userId" reference="users" link="show" label="ID_Usuario" />
-                <TextField source="title" label="Título" />
-                <EditButton />
+             <TextField source="aula" />
+             <TextField source="clasificacion" />
+             <TextField source="tipo" />
+             <TextField source="estatus" />
+             <TextField source="prioridad" />
+             <TextField source="fechaCreacion" /> 
+             <TextField source="rol" />
+             <EditButton />
         </Datagrid>
         </List>
     );
