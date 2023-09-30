@@ -20,42 +20,43 @@ import {
     Button,
     useCreate,
 } from "react-admin";
+import { SelectInput} from "react-admin";
+
+
+const servicios = [
+    { id: 'Cómputo', name: 'Cómputo' },
+    { id: 'Redes', name: 'Redes' },
+    { id: 'Audiovisual', name: 'Audiovisual' },
+    { id: 'Telefonía', name: 'Telefonía' },
+    { id: 'Cableado', name: 'Cableado' },
+    { id: 'Otros', name: 'Otros' },
+];
 
 export const TicketCreate = () => {
     const notify= useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
-    const record = useRecordContext();
-    const ticket = { 
-            // postId: record.id,
-            // user: record.userId,
-            date: new Date().toISOString()
-            // body: 'This is a new ticket'
-        };
-
-    const [create, { isLoading, error }] = useCreate('ticket', { data: ticket });
-    const handleClick = () => {
-        create();
+    const onSuccess = () => {
         notify('Ticket Creado', {undoable: true});
         redirect('/Tickets');
-        refresh();   
-        };
-        if (error) { return <p>ERROR</p>; }
-        // return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-        return(
-                
-                <Create mutationOptions={{handleClick}}>
-                    <SimpleForm warnWhenUnsavedChanges>
-                        <ReferenceInput source="Aula" reference="aula" label="aula"/>
-                        <ReferenceInput source="Clasificación" reference="clasificacion" label="Clasificación"/>
-                        <ReferenceInput source="Tipo" reference="tipo" label="Tipo"/>
-                        <TextInput source="Comentarios" label="Comentarios" multiline rows={5} />
-                    </SimpleForm>
-                    <Button disabled={isLoading} onClick={handleClick}>Like</Button>
-                 </Create>
-                
-                );
+        refresh();
     };
+    return(
+        <Create mutationOptions={{onSuccess}}>
+        <SimpleForm>
+                <TextInput source="aula" label="Aula"/>
+                <SelectInput source="clasificacion" label="Clasificación" choices={servicios}/>
+                <TextInput source="tipo" label="Tipo"/>
+                <TextInput source="prioridad" label="Prioridad"/>
+                <TextInput source="estatus" label="Estatus"/>
+                <TextInput source="comentario"  label="Comentario" multiline rows={5} />
+                <TextInput source="rol" label="Rol"/>
+        </SimpleForm>
+        </Create>
+        ) 
+    
+    };
+
 
 const TicketFilters = [
         <TextInput source="q" label="Buscar" alwaysOn />,

@@ -90,14 +90,17 @@ export const App = () => (
           options={{label:"Álbumes"}}
       /> */}
 
-    <Resource
+    {/* <Resource
         name="CrearTickets"
-        list={TicketCreate}
+        list={null}
+        create={TicketCreate}
         icon={PostAddIcon}
-    />
+    /> */}
+
     <Resource
         name="Tickets"
         list={TicketList}
+        create={TicketCreate}
         icon={PlaylistAddCheckCircleIcon}
     />
   </Admin>
