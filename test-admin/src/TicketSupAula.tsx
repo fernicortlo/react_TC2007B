@@ -46,9 +46,10 @@ export const TicketCreate = () => {
                 
                 <Create mutationOptions={{handleClick}}>
                     <SimpleForm warnWhenUnsavedChanges>
-                        <ReferenceInput source="Lugar" reference="lugar" label="Lugar"/>
-                        <ReferenceInput source="Problema" reference="problema" label="Problema"/>
-                        <TextInput source="Descripción del problema" label="Descripción del problema" multiline rows={5} />
+                        <ReferenceInput source="Aula" reference="aula" label="aula"/>
+                        <ReferenceInput source="Clasificación" reference="clasificacion" label="Clasificación"/>
+                        <ReferenceInput source="Tipo" reference="tipo" label="Tipo"/>
+                        <TextInput source="Comentarios" label="Comentarios" multiline rows={5} />
                     </SimpleForm>
                     <Button disabled={isLoading} onClick={handleClick}>Like</Button>
                  </Create>

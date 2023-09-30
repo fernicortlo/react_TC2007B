@@ -44,7 +44,7 @@
 //     </Admin>
 // );
 
-
+import React from "react";
 import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { PostList, PostEdit, PostCreate } from "./posts";
@@ -96,7 +96,7 @@ export const App = () => (
         icon={PostAddIcon}
     />
     <Resource
-        name="EstatusTickets"
+        name="Tickets"
         list={TicketList}
         icon={PlaylistAddCheckCircleIcon}
     />
