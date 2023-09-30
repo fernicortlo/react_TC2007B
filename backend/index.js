@@ -7,7 +7,7 @@ const jwt=require("jsonwebtoken")
 
 const uri = "mongodb+srv://Fer:1234@pruebas.1e0thqh.mongodb.net/pruebas";
 let db;
- 
+
 const app=express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -42,17 +42,39 @@ app.get("/Tickets", async (request, response)=>{
         console.log(data)
         response.json(data)
     }
-    else {
-        let data = await db.collection('Tickets').find({}).project({_id:0}).toArray();
+    else if ("id" in request.query){ // getMany
+        let data=[]
+        for (let index=0; index<request.query.id.length; index++){
+            let dataObtain=await db.collection('Tickets').find({id: Number(request.query.id[index])}).project({_id:0}).toArray();
+            data=await data.concat(dataObtain)
+        }
         response.json(data);
-    }
-    
+    }else { // getReference
+        let data=[]
+        data=await db.collection('Tickets').find(request.query).project({_id:0}).toArray();
+        response.set('Access-Control-Expose-Headers', 'X-Total-Count')
+        response.set('X-Total-Count', data.length)
+        response.json(data)
+    }   
 })
 
 //getOne
 app.get("/Tickets/:id", async (request, response)=>{
     let data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
     response.json(data[0]);
+})
+
+//create
+app.post("/Tickets", async (request, response)=>{
+    let addValue=request.body
+    let data=await db.collection('Tickets').find({}).toArray();
+    let id=data.length+1;
+    addValue["id"]=id;
+    let fechaCreacion=new Date();
+    addValue["fechaCreacion"]=fechaCreacion;
+
+    data=await db.collection('Tickets').insertOne(addValue);
+    response.json(data);
 })
 
 app.listen(1337, ()=>{
