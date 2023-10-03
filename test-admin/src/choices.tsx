@@ -87,3 +87,8 @@ export const prioridadChoices: ChoiceOption[] = [
         {id:'en proceso', name:'En proceso'},
         {id:'terminado', name:'Terminado'}
     ];
+export const rolChoices: ChoiceOption[] = [
+    {id:"Supervisor de Aula", name:"Supervisor de Aula"},
+    {id:"Supervisor Nacional", name:"Supervisor Nacional"},
+    {id:"Supervisor Ejecutivo", name:"Supervisor Ejecutivo"},
+];
