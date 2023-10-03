@@ -45,7 +45,8 @@
 // );
 
 import React from "react";
-import { Admin, Resource, ShowGuesser } from "react-admin";
+import { Admin, Resource, ShowGuesser, CustomRoutes } from "react-admin";
+import {  Route} from 'react-router-dom';
 import { dataProvider } from "./dataProvider";
 import { PostList, PostEdit, PostCreate } from "./posts";
 import { UserList } from "./users";
@@ -61,6 +62,7 @@ import MyLoginPage from './MyLoginPage';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { TicketCreate,TicketList } from "./TicketSupAula";
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
+import Registrarse from "./registrarse";
 
 
 export const App = () => (
@@ -103,5 +105,8 @@ export const App = () => (
         create={TicketCreate}
         icon={PlaylistAddCheckCircleIcon}
     />
+    <CustomRoutes>
+          <Route path="/registrarse"  element={<Registrarse />}/>
+        </CustomRoutes>
   </Admin>
 );
