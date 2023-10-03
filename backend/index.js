@@ -77,6 +77,53 @@ app.post("/Tickets", async (request, response)=>{
     response.json(data);
 })
 
+app.post("/registrarse", async(request, response)=>{
+    let correo=request.body.correo;
+    let pass=request.body.password;
+    let fname=request.body.nombreCompleto;
+    let rol=request.body.rol;
+    let nombreAula=request.body.aula.nombreAula;
+    let lugarAula=request.body.aula.lugarAula;
+    let sponsorAula=request.body.aula.sponsorAula;
+    console.log(request.body)
+    let data= await db.collection("Usuarios").findOne({"Usuario": correo});
+    if(data==null){
+        try{
+            bcrypt.genSalt(10, (error, salt)=>{
+                bcrypt.hash(pass, salt, async(error, hash)=>{
+                    let usuarioAgregar={"correo": correo, "pass": hash, "nombreCompleto": fname, "rol": rol, "aula": {"nombreAula": nombreAula, "lugarAula": lugarAula, "sponsorAula": sponsorAula}};
+                    data= await db.collection("Usuarios").insertOne(usuarioAgregar);
+                    response.sendStatus(201);
+                })
+            })
+        }catch{
+            response.sendStatus(401);
+        }
+    }else{
+        response.sendStatus(401)
+    }
+})
+
+
+app.post("/login", async(request, response)=>{
+    let user=request.body.username;
+    let pass=request.body.password;
+    let data= await db.collection("usuarios").findOne({"usuario": user});
+    if(data==null){
+        response.sendStatus(401);
+    }else{
+        bcrypt.compare(pass, data.password, (error, result)=>{
+            if(result){
+                let token=jwt.sign({usuario: data.usuario}, "secretKey", {expiresIn: 600});
+                log(user, "login", "");
+                response.json({"token": token, "id": data.usuario, "fullName": data.fullName})
+            }else{
+                response.sendStatus(401)
+            }
+        })
+    }
+})
+
 app.listen(1337, ()=>{
     connectDB();
     console.log("Servidor escuchando en puerto 1337")
