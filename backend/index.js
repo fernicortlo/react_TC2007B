@@ -79,7 +79,7 @@ app.post("/Tickets", async (request, response)=>{
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
-    let pass=request.body.password;
+    let pass=request.body.pass;
     let fname=request.body.nombreCompleto;
     let rol=request.body.rol;
     let nombreAula=request.body.aula.nombreAula;
