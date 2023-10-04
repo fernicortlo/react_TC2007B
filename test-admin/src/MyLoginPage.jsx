@@ -1,21 +1,33 @@
 import { useState } from 'react';
-import { useLogin, useNotify, Notification, Button} from 'react-admin';
+import { useLogin, useNotify, Notification, Button, useRedirect} from 'react-admin';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import authProvider from './authProvider';
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
     const notify = useNotify();
-
-    const handleSubmit = e => {
+    const redirect = useRedirect();
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // will call authProvider.login({ correo, pass })
-        login({ correo: email, pass: password }).catch(() =>
-            notify('Invalid email or password')
-        );
+
+        try {
+            // Call the login function from authProvider
+            await authProvider.login({ correo: email, pass: password });
+            
+            // If login is successful, you can redirect or handle it as needed
+            // For example, you can use react-admin's redirection logic
+            // or notify the user about successful login.
+            notify('Login successful');
+            redirect('/Tickets')
+
+        } catch (error) {
+            // Handle login failure
+            notify('Invalid email or password');
+        }
     };
     
 
