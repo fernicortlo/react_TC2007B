@@ -106,17 +106,17 @@ app.post("/registrarse", async(request, response)=>{
 
 
 app.post("/login", async(request, response)=>{
-    let user=request.body.username;
-    let pass=request.body.password;
-    let data= await db.collection("usuarios").findOne({"usuario": user});
+    let correo=request.body.correo;
+    let pass=request.body.pass;
+    let data= await db.collection("Usuarios").findOne({"correo": correo});
     if(data==null){
         response.sendStatus(401);
     }else{
-        bcrypt.compare(pass, data.password, (error, result)=>{
+        bcrypt.compare(pass, data.pass, (error, result)=>{
             if(result){
-                let token=jwt.sign({usuario: data.usuario}, "secretKey", {expiresIn: 600});
-                log(user, "login", "");
-                response.json({"token": token, "id": data.usuario, "fullName": data.fullName})
+                let token=jwt.sign({correo: data.correo}, "secretKey", {expiresIn: 600});
+                log(correo, "login", "");
+                response.json({"token": token, "id": data.correo, "fullName": data.nombreCompleto})
             }else{
                 response.sendStatus(401)
             }
