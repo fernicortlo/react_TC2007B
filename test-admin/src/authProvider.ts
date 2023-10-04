@@ -13,6 +13,7 @@ export const authProvider: AuthProvider = {
         });
         try {
             const response = await fetch(request);
+            //console.log(response.status);
             if (response.status < 200 || response.status >= 300) {
                 throw new Error(response.statusText);
             }
@@ -24,25 +25,32 @@ export const authProvider: AuthProvider = {
             throw new Error('Error en usuario o password');
         }
     },
-    // called when the user clicks on the logout button
-    logout: () => {
-        localStorage.removeItem("username");
-        return Promise.resolve();
-    },
-    // called when the API returns an error
-    checkError: ({ status }: { status: number }) => {
-        if (status === 401 || status === 403) {
-            localStorage.removeItem("username");
-            return Promise.reject();
-        }
-        return Promise.resolve();
-    },
-    // called when the user navigates to a new location, to check for authentication
-    checkAuth: () => {
-        return localStorage.getItem("username")
-            ? Promise.resolve()
-            : Promise.reject();
-    },
-    // called when the user navigates to a new location, to check for permissions / roles
-    getPermissions: () => Promise.resolve(),
+
+logout: ()=>{
+    localStorage.removeItem("auth");
+    localStorage.removeItem("identity");
+    return Promise.resolve();
+},
+checkAuth: ()=>{
+    return localStorage.getItem("auth")? Promise.resolve(): Promise.reject();
+},
+checkError: (error) =>{
+    const status=error.status;
+    if(status===401|| status===403){
+        localStorage.removeItem("auth");
+        localStorage.removeItem("identity");
+        return Promise.reject();
+    }
+    return Promise.resolve();
+},
+getIdentity: ()=>{
+    try{
+        return Promise.resolve(JSON.parse(localStorage.getItem("identity")));
+    }catch{
+        return Promise.reject()
+    }
+},
+getPermissions: ()=>{return Promise.resolve()},
 };
+
+export default authProvider;
