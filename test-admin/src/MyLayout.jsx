@@ -61,9 +61,9 @@ export const MyLogoutButton = forwardRef((props, ref) => {
 });
 
 const MyUserMenu = () => (
-    <UserMenu>
+    <userMenu>
         <MyLogoutButton />
-    </UserMenu>
+    </userMenu>
 );
 
 const MyAppBar = () => 

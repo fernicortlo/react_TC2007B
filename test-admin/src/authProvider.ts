@@ -2,14 +2,13 @@ import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
     // called when the user attempts to log in
-    login: async ({ correo , pass }) => {
+    login: async ({ correo, pass }) => {
         console.log('Correo:', correo);
         console.log('Pass:', pass);
         const request = new Request('http://127.0.0.1:1337/login', {
             method: 'POST',
-            body: JSON.stringify({ "correo":correo, "pass": pass }),
+            body: JSON.stringify({ "correo": correo, "pass": pass }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
-            
         });
         try {
             const response = await fetch(request);
@@ -22,7 +21,7 @@ export const authProvider: AuthProvider = {
             localStorage.setItem('identity',  JSON.stringify({"id": auth.id,  "fullName":auth.nombreCompleto}));
             return Promise.resolve()
         } catch {
-            throw new Error('Error en usuario o password');
+            throw new Error('Error en correo o password');
         }
     },
 
