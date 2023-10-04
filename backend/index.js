@@ -23,6 +23,14 @@ async function connectDB(){
         console.error("Failed to connect to the database", err);
     }
 }
+async function log(sujeto, accion, objeto){
+    toLog={}
+    toLog["timestamp"]=new Date();
+    toLog["sujeto"]=sujeto;
+    toLog["accion"]=accion;
+    toLog["objeto"]=objeto;
+    await db.collection("log").insertOne(toLog);
+}
 
 
 //getList, getMany, getManyReference
@@ -116,7 +124,7 @@ app.post("/login", async(request, response)=>{
             if(result){
                 let token=jwt.sign({correo: data.correo}, "secretKey", {expiresIn: 600});
                 log(correo, "login", "");
-                response.json({"token": token, "id": data.correo, "fullName": data.nombreCompleto})
+                response.json({"token": token, "id": data.correo, "nombreCompleto": data.nombreCompleto})
             }else{
                 response.sendStatus(401)
             }
