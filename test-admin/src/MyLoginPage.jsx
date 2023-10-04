@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, Button} from 'react-admin';
-import { createTheme, ThemeProvider } from '@mui/material/styles'; 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
