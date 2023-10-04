@@ -14,11 +14,12 @@ const MyLoginPage = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // will call authProvider.login({ email, password })
-        login({ email:"hola@hola.com", password:123 }).catch(() =>
+        // will call authProvider.login({ correo, pass })
+        login({ correo: email, pass: password }).catch(() =>
             notify('Invalid email or password')
         );
     };
+    
 
     return (
         <Container component="main" maxWidth="xs" >
