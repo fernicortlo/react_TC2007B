@@ -1,4 +1,5 @@
 import { AuthProvider } from "react-admin";
+import { setUserId,setUserRol } from "./authState";
 
 export const authProvider: AuthProvider = {
     // called when the user attempts to log in
@@ -18,7 +19,10 @@ export const authProvider: AuthProvider = {
             }
             const auth = await response.json();
             localStorage.setItem('auth', auth.token);
-            localStorage.setItem('identity',  JSON.stringify({"id": auth.id,  "fullName":auth.nombreCompleto}));
+            console.log('auth', auth);
+            localStorage.setItem('identity',  JSON.stringify({"id": auth.id,  "fullName":auth.nombreCompleto, "rol":auth.rol,"aula":auth.aula}));
+            setUserId(auth.aula)
+            setUserRol(auth.rol)
             return Promise.resolve()
         } catch {
             throw new Error('Error en correo o password');

@@ -24,7 +24,7 @@ import {
 } from "react-admin";
 import React, { useState, ChangeEvent } from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
-
+import { getUserId,getUserRol } from "./authState";
 export const TicketCreate = () => {
     const notify= useNotify();
     const refresh = useRefresh();
@@ -47,13 +47,14 @@ export const TicketCreate = () => {
     return (
         <Create mutationOptions={{ onSuccess }}>
             <SimpleForm>
-                <TextInput source="aula" label="Aula"/>
+                <TextInput source="rol" label="Rol" defaultValue={getUserRol} disabled/>
+                <TextInput source="aula" label="Aula" defaultValue={getUserId} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices}/>
                 <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices}/>
                 <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                <TextInput source="rol" label="Rol"/>
+                
             </SimpleForm>
         </Create>
     );

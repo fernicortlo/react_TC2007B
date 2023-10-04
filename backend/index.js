@@ -123,8 +123,15 @@ app.post("/login", async(request, response)=>{
         bcrypt.compare(pass, data.pass, (error, result)=>{
             if(result){
                 let token=jwt.sign({correo: data.correo}, "secretKey", {expiresIn: 600});
+                console.log(data)
                 log(correo, "login", "");
-                response.json({"token": token, "id": data.correo, "nombreCompleto": data.nombreCompleto})
+                response.json({
+                    "token": token,
+                     "id": data.correo,
+                    "nombreCompleto": data.nombreCompleto,
+                    "rol": data.rol,
+                    "aula": data.aula.nombreAula
+                    })
             }else{
                 response.sendStatus(401)
             }
