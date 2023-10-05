@@ -5,6 +5,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import authProvider from './authProvider';
+import { getUserRol } from './authState';
+
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,11 +19,14 @@ const MyLoginPage = () => {
         try {
             // Call the login function from authProvider
             await authProvider.login({ correo: email, pass: password });
-            
-            // If login is successful, you can redirect or handle it as needed
-            // For example, you can use react-admin's redirection logic
-            // or notify the user about successful login.
             notify('Login successful');
+            let rol = getUserRol();
+            // if(rol === 'Supervisor de Aula'){
+            //     redirect('/Tickets')
+            // }
+            // else if (rol === 'Supervisor Nacional' || rol=== 'Supervisor Ejecutivo'){
+            //     redirect('/TicketsNA')
+            // }
             redirect('/Tickets')
 
         } catch (error) {
