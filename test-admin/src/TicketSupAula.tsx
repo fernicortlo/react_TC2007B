@@ -47,8 +47,8 @@ export const TicketCreate = () => {
     return (
         <Create mutationOptions={{ onSuccess }}>
             <SimpleForm>
-                <TextInput source="rol" label="Rol" defaultValue={getUserRol} disabled/>
-                <TextInput source="aula" label="Aula" defaultValue={getUserId} disabled/>
+                <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
+                <TextInput source="aula" label="Aula" defaultValue={getUserId()} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices}/>
                 <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices}/>

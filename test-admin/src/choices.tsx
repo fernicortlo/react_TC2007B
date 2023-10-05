@@ -30,7 +30,7 @@ export const tipoChoicesMapping: Record<string, ChoiceOption[]> = {
         {id:'cámaras de seguridad', name: 'Cámaras de seguridad'},
         {id:'soporte técnico presencial y remoto', name: 'Soporte técnico presencial y remoto'},
     ],
-    'Infrestructura': [
+    'Infraestructura': [
         {id:'paredes', name:'Paredes'},
         {id:'techo', name:'Techo'},
         {id:'ventanas', name:'Ventanas'},
