@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLogin, useNotify, Notification, Button, useRedirect} from 'react-admin';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+//import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import authProvider from './authProvider';
 import { getUserRol } from './authState';
@@ -37,7 +37,7 @@ const MyLoginPage = () => {
     
 
     return (
-        <Container component="main" maxWidth="xs" >
+        <Container component="main" maxWidth="xs" backgroundColor="red" >
        
         <Box
           sx={{
@@ -48,10 +48,7 @@ const MyLoginPage = () => {
             alignContent: 'center'
           }}
         >
-          <img src='src/logoFundacion.png' alt="Your Image" width="200" height="200" />
-          <Typography component="h1" variant="h5">
-            Iniciar Sesión
-          </Typography>
+          <img src='src/logo2.png' alt="Logo Image" width="400" height="400" />
         <Box
             component="form"
             onSubmit={handleSubmit}  
