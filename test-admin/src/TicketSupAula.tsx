@@ -25,6 +25,8 @@ import {
 import React, { useState, ChangeEvent } from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
 import { getUserId,getUserRol } from "./authState";
+
+
 export const TicketCreate = () => {
     const notify= useNotify();
     const refresh = useRefresh();
@@ -43,7 +45,9 @@ export const TicketCreate = () => {
         redirect('/Tickets');
         refresh();
     };
-
+    
+    let rol = getUserRol();
+    if(rol === 'Supervisor de Aula'){
     return (
         <Create mutationOptions={{ onSuccess }}>
             <SimpleForm>
@@ -58,6 +62,23 @@ export const TicketCreate = () => {
             </SimpleForm>
         </Create>
     );
+    }
+    else if(rol === 'Supervisor Nacional' || rol=== 'Supervisor Ejecutivo'){
+        return (
+            <Create mutationOptions={{ onSuccess }}>
+                <SimpleForm>
+                    <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
+                    <TextInput source="aula" label="Aula"/>
+                    <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange}/>
+                    <SelectInput source="tipo" label="Tipo" choices={tipoChoices}/>
+                    <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices}/>
+                    <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
+                    <TextInput source="comentario"  label="Comentario" multiline rows={5} />
+                    
+                </SimpleForm>
+            </Create>
+        );
+    }
 };
 
 const TicketFilters = [

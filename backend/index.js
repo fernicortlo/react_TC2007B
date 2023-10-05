@@ -39,9 +39,10 @@ app.get("/Tickets", async (request, response)=>{
         let token=request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo});
+        
         let parametersFind={}
         if(authData.rol=="Supervisor de Aula"){
-            parametersFind["correo"]=verifiedToken.correo;
+            parametersFind["aula"]=authData.aula.nombreAula;
         
     }
     // determinar donde esta el endpoint
@@ -85,7 +86,7 @@ app.get("/Tickets/:id", async (request, response)=>{
         let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
         let parametersFind={"id": Number(request.params.id)}
         if(authData.rol=="Supervisor de Aula"){
-            parametersFind["correo"]=verifiedToken.correo;
+            parametersFind["aula"]=authData.aula.nombreAula;
         }
         let data=await db.collection('Tickets').find(parametersFind).project({_id:0}).toArray();
         log(verifiedToken.correo, "ver objeto", request.params.id)
