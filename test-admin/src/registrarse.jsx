@@ -35,7 +35,7 @@ const Registrarse = () => {
         }
     };
     
-
+    const isSupervisorAula = datos.rol === 'Supervisor de Aula'
     const handleSendData = async () => {
         const request = await new Request('http://127.0.0.1:1337/registrarse', {
             method: 'POST',
@@ -64,9 +64,14 @@ const Registrarse = () => {
             <TextInput source="pass" label="Contraseña" type="password" name="pass" onChange={handleChange} required/>
             <TextInput source="nombreCompleto" label="Nombre Completo" name="nombreCompleto" onChange={handleChange} required/>
             <SelectInput source="rol" label="Rol" name="rol" choices={rolChoices} onChange={handleChange} required/>
-            <TextInput source="nombreAula" label="Nombre de Aula" name="aula.nombreAula" onChange={handleChange} required/>
-            <TextInput source="lugarAula" label="Lugar de Aula" name="aula.lugarAula" onChange={handleChange} required/>
-            <TextInput source="sponsorAula" label="Patrocinador de Aula" name="aula.sponsorAula" onChange={handleChange} required />
+            {isSupervisorAula && (
+                    <>
+                        <TextInput source="aula.nombreAula" label="Nombre de Aula" name="aula.nombreAula" onChange={handleChange} required/>
+                        <TextInput source="aula.lugarAula" label="Lugar de Aula" name="aula.lugarAula" onChange={handleChange} required/>
+                        <TextInput source="aula.sponsorAula" label="Patrocinador de Aula" name="aula.sponsorAula" onChange={handleChange} required />
+                    </>
+                )}
+            
             <Button label="Crear Usuario" onClick={handleSendData} />
             </SimpleForm>
             
