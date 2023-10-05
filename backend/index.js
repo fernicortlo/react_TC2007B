@@ -35,6 +35,15 @@ async function log(sujeto, accion, objeto){
 
 //getList, getMany, getManyReference
 app.get("/Tickets", async (request, response)=>{
+    try{
+        let token=request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo});
+        let parametersFind={}
+        if(authData.rol=="Supervisor de Aula"){
+            parametersFind["correo"]=verifiedToken.correo;
+        
+    }
     // determinar donde esta el endpoint
     if ("_sort" in request.query){ // list
         let sortBy=request.query._sort; 
@@ -43,14 +52,13 @@ app.get("/Tickets", async (request, response)=>{
         let end=Number(request.query._end);
         let sorter={} // dado que no puedo utilizar una variable como nombre o llave, se agreaga así
         sorter[sortBy]=sortOrder // se agrega la llave y el valor: asc: 1, desc: -1
-        let data=await db.collection('Tickets').find({}).sort(sorter).project({_id:0}).toArray(); 
+        let data=await db.collection('Tickets').find(parametersFind).sort(sorter).project({_id:0}).toArray(); 
         response.set('Access-Control-Expose-Headers', 'X-Total-Count')
         response.set('X-Total-Count', data.length)
         data=data.slice(start, end)
         console.log(data)
         response.json(data)
-    }
-    else if ("id" in request.query){ // getMany
+    }else if ("id" in request.query){ // getMany
         let data=[]
         for (let index=0; index<request.query.id.length; index++){
             let dataObtain=await db.collection('Tickets').find({id: Number(request.query.id[index])}).project({_id:0}).toArray();
@@ -64,26 +72,56 @@ app.get("/Tickets", async (request, response)=>{
         response.set('X-Total-Count', data.length)
         response.json(data)
     }   
+    }catch{
+        response.sendStatus(401);
+    }
 })
 
 //getOne
 app.get("/Tickets/:id", async (request, response)=>{
-    let data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
-    response.json(data[0]);
+    try{
+        let token=request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
+        let parametersFind={"id": Number(request.params.id)}
+        if(authData.rol=="Supervisor de Aula"){
+            parametersFind["correo"]=verifiedToken.correo;
+        }
+        let data=await db.collection('Tickets').find(parametersFind).project({_id:0}).toArray();
+        log(verifiedToken.correo, "ver objeto", request.params.id)
+        response.json(data[0]);
+    }catch{
+        response.sendStatus(401);
+    }
 })
 
 //create
 app.post("/Tickets", async (request, response)=>{
-    let addValue=request.body
-    let data=await db.collection('Tickets').find({}).toArray();
-    let id=data.length+1;
-    addValue["id"]=id;
-    let fechaCreacion=new Date();
-    addValue["fechaCreacion"]=fechaCreacion;
+    try{
+        let token=request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let addValue=request.body
+        let data=await db.collection('Tickets').find({}).toArray();
+        let id=data.length+1;
+        addValue["id"]=id;
+        let fechaCreacion=new Date();
+        addValue["fechaCreacion"]=fechaCreacion;
+        data=await db.collection('Tickets').insertOne(addValue);
+        response.json(data);
+    }catch{
+        response.sendStatus(401);
+    }
+}) 
+//     let addValue=request.body
+//     let data=await db.collection('Tickets').find({}).toArray();
+//     let id=data.length+1;
+//     addValue["id"]=id;
+//     let fechaCreacion=new Date();
+//     addValue["fechaCreacion"]=fechaCreacion;
 
-    data=await db.collection('Tickets').insertOne(addValue);
-    response.json(data);
-})
+//     data=await db.collection('Tickets').insertOne(addValue);
+//     response.json(data);
+// })
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
