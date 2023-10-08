@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import authProvider from './authProvider';
 import { getUserRol } from './authState';
+import "./css/login.css"
 
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
@@ -37,7 +38,7 @@ const MyLoginPage = () => {
     
 
     return (
-        <Container component="main" maxWidth="xs" backgroundColor="red" >
+        // <Container component="main" maxWidth="xs" backgroundColor="red" >
        
         <Box
           sx={{
@@ -89,7 +90,7 @@ const MyLoginPage = () => {
                 fullWidth>Iniciar Sesión</Button>
         </Box>
         </Box>
-        </Container>
+        // </Container>
     );
 };
 

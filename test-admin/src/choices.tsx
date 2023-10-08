@@ -17,61 +17,61 @@ export const clasificacionChoices: ChoiceOption[] = [
 ];
 export const tipoChoicesMapping: Record<string, ChoiceOption[]> = {
     'Servicios': [
-        {id:'agua', name:'Agua'},
-        {id:'luz', name:'Luz'},
-        {id:'telefono', name:'Telefono'}, 
-        {id:'basura', name:'Basura'},
-        {id:'limpieza del aula', name:'Limpieza del Aula'},
+        {id:'Agua', name:'Agua'},
+        {id:'Luz', name:'Luz'},
+        {id:'Telefono', name:'Telefono'}, 
+        {id:'Basura', name:'Basura'},
+        {id:'Limpieza del aula', name:'Limpieza del Aula'},
     ],
     'Digital': [
-        {id:'internet, servidores y equipos', name:'Internet, Servidores y Equipos'},
-        {id:'software', name:'Software'},
-        {id:'hardware', name:'Hardware'},
-        {id:'cámaras de seguridad', name: 'Cámaras de seguridad'},
-        {id:'soporte técnico presencial y remoto', name: 'Soporte técnico presencial y remoto'},
+        {id:'Internet, servidores y equipos', name:'Internet, Servidores y Equipos'},
+        {id:'Software', name:'Software'},
+        {id:'Hardware', name:'Hardware'},
+        {id:'Cámaras de seguridad', name: 'Cámaras de seguridad'},
+        {id:'Soporte técnico presencial y remoto', name: 'Soporte técnico presencial y remoto'},
     ],
     'Infraestructura': [
-        {id:'paredes', name:'Paredes'},
-        {id:'techo', name:'Techo'},
-        {id:'ventanas', name:'Ventanas'},
-        {id:'puertas', name:'Puertas'},
+        {id:'Paredes', name:'Paredes'},
+        {id:'Techo', name:'Techo'},
+        {id:'Ventanas', name:'Ventanas'},
+        {id:'Puertas', name:'Puertas'},
         {id:'Aulas en general', name:'Aulas en general'}
     ],
     'Recursos Humanos': [
-        {id:'permisos', name:'Permisos'},
-        {id:'asistencias', name:'Asistencias'},
-        {id:'salud', name:'Salud'},
-        {id:'trámites', name:'Trámites'},
-        {id:'honorarios', name:'Honorarios'}
+        {id:'Permisos', name:'Permisos'},
+        {id:'Asistencias', name:'Asistencias'},
+        {id:'Salud', name:'Salud'},
+        {id: 'Trámites', name:'Trámites'},
+        {id:'Honorarios', name:'Honorarios'}
     ],
     'Beneficiarios': [
-        {id:'asistencias', name:'Asistencias'},
-        {id:'documentación', name:'Documentación'},
-        {id:'apoyo académico', name:'Apoyo académico'},
+        {id:'Asistencias', name:'Asistencias'},
+        {id:'Documentación', name:'Documentación'},
+        {id:'Apoyo académico', name:'Apoyo académico'},
         {id:'Salud', name:'Seguridad, bulling'}
     ],
     'Mobiliario': [
-        {id:'sillas, butacas', name:'Sillas, butacas'},
-        {id:'escritorios', name:'Escritorios'},
-        {id:'pizarrones', name:'Pizarrones'},
-        {id:'cafetería', name:'Cafetería'},
-        {id:'estantes, archiveros', name:'Estantes, archiveros'}
+        {id:'Sillas, butacas', name:'Sillas, butacas'},
+        {id:'Escritorios', name:'Escritorios'},
+        {id:'Pizarrones', name:'Pizarrones'},
+        {id:'Cafetería', name:'Cafetería'},
+        {id:'Estantes, archiveros', name:'Estantes, archiveros'}
     ],
     'Seguridad': [
-        {id:'delincuencia', name:'Delincuencia'},
-        {id:'robos', name:'Robos'},
-        {id:'bandalismo', name:'Bandalismo'},
-        {id:'imagen institucional', name:'Imagen institucional'}
+        {id:'Delincuencia', name:'Delincuencia'},
+        {id:'Robos', name:'Robos'},
+        {id:'Bandalismo', name:'Bandalismo'},
+        {id:'Imagen institucional', name:'Imagen institucional'}
     ],
     'Materiales': [
-        {id:'educativos', name:'Educativos'},
-        {id:'papelería', name:'Papelería'},
-        {id:'limpieza', name:'Limpieza'}
+        {id:'Educativos', name:'Educativos'},
+        {id:'Papelería', name:'Papelería'},
+        {id:'Limpieza', name:'Limpieza'}
     ],
     'Fenómeno meteorológico': [
-        {id:'inundaciones', name:'Inundaciones'},
-        {id:'incendios', name:'Incendios'},
-        {id:'sismos', name:'Sismos'}
+        {id:'Inundaciones', name:'Inundaciones'},
+        {id:'Incendios', name:'Incendios'},
+        {id:'Sismos', name:'Sismos'}
     ],
 };
 
@@ -82,10 +82,10 @@ export const prioridadChoices: ChoiceOption[] = [
     ];
 
  export const estatusChoices: ChoiceOption[] = [
-        {id:'no iniciado', name:' No Iniciado'},
-        {id:'iniciado', name:'Iniciado'},
-        {id:'en proceso', name:'En proceso'},
-        {id:'terminado', name:'Terminado'}
+        {id:'No iniciado', name:' No Iniciado'},
+        {id:'Iniciado', name:'Iniciado'},
+        {id:'En proceso', name:'En proceso'},
+        {id:'Terminado', name:'Terminado'}
     ];
 export const rolChoices: ChoiceOption[] = [
     {id:"Supervisor de Aula", name:"Supervisor de Aula"},

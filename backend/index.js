@@ -105,8 +105,17 @@ app.post("/Tickets", async (request, response)=>{
         let data=await db.collection('Tickets').find({}).toArray();
         let id=data.length+1;
         addValue["id"]=id;
+
         let fechaCreacion=new Date();
-        addValue["fechaCreacion"]=fechaCreacion;
+        // Format the date as "dd/mm/yyyy hh:mm"
+        let formattedDate = fechaCreacion.toLocaleString("en-US", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+        addValue["fechaCreacion"]=formattedDate;
         data=await db.collection('Tickets').insertOne(addValue);
         response.json(data);
     }catch{
