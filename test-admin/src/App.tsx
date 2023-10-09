@@ -14,7 +14,7 @@ import { AlbumList, AlbumEdit, AlbumCreate } from "./albums";
 import MyLayout from './MyLayout';
 import MyLoginPage from './MyLoginPage';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import { TicketCreate,TicketList } from "./TicketSupAula";
+import { TicketCreate,TicketList, TicketEdit } from "./TicketSupAula";
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
 import Registrarse from "./registrarse";
 
@@ -27,6 +27,7 @@ export const App = () => (
         list={TicketList}
         create={TicketCreate}
         icon={PlaylistAddCheckCircleIcon}
+        edit={TicketEdit}
     />
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>

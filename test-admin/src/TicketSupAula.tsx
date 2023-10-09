@@ -15,6 +15,7 @@ import {
     TextInput,
     useRefresh,
     useRedirect,
+    Edit,
     // FilterList,
     // FilterListItem,
     // FilterLiveSearch,
@@ -106,5 +107,32 @@ export const TicketList = () => (
         </Datagrid>
         </List>
     );
+
+    const TicketTitle = () => {
+        const record = useRecordContext();
+        return <span>Post {record ? `"${record.title}"` : ''}</span>;
+        };
+
+    export const TicketEdit = () => {
+        const notify= useNotify();
+        const refresh= useRefresh();
+        const redirect= useRedirect();
+      
+        const onSuccess=()=>{
+            notify('Cambios guardados',{undoable:true});
+            redirect('/Tickets');
+            refresh();
+        };
+
+        return(
+        <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
+            <SimpleForm warnWhenUnsavedChanges>        
+                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
+                <TextInput source="comentario"  label="Comentario" multiline rows={5} />
+                <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   
+            </SimpleForm>
+        </Edit>
+        );
+    };
 
 
