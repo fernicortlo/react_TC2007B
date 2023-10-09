@@ -122,16 +122,21 @@ app.post("/Tickets", async (request, response)=>{
         response.sendStatus(401);
     }
 }) 
-//     let addValue=request.body
-//     let data=await db.collection('Tickets').find({}).toArray();
-//     let id=data.length+1;
-//     addValue["id"]=id;
-//     let fechaCreacion=new Date();
-//     addValue["fechaCreacion"]=fechaCreacion;
 
-//     data=await db.collection('Tickets').insertOne(addValue);
-//     response.json(data);
-// })
+//update
+app.put("/Tickets/:id", async (request, response)=>{
+    try{
+        let token=request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let addValue=request.body
+        addValue["id"]=Number(request.params.id);
+        let data=await db.collection("Tickets").updateOne({"id": addValue["id"]}, {"$set": addValue});
+        data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
+        response.json(data[0]);
+    }catch{
+        response.sendStatus(401);
+    }
+})  
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
