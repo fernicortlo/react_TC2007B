@@ -58,6 +58,7 @@ export const TicketCreate = () => {
                 <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
                 <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" required={true} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
+                <TextInput source="folio"  label="numeroOficio" multiline rows={1}/>
                 
             </SimpleForm>
         </Create>
@@ -74,6 +75,7 @@ export const TicketCreate = () => {
                     <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices}/>
                     <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
                     <TextInput source="comentario"  label="Comentario" multiline rows={5} />
+                    <TextInput source="folio"  label="numeroOficio" multiline rows={1}/>
                     
                 </SimpleForm>
             </Create>
@@ -99,6 +101,7 @@ export const TicketList = () => (
              <TextField source="prioridad" />
              <TextField source="fechaCreacion" /> 
              <TextField source="rol" />
+             <TextField source="folio" />
              <EditButton />
         </Datagrid>
         </List>
