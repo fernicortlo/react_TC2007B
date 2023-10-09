@@ -58,7 +58,7 @@ export const TicketCreate = () => {
                 <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
                 <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" required={true} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
-                <TextInput source="folio"  label="numeroOficio" multiline rows={1}/>
+                <TextInput source="folio"  label="Número de Oficio" multiline rows={1} required={true}/>
                 
             </SimpleForm>
         </Create>
@@ -69,13 +69,13 @@ export const TicketCreate = () => {
             <Create mutationOptions={{ onSuccess }}>
                 <SimpleForm>
                     <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
-                    <TextInput source="aula" label="Aula"/>
-                    <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange}/>
-                    <SelectInput source="tipo" label="Tipo" choices={tipoChoices}/>
-                    <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices}/>
-                    <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
-                    <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                    <TextInput source="folio"  label="numeroOficio" multiline rows={1}/>
+                    <TextInput source="aula" label="Aula" required={true}/>
+                    <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
+                    <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
+                    <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
+                    <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" required={true}/>
+                    <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
+                    <TextInput source="folio"  label="Número de Oficio" multiline rows={1} required={true}/>
                     
                 </SimpleForm>
             </Create>
