@@ -53,11 +53,11 @@ export const TicketCreate = () => {
             <SimpleForm>
                 <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
                 <TextInput source="aula" label="Aula" defaultValue={getUserId()} disabled/>
-                <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange}/>
-                <SelectInput source="tipo" label="Tipo" choices={tipoChoices}/>
-                <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices}/>
-                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
-                <TextInput source="comentario"  label="Comentario" multiline rows={5} />
+                <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
+                <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
+                <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
+                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" required={true} />
+                <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
                 
             </SimpleForm>
         </Create>
@@ -83,7 +83,8 @@ export const TicketCreate = () => {
 
 const TicketFilters = [
         <TextInput source="q" label="Buscar" alwaysOn />,
-        <ReferenceInput source="userId" label="Usuario" reference="users" />,
+        <ReferenceInput source="aula" label="Aula" reference="aula" />,
+        <ReferenceInput source="clasificacion" label="Clasificacion" reference="clasificacion" />,
     ];
     
 export const TicketList = () => (
@@ -93,6 +94,7 @@ export const TicketList = () => (
              <TextField source="aula" />
              <TextField source="clasificacion" />
              <TextField source="tipo" />
+             <TextField source="comentario" />
              <TextField source="estatus" />
              <TextField source="prioridad" />
              <TextField source="fechaCreacion" /> 

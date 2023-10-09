@@ -69,15 +69,15 @@ const Registrarse = () => {
             <SimpleForm
             save={handleSendData}
             toolbar={null}>
-            <TextInput source="correo" label="Correo" name="correo" onChange={handleChange} required />
-            <TextInput source="pass" label="Contraseña" type="password" name="pass" onChange={handleChange} required/>
-            <TextInput source="nombreCompleto" label="Nombre Completo" name="nombreCompleto" onChange={handleChange} required/>
-            <SelectInput source="rol" label="Rol" name="rol" choices={rolChoices} onChange={handleChange} required/>
+            <TextInput source="correo" label="Correo" name="correo" onChange={handleChange} required={true} />
+            <TextInput source="pass" label="Contraseña" type="password" name="pass" onChange={handleChange} required={true}/>
+            <TextInput source="nombreCompleto" label="Nombre Completo" name="nombreCompleto" onChange={handleChange} required={true}/>
+            <SelectInput source="rol" label="Rol" name="rol" choices={rolChoices} onChange={handleChange} required={true}/>
             {isSupervisorAula && (
                     <>
-                        <TextInput source="aula.nombreAula" label="Nombre de Aula" name="aula.nombreAula" onChange={handleChange} required/>
-                        <TextInput source="aula.lugarAula" label="Lugar de Aula" name="aula.lugarAula" onChange={handleChange} required/>
-                        <TextInput source="aula.sponsorAula" label="Patrocinador de Aula" name="aula.sponsorAula" onChange={handleChange} required />
+                        <TextInput source="aula.nombreAula" label="Nombre de Aula" name="aula.nombreAula" onChange={handleChange} required={true}/>
+                        <TextInput source="aula.lugarAula" label="Lugar de Aula" name="aula.lugarAula" onChange={handleChange} required={true}/>
+                        <TextInput source="aula.sponsorAula" label="Patrocinador de Aula" name="aula.sponsorAula" onChange={handleChange} required={true} />
                     </>
                 )}
             
