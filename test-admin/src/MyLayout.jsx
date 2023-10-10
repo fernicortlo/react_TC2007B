@@ -1,82 +1,52 @@
-// import { forwardRef } from 'react';
-// import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
-// import { MenuItem } from '@mui/material';
-// import ExitIcon from '@mui/icons-material/PowerSettingsNew';
-
-// // It's important to pass the ref to allow Material UI to manage the keyboard navigation
-
-// const MyLogoutButton = forwardRef((props, ref) => {
-//     const logout = useLogout();
-//     const handleClick = () => logout();
-//     return (
-//         <Menu>
-//         <MenuItem
-//             onClick={handleClick}
-//             ref={ref}
-//             // It's important to pass the props to allow Material UI to manage the keyboard navigation
-//             {...props}
-//         >
-//             <ExitIcon /> Logout
-//         </MenuItem>
-        
-//     </Menu>
-//     );
-// });
-
-// const MyUserMenu = () => (
-//     <UserMenu>
-//         {/* Your custom menu items */}
-//         {/* Include the logout button */}
-//         <MyLogoutButton />
-//         <MySettings/>
-//     </UserMenu>
-// );
-
-// const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
-
-// const MyLayout = (props) => (
-//     <Layout {...props} appBar={MyAppBar} />
-// );
-
-// export default MyLayout;
-import { forwardRef } from 'react';
-import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
+import React, { forwardRef } from 'react';
+import { AppBar, Layout, Sidebar, useLogout, UserMenu, MenuItemLink } from 'react-admin';
+import { useTheme } from '@mui/material/styles';
 import { MenuItem } from '@mui/material';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
-// It's important to pass the ref to allow Material UI to manage the keyboard navigation
-export const MyLogoutButton = forwardRef((props, ref) => {
-    const logout = useLogout();
-    const handleClick = () => logout();
-    return (
-        <MenuItem
-            onClick={handleClick}
-            ref={ref}
-            // It's important to pass the props to allow Material UI to manage the keyboard navigation
-            {...props}
-        >
-            <ExitIcon /> Logout
-        </MenuItem>
-    );
+const ThemedLogoutButton = () => {
+    const theme = useTheme();
+    return <ExitIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', }} />;
+  };
+
+const MyLogoutButton = forwardRef((props, ref) => {
+  const logout = useLogout();
+  const handleClick = () => logout();
+  return (
+    <MenuItem
+      onClick={handleClick}
+      ref={ref}
+      {...props}
+    >
+      <ThemedLogoutButton/> Cerrar Sesion
+    </MenuItem>
+  );
 });
 
-const MyUserMenu = () => (
-    <userMenu>
-        <MyLogoutButton />
-    </userMenu>
+const MyUserMenu = (props) => (
+  <UserMenu {...props}>
+    <MyLogoutButton />
+  </UserMenu>
 );
 
-const MyAppBar = () => 
-<AppBar 
-    sx={{
-        color: '#FF4B4B',
-        background: 'white',
-        '& .RaAppBar-toolbar': { padding: 0 },
-    }}
-    UserMenu={<MyUserMenu />} />;
+const MyAppBar = (props) => {
+  const theme = useTheme();
+  const appBarStyle = {
+    background: theme.palette.mode === 'dark' ? 'transparent' : '#FFFFFF',
+    color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f',
+    '& .RaAppBar-toolbar': { padding: 0 },
+  };
+
+  return (
+    <AppBar
+      {...props}
+      sx={appBarStyle}
+      userMenu={<MyUserMenu />}
+    />
+  );
+};
 
 const MyLayout = (props) => (
-    <Layout {...props} appBar={MyAppBar} />
+  <Layout {...props} appBar={MyAppBar}/>
 );
-
 export default MyLayout;
