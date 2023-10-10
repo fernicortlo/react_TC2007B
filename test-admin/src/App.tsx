@@ -29,7 +29,7 @@ export const App = () => (
 
     <Resource
         name="Tickets"
-        options={{ label: 'ColorTickets' }}
+       
         list={TicketList}
         create={TicketCreate}
         icon={ThemedIcon}
