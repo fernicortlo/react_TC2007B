@@ -131,12 +131,48 @@ app.put("/Tickets/:id", async (request, response)=>{
         let addValue=request.body
         addValue["id"]=Number(request.params.id);
         let data=await db.collection("Tickets").updateOne({"id": addValue["id"]}, {"$set": addValue});
-        data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
-        response.json(data[0]);
+        //data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
+        //response.json(data[0]);
+         // Create a new Actualizaciones record
+        let actualizacionesRecord = {
+            ticketId: addValue["id"],
+            updatedBy: verifiedToken.correo,
+            updateTimestamp: new Date(),
+            updateData: addValue, // You may want to structure this data as needed
+        };
+      await db.collection("Actualizaciones").insertOne(actualizacionesRecord);
     }catch{
         response.sendStatus(401);
     }
 })  
+
+
+//create
+app.post("/Historial", async (request, response)=>{
+    try{
+        let token=request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let addValue=request.body
+        let data=await db.collection('Tickets').find({}).toArray();
+        let id=data.length+1;
+        addValue["id"]=id;
+
+        let fechaCreacion=new Date();
+        // Format the date as "dd/mm/yyyy hh:mm"
+        let formattedDate = fechaCreacion.toLocaleString("en-US", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+        addValue["fechaCreacion"]=formattedDate;
+        data=await db.collection('Tickets').insertOne(addValue);
+        response.json(data);
+    }catch{
+        response.sendStatus(401);
+    }
+}) 
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
