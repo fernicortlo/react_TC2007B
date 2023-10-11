@@ -58,6 +58,21 @@ app.get("/Tickets", async (request, response) => {
             console.log("Filtering by Tipo:", request.query.tipo)
             parametersFind["tipo"] = request.query.tipo;
         }
+        if ("estatus" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Estatus:", request.query.estatus)
+            parametersFind["estatus"] = request.query.estatus;
+        }
+        if ("aula" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Estatus:", request.query.aula)
+            parametersFind["aula"] = request.query.aula;
+        }
+        if ("id" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by ID:", request.query.id)
+            parametersFind["id"] = request.query.id;
+        }
 
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
@@ -81,24 +96,28 @@ app.get("/Tickets", async (request, response) => {
                 .toArray();
 
             response.json(data);
-        } else if ("id" in request.query) { // getMany
+        } 
+        else if ("id" in request.query) { // getMany
             let data = [];
             for (let index = 0; index < request.query.id.length; index++) {
                 let dataObtain = await db.collection('Tickets').find({ id: Number(request.query.id[index]) }).project({ _id: 0 }).toArray();
                 data = data.concat(dataObtain);
             }
             response.json(data);
-        } else { // getReference
+        } 
+        else { // getReference
             let data = await db.collection('Tickets').find(parametersFind).project({ _id: 0 }).toArray();
             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
             response.set('X-Total-Count', data.length);
             response.json(data);
         }
-    } catch {
+    } catch(error) {
         console.error(error);
         response.sendStatus(401);
     }
 });
+
+
 
 // app.get("/Tickets", async (request, response) => {
 //     try {
