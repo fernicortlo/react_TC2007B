@@ -69,10 +69,11 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["aula"] = request.query.aula;
         }
         if ("id" in request.query) {
-            // If "prioridad" is present in the query, filter by it
-            console.log("Filtering by ID:", request.query.id)
-            parametersFind["id"] = request.query.id;
+            // If "id" is present in the query, filter by it
+            console.log("Filtering by ID:", request.query.id);
+            parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
+        
 
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list

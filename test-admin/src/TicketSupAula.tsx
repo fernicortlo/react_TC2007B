@@ -88,8 +88,8 @@ export const TicketCreate = () => {
 
 const TicketFilters = [
         //<SearchInput source="q" alwaysOn />,
-        <SearchInput source="aula"/>,
-        //<NumberInput source="id" label="ID" />, //Id no funciona.
+        <TextInput source="aula" label="Buscar Aula"/>,
+        <NumberInput source="id" label="ID" />, //Id no funciona.
         <SelectInput source="estatus" label="Estatus" choices={estatusChoices} />,
         <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} />,
         <SelectInput source="clasificacion" label="Clasificacion" choices={clasificacionChoices} />,
