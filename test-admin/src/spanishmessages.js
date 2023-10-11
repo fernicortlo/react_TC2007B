@@ -48,7 +48,7 @@ export const spanishMessages = {
         },
         page: {
             create: 'Create %{name}',
-            dashboard: 'Panel de control',
+            dashboard: 'Reportes',
             edit: 'Edit %{name} %{recordRepresentation}',
             error: 'Algo salió mal',
             list: '%{name}',
