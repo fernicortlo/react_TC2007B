@@ -30,7 +30,6 @@ export const App = () => (
           darkTheme={darkTheme} >
     <Resource
         name="Tickets"
-       
         list={TicketList}
         create={TicketCreate}
         icon={ThemedIcon}
