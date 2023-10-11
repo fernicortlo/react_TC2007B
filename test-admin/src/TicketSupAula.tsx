@@ -23,6 +23,7 @@ import {
     // useCreate,
     SelectInput,
     SearchInput,
+    NumberInput,
 } from "react-admin";
 import React, { useState, ChangeEvent } from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
@@ -87,28 +88,27 @@ export const TicketCreate = () => {
 
 const TicketFilters = [
         //<SearchInput source="q" alwaysOn />,
-        // //<TextInput source="q" label="Buscar" alwaysOn />,
-        // <ReferenceInput source="aula" label="Aula" reference="aula" />,
-        // <ReferenceInput source="id" label="id" reference="id" />,
+        <SearchInput source="aula"/>,
+        //<NumberInput source="id" label="ID" />, //Id no funciona.
+        <SelectInput source="estatus" label="Estatus" choices={estatusChoices} />,
         <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} />,
         <SelectInput source="clasificacion" label="Clasificacion" choices={clasificacionChoices} />,
-        // <SelectInput source="tipo" label="Tipo" choices={tipoChoicesMapping} />,
-        //<SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
+        //<SelectInput source="tipo" label="Tipo" choices={tipoChoicesMapping[selectedClasificacion]} />
     ];
-
-    export const PostFilterSidebar = () => (
-        <Card sx={{ order: -1, mr: 2, mt: 9, width: 500 }}>
-            <CardContent>
-                <FilterLiveSearch />
-                <FilterList label="Category" icon={<CategoryIcon />}>
-                    <FilterListItem label="ID" value={{ category: 'ID' }} />
-                    <FilterListItem label="Users" value={{ category: 'users' }} />
-                    <FilterListItem label="title" value={{ category: 'title' }} />
-                    <FilterListItem label="Body" value={{ category: 'body' }} />
-                </FilterList>
-            </CardContent>
-        </Card>
-    )
+    
+    // export const PostFilterSidebar = () => (
+    //     <Card sx={{ order: -1, mr: 2, mt: 9, width: 500 }}>
+    //         <CardContent>
+    //             <FilterLiveSearch />
+    //             <FilterList label="Category" icon={<CategoryIcon />}>
+    //                 <FilterListItem label="ID" value={{ category: 'ID' }} />
+    //                 <FilterListItem label="Users" value={{ category: 'users' }} />
+    //                 <FilterListItem label="title" value={{ category: 'title' }} />
+    //                 <FilterListItem label="Body" value={{ category: 'body' }} />
+    //             </FilterList>
+    //         </CardContent>
+    //     </Card>
+    // )
     
     
 export const TicketList = () => (
