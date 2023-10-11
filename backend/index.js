@@ -6,7 +6,7 @@ const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
 const https=require("https")
 const fs=require("fs")
-
+//security applied
 const uri = "mongodb+srv://Fer:1234@pruebas.1e0thqh.mongodb.net/pruebas";
 let db;
 
