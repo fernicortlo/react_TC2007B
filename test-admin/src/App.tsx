@@ -3,7 +3,7 @@ import { Admin, Resource, ShowGuesser, CustomRoutes } from "react-admin";
 import {  Route} from 'react-router-dom';
 import { dataProvider } from "./dataProvider";
 import {i18nProvider} from './i18nProvider';
-import { Dashboard } from './Dashboard';
+import  Dashboard  from './Dashboard';
 import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
 import { TicketCreate,TicketList, TicketEdit } from "./TicketSupAula";
@@ -13,6 +13,7 @@ import MyLayout from "./MyLayout";
 import { lightTheme, darkTheme } from './theme';
 import {useTheme} from '@mui/material/styles';
 
+
 const ThemedIcon = () => {
   const theme = useTheme();
   return <PlaylistAddCheckCircleIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', }} />;
@@ -21,12 +22,12 @@ const ThemedIcon = () => {
 export const App = () => (
   <Admin layout={MyLayout} 
           loginPage={MyLoginPage} 
+          dashboard={Dashboard}
           authProvider={authProvider} 
           dataProvider={dataProvider}  
           i18nProvider= {i18nProvider}  
           theme={lightTheme}
           darkTheme={darkTheme} >
-
     <Resource
         name="Tickets"
        
@@ -35,8 +36,9 @@ export const App = () => (
         icon={ThemedIcon}
         edit={TicketEdit}
     />
+    
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>
-        </CustomRoutes>
+     </CustomRoutes>
   </Admin>
 );
