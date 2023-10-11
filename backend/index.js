@@ -4,7 +4,9 @@ var cors=require('cors')
 bodyParser=require('body-parser')
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
-
+const https=require("https")
+const fs=require("fs")
+//security applied
 const uri = "mongodb+srv://Fer:1234@pruebas.1e0thqh.mongodb.net/pruebas";
 let db;
 
@@ -325,7 +327,15 @@ app.post("/login", async(request, response)=>{
     }
 })
 
-app.listen(1337, ()=>{
+https.createServer({
+    cert: fs.readFileSync("backend.cer"),
+    key: fs.readFileSync("backend.key"),
+}, app).listen(1337, ()=>{
     connectDB();
     console.log("Servidor escuchando en puerto 1337")
 })
+
+// app.listen(1337, ()=>{
+//     connectDB();
+//     console.log("Servidor escuchando en puerto 1337")
+// })
