@@ -29,7 +29,6 @@ export const App = () => (
 
     <Resource
         name="Tickets"
-       
         list={TicketList}
         create={TicketCreate}
         icon={ThemedIcon}

@@ -16,12 +16,13 @@ import {
     useRefresh,
     useRedirect,
     Edit,
-    // FilterList,
-    // FilterListItem,
-    // FilterLiveSearch,
+    FilterList,
+    FilterListItem,
+    FilterLiveSearch,
     // Button,
     // useCreate,
-    SelectInput
+    SelectInput,
+    SearchInput,
 } from "react-admin";
 import React, { useState, ChangeEvent } from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
@@ -85,13 +86,33 @@ export const TicketCreate = () => {
 };
 
 const TicketFilters = [
-        <TextInput source="q" label="Buscar" alwaysOn />,
-        <ReferenceInput source="aula" label="Aula" reference="aula" />,
-        <ReferenceInput source="clasificacion" label="Clasificacion" reference="clasificacion" />,
+        //<SearchInput source="q" alwaysOn />,
+        // //<TextInput source="q" label="Buscar" alwaysOn />,
+        // <ReferenceInput source="aula" label="Aula" reference="aula" />,
+        // <ReferenceInput source="id" label="id" reference="id" />,
+        <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} />,
+        <SelectInput source="clasificacion" label="Clasificacion" choices={clasificacionChoices} />,
+        // <SelectInput source="tipo" label="Tipo" choices={tipoChoicesMapping} />,
+        //<SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
     ];
+
+    export const PostFilterSidebar = () => (
+        <Card sx={{ order: -1, mr: 2, mt: 9, width: 500 }}>
+            <CardContent>
+                <FilterLiveSearch />
+                <FilterList label="Category" icon={<CategoryIcon />}>
+                    <FilterListItem label="ID" value={{ category: 'ID' }} />
+                    <FilterListItem label="Users" value={{ category: 'users' }} />
+                    <FilterListItem label="title" value={{ category: 'title' }} />
+                    <FilterListItem label="Body" value={{ category: 'body' }} />
+                </FilterList>
+            </CardContent>
+        </Card>
+    )
+    
     
 export const TicketList = () => (
-    <List filters={TicketFilters}>
+    <List  filters={TicketFilters}> 
         <Datagrid>
              <TextField source="id" />
              <TextField source="aula" />
@@ -135,4 +156,4 @@ export const TicketList = () => (
         );
     };
 
-
+   
