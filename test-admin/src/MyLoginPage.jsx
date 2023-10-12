@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLogin, useNotify, Notification, Button, useRedirect} from 'react-admin';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-//import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import { useTheme } from '@mui/material/styles';
 import authProvider from './authProvider';
 import { getUserRol } from './authState';
-import "./css/login.css"
 
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
@@ -14,28 +12,31 @@ const MyLoginPage = () => {
     const login = useLogin();
     const notify = useNotify();
     const redirect = useRedirect();
+    const theme = useTheme(); // using useTheme hook to access the current theme
+    
+    useEffect(() => {
+        document.body.style.backgroundColor = theme.palette.mode === 'dark' ? '#121212' : '#fafafb';
+
+    return () => document.body.style.backgroundColor = null;
+    }, [theme.palette.mode]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            // Call the login function from authProvider
             await authProvider.login({ correo: email, pass: password });
-            notify('Login successful');
+            notify('Inicio de sesión exitoso');
             let rol = getUserRol();
-            // if(rol === 'Supervisor de Aula'){
-            //     redirect('/Tickets')
-            // }
-            // else if (rol === 'Supervisor Nacional' || rol=== 'Supervisor Ejecutivo'){
-            //     redirect('/TicketsNA')
-            // }
-            redirect('/Tickets')
+            if (rol === 'Administrador') {
+                redirect('/registrarse');
+            } else {
+                redirect('/tickets');
+            }
 
         } catch (error) {
-            // Handle login failure
-            notify('Invalid email or password');
+            notify('Correo electrónico o contraseña inválidos');
         }
     };
-    
 
     return (
         // <Container component="main" maxWidth="xs" backgroundColor="red" >
@@ -46,7 +47,7 @@ const MyLoginPage = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            alignContent: 'center'
+            alignContent: 'center',
           }}
         >
           <img src='src/logo2.png' alt="Logo Image" width="400" height="400" />
