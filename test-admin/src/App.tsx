@@ -6,7 +6,6 @@ import {i18nProvider} from './i18nProvider';
 import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
 import { TicketCreate,TicketList, TicketEdit } from "./TicketSupAula";
-import { HistorialList } from "./Historial";
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
 import Registrarse from "./registrarse";
 import MyLayout from "./MyLayout";
@@ -37,11 +36,6 @@ export const App = () => (
         icon={ThemedIcon}
         edit={TicketEdit}
     />
-    <Resource
-        name="Historial"
-        list={HistorialList}
-        icon={ThemedIcon}
-      />
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>
           <Route path="/Reportes"  element={<Reportes />}/>
