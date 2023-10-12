@@ -5,6 +5,10 @@ import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
 import authProvider from './authProvider';
 import { getUserRol } from './authState';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const MyLoginPage = () => {
     const [email, setEmail] = useState('');
@@ -13,6 +17,8 @@ const MyLoginPage = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const theme = useTheme(); // using useTheme hook to access the current theme
+    const [showPassword, setShowPassword] = useState(false); // New state variable
+
     
     useEffect(() => {
         document.body.style.backgroundColor = theme.palette.mode === 'dark' ? '#121212' : '#fafafb';
@@ -36,6 +42,10 @@ const MyLoginPage = () => {
         } catch (error) {
             notify('Correo electrónico o contraseña inválidos');
         }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -75,14 +85,27 @@ const MyLoginPage = () => {
                 onChange={e => setEmail(e.target.value)}/>
             
             <TextField
-                margin='normal'
-                id="password" 
-                label="Contraseña" 
-                autoComplete="password"
-                required
-                fullWidth
-                onChange={e => setPassword(e.target.value)}
-            />
+            margin='normal'
+            id="password" 
+            label="Contraseña" 
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="password"
+            required
+            fullWidth
+            onChange={e => setPassword(e.target.value)}
+            InputProps={{ // This is where the magic happens!
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton
+                            edge="end"
+                            onClick={togglePasswordVisibility}
+                        >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                    </InputAdornment>
+                )
+            }}
+        />
             <Button 
                 variant='contained' 
                 onClick={handleSubmit} 
