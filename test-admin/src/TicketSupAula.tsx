@@ -163,7 +163,7 @@ export const TicketList = () => (
            
             </TabbedForm.Tab>
              <TabbedForm.Tab label="Historial de versiones"> 
-                <ReferenceManyField reference="Historial" target="id" label={false}>
+                <ReferenceManyField reference="Historials" target="id" label={false}>
                     <Datagrid>
                         <TextField source ="updateData.estatus" />
                     </Datagrid>
