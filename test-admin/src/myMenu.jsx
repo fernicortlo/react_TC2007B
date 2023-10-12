@@ -19,10 +19,12 @@ export const MyMenu = () => {
     const rol = getUserRol();
     return(
     <Menu>
-        <Menu.ResourceItem name="Tickets" />
+        {rol !== "Administrador" &&
+        <Menu.ResourceItem name="Tickets" />}
         {rol==="Administrador" &&
         <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
-        <Menu.Item to="./Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>
+        {rol!=="Administrador" &&
+        <Menu.Item to="/Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>}
 
     </Menu>
     );

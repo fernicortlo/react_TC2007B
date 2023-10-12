@@ -38,11 +38,15 @@ export const TicketCreate = () => {
 
     const [tipoChoices, setTipoChoices] = useState<ChoiceOption[]>([]);
 
-    const handleClasificacionChange = (event: React.ChangeEvent<{ name?: string; value: any }>) => {
-        const selectedClasificacion = event.target.value as string;
-        setTipoChoices(tipoChoicesMapping[selectedClasificacion] || []);
+    // const handleClasificacionChange = (event: React.ChangeEvent<{ name?: string; value: any }>) => {
+    //     const selectedClasificacion = event.target.value as string;
+    //     setTipoChoices(tipoChoicesMapping[selectedClasificacion] || []);
+    // };
+    const handleClasificacionChange = (event) => {
+        const selectedClasificacion = event.target.value;
+        const newTipoChoices = tipoChoicesMapping[selectedClasificacion] || [];
+        setTipoChoices(newTipoChoices);
     };
-
     const onSuccess = () => {
         notify('Ticket Creado', {undoable: true});
         redirect('/Tickets');

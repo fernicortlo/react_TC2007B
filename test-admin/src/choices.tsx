@@ -8,7 +8,7 @@ export const clasificacionChoices: ChoiceOption[] = [
     {id:'Digital', name:'Digital'},
     {id:'Infraestructura', name:'Infraestructura'},
     {id:'Recursos Humanos', name:'Recursos Humanos'},
-    {id:'Beneficios', name:'Beneficios'},
+    {id:'Beneficiarios', name:'Beneficiarios'},
     {id:'Mobiliario', name:'Mobiliario'},
     {id:'Seguridad', name:'Seguridad'},
     {id:'Materiales', name:'Materiales'},
