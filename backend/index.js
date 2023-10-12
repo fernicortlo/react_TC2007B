@@ -4,7 +4,9 @@ var cors=require('cors')
 bodyParser=require('body-parser')
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
-
+const https=require("https")
+const fs=require("fs")
+//security applied
 const uri = "mongodb+srv://Fer:1234@pruebas.1e0thqh.mongodb.net/pruebas";
 let db;
 
@@ -69,10 +71,11 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["aula"] = request.query.aula;
         }
         if ("id" in request.query) {
-            // If "prioridad" is present in the query, filter by it
-            console.log("Filtering by ID:", request.query.id)
-            parametersFind["id"] = request.query.id;
+            // If "id" is present in the query, filter by it
+            console.log("Filtering by ID:", request.query.id);
+            parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
+        
 
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
@@ -324,7 +327,15 @@ app.post("/login", async(request, response)=>{
     }
 })
 
-app.listen(1337, ()=>{
+https.createServer({
+    cert: fs.readFileSync("backend.cer"),
+    key: fs.readFileSync("backend.key"),
+}, app).listen(1337, ()=>{
     connectDB();
     console.log("Servidor escuchando en puerto 1337")
 })
+
+// app.listen(1337, ()=>{
+//     connectDB();
+//     console.log("Servidor escuchando en puerto 1337")
+// })
