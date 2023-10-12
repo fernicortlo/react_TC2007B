@@ -3,6 +3,7 @@ import { AppBar, Layout, Sidebar, useLogout, UserMenu, MenuItemLink } from 'reac
 import { useTheme } from '@mui/material/styles';
 import { MenuItem } from '@mui/material';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 const ThemedLogoutButton = () => {
     const theme = useTheme();
@@ -10,6 +11,19 @@ const ThemedLogoutButton = () => {
   };
 
 const MyLogoutButton = forwardRef((props, ref) => {
+  const logout = useLogout();
+  const handleClick = () => logout();
+  return (
+    <MenuItem
+      onClick={handleClick}
+      ref={ref}
+      {...props}
+    >
+      <ThemedLogoutButton/> Cerrar Sesion
+    </MenuItem>
+  );
+});
+const MyDashboardButton = forwardRef((props, ref) => {
   const logout = useLogout();
   const handleClick = () => logout();
   return (
@@ -36,15 +50,15 @@ const MyAppBar = (props) => {
     color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f',
     '& .RaAppBar-toolbar': { padding: 0 },
   };
-
   return (
     <AppBar
       {...props}
       sx={appBarStyle}
-      userMenu={<MyUserMenu />}
+      userMenu={<MyUserMenu/>}
     />
   );
 };
+
 
 const MyLayout = (props) => (
   <Layout {...props} appBar={MyAppBar}/>
