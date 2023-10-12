@@ -6,7 +6,7 @@ export const authProvider: AuthProvider = {
     login: async ({ correo, pass }) => {
         console.log('Correo:', correo);
         console.log('Pass:', pass);
-        const request = new Request('https://127.0.0.1:1337/login', {
+        const request = new Request('http://127.0.0.1:1337/login', {
             method: 'POST',
             body: JSON.stringify({ "correo": correo, "pass": pass }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
