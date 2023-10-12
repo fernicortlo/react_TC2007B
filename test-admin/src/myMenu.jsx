@@ -21,7 +21,6 @@ export const MyMenu = () => {
     <Menu>
         {rol !== "Administrador" &&
         <Menu.ResourceItem name="Tickets" />}
-        <Menu.ResourceItem name="Historial" />
         {rol==="Administrador" &&
         <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
         {rol!=="Administrador" &&
