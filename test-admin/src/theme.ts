@@ -15,7 +15,7 @@ export const lightTheme = createTheme({
       paper: '#fafafb',
     },
     error: {
-      main: '#ff0000',
+      main: '#b53f3f',
     },
   },
   typography: {

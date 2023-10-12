@@ -6,12 +6,12 @@ import {
     List,
     Datagrid,
     TextField,
-    // ReferenceField,
+    ReferenceManyField,
     EditButton,
     // Edit,
     Create,
     SimpleForm,
-    ReferenceInput,
+    DateField,
     TextInput,
     useRefresh,
     useRedirect,
@@ -24,6 +24,9 @@ import {
     SelectInput,
     SearchInput,
     NumberInput,
+    RadioButtonGroupInput,
+    TabbedForm,
+    Toolbar
 } from "react-admin";
 import React, { useState, ChangeEvent } from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
@@ -62,8 +65,9 @@ export const TicketCreate = () => {
                 <TextInput source="aula" label="Aula" defaultValue={getUserId()} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
-                <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
-                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" required={true} />
+                <RadioButtonGroupInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
+                <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
+                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="No iniciado" required={true} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
                 <TextInput source="folio"  label="Número de Oficio" multiline rows={1} required={true}/>
                 
@@ -79,8 +83,8 @@ export const TicketCreate = () => {
                     <TextInput source="aula" label="Aula" required={true}/>
                     <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                     <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
-                    <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
-                    <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" required={true}/>
+                    <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
+                    <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="No iniciado" required={true}/>
                     <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
                     <TextInput source="folio"  label="Número de Oficio" multiline rows={1} required={true}/>
                     
@@ -135,7 +139,7 @@ export const TicketList = () => (
 
     const TicketTitle = () => {
         const record = useRecordContext();
-        return <span>Post {record ? `"${record.title}"` : ''}</span>;
+        return <span>Ticket {record ? `"${record.id}"` : ''}</span>;
         };
 
     export const TicketEdit = () => {
@@ -151,11 +155,21 @@ export const TicketList = () => (
 
         return(
         <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
-            <SimpleForm warnWhenUnsavedChanges>        
-                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
+            <TabbedForm> 
+            <TabbedForm.Tab label="Actualizar Ticket"> 
+            <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   
-            </SimpleForm>
+                <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />  
+           
+            </TabbedForm.Tab>
+             <TabbedForm.Tab label="Historial de versiones"> 
+                <ReferenceManyField reference="Historial" target="id" label={false}>
+                    <Datagrid>
+                        <TextField source ="updateData.estatus" />
+                    </Datagrid>
+                </ReferenceManyField>
+            </TabbedForm.Tab>
+            </TabbedForm>
         </Edit>
         );
     };

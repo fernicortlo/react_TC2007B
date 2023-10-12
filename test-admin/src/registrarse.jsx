@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SimpleForm, TextInput, Button, SelectInput, choices, Create, useCreate, useRedirect, useNotify } from 'react-admin';
+import { SimpleForm, TextInput, Button, SelectInput,useRedirect, useNotify, useUnique } from 'react-admin';
 import { rolChoices } from "./choices";
 import SaveIcon from '@mui/icons-material/Save';
 
@@ -60,7 +60,7 @@ const Registrarse = () => {
             throw new Error('No se pudo registrar el usuario');
         }
     };
-
+    const unique = useUnique();
     return (
         <div>
             <h2>Registro de nuevos usuarios</h2>
@@ -69,7 +69,7 @@ const Registrarse = () => {
             <SimpleForm
             save={handleSendData}
             toolbar={null}>
-            <TextInput source="correo" label="Correo" name="correo" onChange={handleChange} required={true} />
+            <TextInput source="correo" label="Correo" name="correo" onChange={handleChange} required={true} validate={unique()}/>
             <TextInput source="pass" label="Contraseña" type="password" name="pass" onChange={handleChange} required={true}/>
             <TextInput source="nombreCompleto" label="Nombre Completo" name="nombreCompleto" onChange={handleChange} required={true}/>
             <SelectInput source="rol" label="Rol" name="rol" choices={rolChoices} onChange={handleChange} required={true}/>
