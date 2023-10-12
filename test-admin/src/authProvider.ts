@@ -53,7 +53,8 @@ getIdentity: ()=>{
         return Promise.reject()
     }
 },
-getPermissions: ()=>{return Promise.resolve()},
+getPermissions: ()=>{return Promise.resolve([])},
+
 };
 
 export default authProvider;
