@@ -335,7 +335,3 @@ https.createServer({
     console.log("Servidor escuchando en puerto 1337")
 })
 
-// app.listen(1337, ()=>{
-//     connectDB();
-//     console.log("Servidor escuchando en puerto 1337")
-// })

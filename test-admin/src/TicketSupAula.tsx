@@ -93,26 +93,11 @@ const TicketFilters = [
         <SelectInput source="estatus" label="Estatus" choices={estatusChoices} />,
         <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} />,
         <SelectInput source="clasificacion" label="Clasificacion" choices={clasificacionChoices} />,
-        //<SelectInput source="tipo" label="Tipo" choices={tipoChoicesMapping[selectedClasificacion]} />
     ];
-    
-    // export const PostFilterSidebar = () => (
-    //     <Card sx={{ order: -1, mr: 2, mt: 9, width: 500 }}>
-    //         <CardContent>
-    //             <FilterLiveSearch />
-    //             <FilterList label="Category" icon={<CategoryIcon />}>
-    //                 <FilterListItem label="ID" value={{ category: 'ID' }} />
-    //                 <FilterListItem label="Users" value={{ category: 'users' }} />
-    //                 <FilterListItem label="title" value={{ category: 'title' }} />
-    //                 <FilterListItem label="Body" value={{ category: 'body' }} />
-    //             </FilterList>
-    //         </CardContent>
-    //     </Card>
-    // )
-    
+
     
 export const TicketList = () => (
-    <List  filters={TicketFilters}> 
+    <List filters={TicketFilters}> 
         <Datagrid>
              <TextField source="id" />
              <TextField source="aula" />

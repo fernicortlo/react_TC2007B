@@ -20,7 +20,7 @@ const MyLoginPage = () => {
         try {
             // Call the login function from authProvider
             await authProvider.login({ correo: email, pass: password });
-            notify('Login successful');
+            notify('Login Exitoso');
             let rol = getUserRol();
             // if(rol === 'Supervisor de Aula'){
             //     redirect('/Tickets')
@@ -32,7 +32,7 @@ const MyLoginPage = () => {
 
         } catch (error) {
             // Handle login failure
-            notify('Invalid email or password');
+            notify('Contraseña o Email Invalido');
         }
     };
     
