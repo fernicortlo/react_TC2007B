@@ -121,62 +121,6 @@ app.get("/Tickets", async (request, response) => {
 });
 
 
-
-// app.get("/Tickets", async (request, response) => {
-//     try {
-//         let token = request.get("Authentication");
-//         let verifiedToken = await jwt.verify(token, "secretKey");
-//         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-//         let parametersFind = {};
-//         if (authData.rol === "Supervisor de Aula") {
-//             parametersFind["aula"] = authData.aula.nombreAula;
-//         }
-
-//         if ("prioridad" in request.query) {
-//             // If "prioridad" is present in the query, filter by it
-//             parametersFind["prioridad"] = request.query.prioridad;
-//         }
-
-//         // Determine where the endpoint is
-//         if ("_sort" in request.query) { // list
-//             let sortBy = request.query._sort;
-//             let sortOrder = request.query._order === "ASC" ? 1 : -1;
-//             let start = Number(request.query._start);
-//             let end = Number(request.query._end);
-//             let sorter = {};
-//             sorter[sortBy] = sortOrder;
-            
-//             let data = await db.collection('Tickets').find(parametersFind)
-//                 .sort(sorter)
-//                 .project({ _id: 0 })
-//                 .skip(start)
-//                 .limit(end - start)
-//                 .toArray();
-            
-//             const total = await db.collection('Tickets').countDocuments(parametersFind);
-//             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
-//             response.set('X-Total-Count', total);
-//             response.json(data);
-//         } else if ("id" in request.query) { // getMany
-//             let data = [];
-//             for (let index = 0; index < request.query.id.length; index++) {
-//                 let dataObtain = await db.collection('Tickets').find({ id: Number(request.query.id[index]) }).project({ _id: 0 }).toArray();
-//                 data = data.concat(dataObtain);
-//             }
-//             response.json(data);
-//         } else { // getReference
-//             let data = await db.collection('Tickets').find(parametersFind).project({ _id: 0 }).toArray();
-//             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
-//             response.set('X-Total-Count', data.length);
-//             response.json(data);
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         response.sendStatus(401);
-//     }
-// });
-
 //getOne
 app.get("/Tickets/:id", async (request, response)=>{
     try{
@@ -273,6 +217,33 @@ app.post("/Historial", async (request, response)=>{
     }
 }) 
 
+//GetHistorial
+app.get("/Historial/:ticketId", async (request, response) => {
+    try {
+        const id = request.params.ticketId; // Use 'ticketId' here
+        let token = request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+        let parametersFind = { "ticketId": Number(request.params.ticketId) }; // Use 'ticketId' here
+
+        if (authData.rol == "Supervisor de Aula") {
+            parametersFind["aula"] = authData.aula.nombreAula;
+        }
+        
+        let data = await db.collection('Actualizaciones').find(parametersFind).project({ _id: 0 }).toArray();
+        console.log(data);
+        log(verifiedToken.correo, "ver objeto", request.params.ticketId);
+        
+        response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+        response.set('X-Total-Count', data.length);
+        response.json(data);
+    } catch (error) {
+        console.error(error); // Log the error for debugging
+        response.sendStatus(401);
+    }
+});
+
+
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
     let pass=request.body.pass;
@@ -327,15 +298,15 @@ app.post("/login", async(request, response)=>{
     }
 })
 
-https.createServer({
-    cert: fs.readFileSync("backend.cer"),
-    key: fs.readFileSync("backend.key"),
-}, app).listen(1337, ()=>{
-    connectDB();
-    console.log("Servidor escuchando en puerto 1337")
-})
-
-// app.listen(1337, ()=>{
+// https.createServer({
+//     cert: fs.readFileSync("backend.cer"),
+//     key: fs.readFileSync("backend.key"),
+// }, app).listen(1337, ()=>{
 //     connectDB();
 //     console.log("Servidor escuchando en puerto 1337")
 // })
+
+app.listen(1337, ()=>{
+    connectDB();
+    console.log("Servidor escuchando en puerto 1337")
+})
