@@ -13,6 +13,7 @@ import { lightTheme, darkTheme } from './theme';
 import {useTheme} from '@mui/material/styles';
 import  {MyMenu} from "./myMenu";
 import Reportes from "./Reportes";
+import {HistorialList} from "./Historial";
 
 
 const ThemedIcon = () => {
@@ -35,6 +36,11 @@ export const App = () => (
         create={TicketCreate}
         icon={ThemedIcon}
         edit={TicketEdit}
+    />
+    <Resource
+        name="Historial"
+        list={HistorialList}
+        icon={ThemedIcon}
     />
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>
