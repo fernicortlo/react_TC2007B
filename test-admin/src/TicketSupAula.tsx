@@ -1,4 +1,3 @@
-
 import { useNotify, useRecordContext} from "react-admin";
 import { Card, CardContent } from '@mui/material';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
@@ -26,12 +25,13 @@ import {
     NumberInput,
     RadioButtonGroupInput,
     TabbedForm,
-    Toolbar
+    Toolbar,
+    ReferenceInput,
+    useGetRecordId,
 } from "react-admin";
 import React, { useState, ChangeEvent } from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
 import { getUserId,getUserRol } from "./authState";
-
 
 export const TicketCreate = () => {
     const notify= useNotify();
@@ -143,9 +143,12 @@ export const TicketList = () => (
         };
 
     export const TicketEdit = () => {
+        const recordId = useGetRecordId();
+        console.log(recordId);
         const notify= useNotify();
         const refresh= useRefresh();
         const redirect= useRedirect();
+        
       
         const onSuccess=()=>{
             notify('Cambios guardados',{undoable:true});
@@ -163,9 +166,9 @@ export const TicketList = () => (
            
             </TabbedForm.Tab>
              <TabbedForm.Tab label="Historial de versiones"> 
-                <ReferenceManyField reference="Historials" target="id" label={false}>
+                <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
                     <Datagrid>
-                        <TextField source ="updateData.estatus" />
+                        <TextField source="id" />
                     </Datagrid>
                 </ReferenceManyField>
             </TabbedForm.Tab>

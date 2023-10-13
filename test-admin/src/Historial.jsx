@@ -6,13 +6,13 @@ import {
     Datagrid,
     TextField,
     EditButton,
+    useGetRecordId,
     // Edit,
 } from "react-admin";
 export const HistorialList = () => {
-    const { idT} = useParams();
     console.log("idT");
     return(
-     <List resource="Historial" filter={{ id: idT }}>
+     <List resource="Historial">
         <Datagrid>
              <TextField source="updatedBy" />
              <TextField source="id" />

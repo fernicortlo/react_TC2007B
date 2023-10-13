@@ -208,13 +208,12 @@ app.get("/Historial", async (request, response) => {
         let token = request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+        
 
         let parametersFind = {};
         if (authData.rol === "Supervisor de Aula") {
             parametersFind["updateData.aula"] = authData.aula.nombreAula;
         }
-
-
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
@@ -223,6 +222,10 @@ app.get("/Historial", async (request, response) => {
             let end = Number(request.query._end);
             let sorter = {};
             sorter[sortBy] = sortOrder;
+
+            if ("updateData.id" in request.query) {
+                parametersFind["updateData.id"] = Number(request.query["updateData.id"]);
+            }
 
             const total = await db.collection('Actualizaciones').countDocuments(parametersFind);
             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
@@ -246,8 +249,17 @@ app.get("/Historial", async (request, response) => {
             }
             response.json(data);
         } 
+        // else { // getReference
+        //     let data = await db.collection('Actualizaciones').find(parametersFind).project({ _id: 0 }).toArray();
+        //     response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+        //     response.set('X-Total-Count', data.length);
+        //     response.json(data);
+        // }
         else { // getReference
-            let data = await db.collection('Actualizaciones').find(parametersFind).project({ _id: 0 }).toArray();
+            let filter = request.query.filter ? JSON.parse(request.query.filter) : {};
+
+            console.log(filter);
+            // let data = await db.collection('Actualizaciones').find({parametersFind, ...filter }).project({ _id: 0 }).toArray();
             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
             response.set('X-Total-Count', data.length);
             response.json(data);
