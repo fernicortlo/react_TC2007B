@@ -153,7 +153,7 @@ export const TicketEdit = () => {
     const notify= useNotify();
     const refresh= useRefresh();
     const redirect= useRedirect();
-        
+    const record = useRecordContext();
       
     const onSuccess=()=>{
         notify('Cambios guardados',{undoable:true});
@@ -161,16 +161,18 @@ export const TicketEdit = () => {
         refresh();
         };
 
+
         return(
             <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
             <TabbedForm> 
-                
+                {/* {record && record.updateData.estatus !== 'Terminado' && (  */}
                 <TabbedForm.Tab label="Actualizar Ticket"> 
                 <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} />
                 <TextInput source="descripscion"  label="Avance del ticket" multiline rows={5} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
                 {/* <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   */}
             </TabbedForm.Tab>
+                {/* )} */}
             <TabbedForm.Tab label="Historial de versiones"> 
                 <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
                     <Datagrid bulkActionButtons={false}>
