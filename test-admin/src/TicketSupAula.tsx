@@ -1,37 +1,32 @@
 import { useNotify, useRecordContext} from "react-admin";
-import { Card, CardContent } from '@mui/material';
-import CategoryIcon from '@mui/icons-material/LocalOffer';
 import {
     List,
     Datagrid,
     TextField,
     ReferenceManyField,
     EditButton,
-    // Edit,
     Create,
     SimpleForm,
-    DateField,
     TextInput,
     useRefresh,
     useRedirect,
     Edit,
-    FilterList,
-    FilterListItem,
-    FilterLiveSearch,
-    // Button,
-    // useCreate,
     SelectInput,
-    SearchInput,
     NumberInput,
     RadioButtonGroupInput,
     TabbedForm,
-    Toolbar,
-    ReferenceInput,
     useGetRecordId,
+    DatagridConfigurable,
+    SelectColumnsButton,
+    TopToolbar,
+    FilterButton,
+    CreateButton,
+    ExportButton,
 } from "react-admin";
-import React, { useState, ChangeEvent } from 'react';
+import { useState, useEffect} from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
-import { getUserId,getUserRol } from "./authState";
+import { getUserId,getUserRol,getUserName } from "./authState";
+import InfoIcon from '@mui/icons-material/Info';
 
 export const TicketCreate = () => {
     const notify= useNotify();
@@ -41,10 +36,6 @@ export const TicketCreate = () => {
 
     const [tipoChoices, setTipoChoices] = useState<ChoiceOption[]>([]);
 
-    // const handleClasificacionChange = (event: React.ChangeEvent<{ name?: string; value: any }>) => {
-    //     const selectedClasificacion = event.target.value as string;
-    //     setTipoChoices(tipoChoicesMapping[selectedClasificacion] || []);
-    // };
     const handleClasificacionChange = (event) => {
         const selectedClasificacion = event.target.value;
         const newTipoChoices = tipoChoicesMapping[selectedClasificacion] || [];
@@ -63,13 +54,15 @@ export const TicketCreate = () => {
             <SimpleForm>
                 <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
                 <TextInput source="aula" label="Aula" defaultValue={getUserId()} disabled/>
+                <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
                 <RadioButtonGroupInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
                 <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
-                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="No iniciado" required={true} />
-                <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
-                <TextInput source="folio"  label="Número de Oficio" multiline rows={1} required={true}/>
+                <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="Creado" disabled />
+                <TextInput source="descripscion"  label="Descripsión del ticket" multiline rows={5} required={true}/>
+                <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
+                <TextInput source="comentario"  label="Comentario" multiline rows={5}/>
                 
             </SimpleForm>
         </Create>
@@ -80,13 +73,15 @@ export const TicketCreate = () => {
             <Create mutationOptions={{ onSuccess }}>
                 <SimpleForm>
                     <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
+                    <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
                     <TextInput source="aula" label="Aula" required={true}/>
                     <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                     <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
                     <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
-                    <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="No iniciado" required={true}/>
-                    <TextInput source="comentario"  label="Comentario" multiline rows={5} required={true}/>
-                    <TextInput source="folio"  label="Número de Oficio" multiline rows={1} required={true}/>
+                    <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="Creado" disabled/>
+                    <TextInput source="descripscion"  label="Descripsión del ticket" multiline rows={5} required={true}/>
+                    <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
+                    <TextInput source="comentario"  label="Comentario" multiline rows={5} />
                     
                 </SimpleForm>
             </Create>
@@ -117,64 +112,81 @@ const TicketFilters = [
     //         </CardContent>
     //     </Card>
     // )
-    
-    
-export const TicketList = () => (
-    <List  filters={TicketFilters}> 
-        <Datagrid>
-             <TextField source="id" />
-             <TextField source="aula" />
-             <TextField source="clasificacion" />
-             <TextField source="tipo" />
-             <TextField source="comentario" />
-             <TextField source="estatus" />
-             <TextField source="prioridad" />
-             <TextField source="fechaCreacion" /> 
-             <TextField source="rol" />
-             <TextField source="folio" />
-             <EditButton />
-        </Datagrid>
-        </List>
+    const TicketListActions = () => (
+        <TopToolbar>
+            <SelectColumnsButton />
+            <FilterButton />
+            <CreateButton />
+            <ExportButton />
+        </TopToolbar>
     );
 
-    const TicketTitle = () => {
-        const record = useRecordContext();
-        return <span>Ticket {record ? `"${record.id}"` : ''}</span>;
+export const TicketList = () => (
+        <List filters={TicketFilters} actions={<TicketListActions />}> 
+          <DatagridConfigurable bulkActionButtons={false}>
+                <TextField source="id" />
+                <TextField source="aula" />
+                <TextField source="autor" />
+                <TextField source="clasificacion" />
+                <TextField source="tipo" />
+                <TextField source="descripscion" />
+                <TextField source="estatus" />
+                <TextField source="prioridad" />
+                <TextField source="fechaCreacion" /> 
+                <TextField source="rol" />
+                <TextField source="folio" />
+                <TextField source="comentario" />
+                <EditButton label="Mas" icon={<InfoIcon/>}/>
+            </DatagridConfigurable>
+        </List>
+    );
+    
+
+const TicketTitle = () => {
+    const record = useRecordContext();
+    return <span>Ticket {record ? `"${record.id}"` : ''}</span>;
         };
 
-    export const TicketEdit = () => {
-        const recordId = useGetRecordId();
-        console.log(recordId);
-        const notify= useNotify();
-        const refresh= useRefresh();
-        const redirect= useRedirect();
+export const TicketEdit = () => {
+    const recordId = useGetRecordId();
+    console.log(recordId);
+    const notify= useNotify();
+    const refresh= useRefresh();
+    const redirect= useRedirect();
         
       
-        const onSuccess=()=>{
-            notify('Cambios guardados',{undoable:true});
-            redirect('/Tickets');
-            refresh();
+    const onSuccess=()=>{
+        notify('Cambios guardados',{undoable:true});
+        redirect('/Tickets');
+        refresh();
         };
 
         return(
-        <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
+            <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
             <TabbedForm> 
-            <TabbedForm.Tab label="Actualizar Ticket"> 
-            <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="no iniciado" />
+                
+                <TabbedForm.Tab label="Actualizar Ticket"> 
+                <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} />
+                <TextInput source="descripscion"  label="Avance del ticket" multiline rows={5} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />  
-           
+                {/* <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   */}
             </TabbedForm.Tab>
-             <TabbedForm.Tab label="Historial de versiones"> 
+            <TabbedForm.Tab label="Historial de versiones"> 
                 <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
-                    <Datagrid>
+                    <Datagrid bulkActionButtons={false}>
                         <TextField source="id" />
+                        <TextField source="updateData.aula" label="Aula" />
+                        <TextField source="updateData.fechaCreacion" label="Fecha de creación" />
+                        <TextField source="updateData.autor" label="Actualizado por" />
+                        <TextField source="updateData.descripscion" label="Avance del ticket" />
+                        <TextField source="updateData.estatus" label="Estatus" />
+                        <TextField source="updateData.comentario" label="Comentario" />
                     </Datagrid>
                 </ReferenceManyField>
             </TabbedForm.Tab>
             </TabbedForm>
         </Edit>
-        );
-    };
+    );
+};
 
-   
+    

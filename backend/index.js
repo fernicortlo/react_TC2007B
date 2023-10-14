@@ -270,9 +270,6 @@ app.get("/Historial", async (request, response) => {
     }
 });
 
-//GetHistorial
-
-
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
     let pass=request.body.pass;
