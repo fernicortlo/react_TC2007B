@@ -14,9 +14,10 @@ export const HistorialList = () => {
     return(
      <List resource="Historial">
         <Datagrid>
-             <TextField source="updatedBy" />
+             <TextField source="updateData.autor" />
              <TextField source="id" />
              <TextField source="updateData.estatus" />
+             <TextField source="updateData.comentario" />
              <EditButton />
         </Datagrid>
         </List>

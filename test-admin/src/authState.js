@@ -1,6 +1,6 @@
 let userId = null; // Initialize userId as null
 let userRol=null;
-let TicketId=null;
+let userName=null;
 
 export const setUserId = (id) => {
   userId = id; // Set the userId
@@ -20,13 +20,13 @@ export const setUserRol = (rol) => {
     return userRol; // Get the userId
   };
 
-  export const setTicketId = (id) => {
-    TicketId = id; // Set the userId
+  export const setUserName = (name) => {
+    userName= name; // Set the userId
   
   };
   
-  export const getTicketId = () => {
-    return TicketId; // Get the userId
+  export const getUserName  = () => {
+    return userName; // Get the userId
   };
   
   

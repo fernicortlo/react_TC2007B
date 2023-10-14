@@ -270,9 +270,6 @@ app.get("/Historial", async (request, response) => {
     }
 });
 
-//GetHistorial
-
-
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
     let pass=request.body.pass;
@@ -326,6 +323,24 @@ app.post("/login", async(request, response)=>{
         })
     }
 })
+// app.get('Tickets/:id/count', async (req, res) => {
+//     try {
+//       // Asegúrate de que la conexión esté establecida antes de hacer cualquier operación de la base de datos.
+//       if (!client.isConnected()) await client.connect();
+  
+//       const ticketId = Number(req.params.id);
+  
+//       // Contar el número de documentos que tienen el id especificado.
+//       const updatesCount = await db.collection('Actualizaciones')
+//         .countDocuments({ id: ticketId });
+  
+//       // Enviar la cuenta como respuesta.
+//       res.json({ updatesCount: updatesCount });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Internal Server Error');
+//       }
+//     });
 
 // https.createServer({
 //     cert: fs.readFileSync("backend.cer"),
