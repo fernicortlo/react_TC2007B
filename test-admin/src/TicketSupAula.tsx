@@ -22,11 +22,14 @@ import {
     FilterButton,
     CreateButton,
     ExportButton,
+    Toolbar,
+    SaveButton
 } from "react-admin";
 import { useState, useEffect} from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
 import { getUserId,getUserRol,getUserName } from "./authState";
 import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
 
 export const TicketCreate = () => {
     const notify= useNotify();
@@ -164,13 +167,16 @@ export const TicketEdit = () => {
 
         return(
             <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
-            <TabbedForm> 
+            <TabbedForm toolbar={null}> 
                 {/* {record && record.updateData.estatus !== 'Terminado' && (  */}
                 <TabbedForm.Tab label="Actualizar Ticket"> 
                 <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} />
                 <TextInput source="descripscion"  label="Avance del ticket" multiline rows={5} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
                 {/* <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   */}
+                <Toolbar>
+                <SaveButton label="Actualizar" icon={<UpdateIcon/>}/>
+                 </Toolbar>
             </TabbedForm.Tab>
                 {/* )} */}
             <TabbedForm.Tab label="Historial de versiones"> 
