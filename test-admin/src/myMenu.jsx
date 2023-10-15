@@ -25,7 +25,8 @@ export const MyMenu = () => {
         <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
         {rol!=="Administrador" &&
         <Menu.Item to="/Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>}
-
+        {rol!=="Administrador" &&
+        <Menu.Item to="/barChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
     </Menu>
     );
 };

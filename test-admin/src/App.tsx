@@ -5,7 +5,7 @@ import { dataProvider } from "./dataProvider";
 import {i18nProvider} from './i18nProvider';
 import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
-import { TicketCreate,TicketList, TicketEdit } from "./TicketSupAula";
+import { TicketCreate,TicketList, TicketEdit, TicketTerminadoList } from "./TicketSupAula";
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
 import Registrarse from "./registrarse";
 import MyLayout from "./MyLayout";
@@ -14,6 +14,10 @@ import {useTheme} from '@mui/material/styles';
 import  {MyMenu} from "./myMenu";
 import Reportes from "./Reportes";
 import {HistorialList} from "./Historial";
+import MyBarChart from "./graficas/barratxa";
+import MyPieChart from "./graficas/piepxt";
+
+
 
 
 const ThemedIcon = () => {
@@ -45,6 +49,8 @@ export const App = () => (
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>
           <Route path="/Reportes"  element={<Reportes />}/>
+          <Route path="/barChart" element={<MyBarChart />} />
+          <Route path="/pieChart" element={<MyPieChart />} />
      </CustomRoutes>
   </Admin>
 );
