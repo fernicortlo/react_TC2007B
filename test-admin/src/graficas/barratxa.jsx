@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useAuthState } from 'react-admin';
+import { getToken } from '../authState';
 
 function MyBarChart() {
   const [data, setData] = useState([]);
+  const { token } = getToken(); // Assuming this gives you access to the auth token
+  console.log(token)
 
   useEffect(() => {
-    fetch('http://localhost:1337/barChart')
+    fetch('http://localhost:1337/barChart', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Add the token to the Authorization header
+      },
+    })
       .then((response) => response.json())
       .then((ticketCounts) => {
         setData(ticketCounts);
