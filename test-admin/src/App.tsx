@@ -5,8 +5,10 @@ import { dataProvider } from "./dataProvider";
 import {i18nProvider} from './i18nProvider';
 import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
-import { TicketCreate,TicketList, TicketEdit, TicketTerminadoList } from "./TicketSupAula";
+import { TicketCreate,TicketList, TicketEdit } from "./TicketSupAula";
+import { TicketTerminadoList, TicketFEdit } from "./Finalizado";
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
+import PlaylistAddCircleIcon from '@mui/icons-material/PlaylistAddCircle';
 import Registrarse from "./registrarse";
 import MyLayout from "./MyLayout";
 import { lightTheme, darkTheme } from './theme';
@@ -20,9 +22,15 @@ import MyPieChart from "./graficas/piepxt";
 
 
 
-const ThemedIcon = () => {
+
+const ThemedIconF = () => {
   const theme = useTheme();
   return <PlaylistAddCheckCircleIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', }} />;
+};
+
+const ThemedIcon = () => {
+  const theme = useTheme();
+  return <PlaylistAddCircleIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', }} />;
 };
 export const App = () => (
   <Admin layout={MyLayout} 
@@ -46,6 +54,12 @@ export const App = () => (
         list={HistorialList}
         icon={ThemedIcon}
     />
+    <Resource
+        name="Finalizado"
+        list={TicketTerminadoList}
+        edit={TicketFEdit}
+        icon={ThemedIconF}/>
+
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>
           <Route path="/Reportes"  element={<Reportes />}/>

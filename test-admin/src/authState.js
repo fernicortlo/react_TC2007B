@@ -1,6 +1,7 @@
 let userId = null; // Initialize userId as null
 let userRol=null;
 let userName=null;
+let token=null
 
 export const setUserId = (id) => {
   userId = id; // Set the userId
@@ -27,6 +28,15 @@ export const setUserRol = (rol) => {
   
   export const getUserName  = () => {
     return userName; // Get the userId
+  };
+
+  export const setToken = (id) => {
+    token = id; // Set the userId
+  
+  };
+  
+  export const getToken = () => {
+    return token; // Get the userId
   };
   
   

@@ -44,7 +44,7 @@ app.get("/Tickets", async (request, response) => {
         if (authData.rol === "Supervisor de Aula") {
             parametersFind["aula"] = authData.aula.nombreAula;
         }
-        parametersFind["estatus"] = { $ne: "finalizado" };
+        
         if ("prioridad" in request.query) {
             // If "prioridad" is present in the query, filter by it
             console.log("Filtering by Prioridad:", request.query.prioridad)
@@ -76,7 +76,7 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
         
-   
+        parametersFind["estatus"] = { $ne: "Terminado" };
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
@@ -272,7 +272,7 @@ app.get("/Historial", async (request, response) => {
     }
 });
 
-app.get("/TicketsFinalizados", async (request, response) => {
+app.get("/Finalizado", async (request, response) => {
     try {
         let token = request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
@@ -283,7 +283,7 @@ app.get("/TicketsFinalizados", async (request, response) => {
             parametersFind["aula"] = authData.aula.nombreAula;
            
         }
-        parametersFind["estatus"] = "Terminado";
+        
         if ("prioridad" in request.query) {
             // If "prioridad" is present in the query, filter by it
             console.log("Filtering by Prioridad:", request.query.prioridad)
@@ -299,11 +299,6 @@ app.get("/TicketsFinalizados", async (request, response) => {
             console.log("Filtering by Tipo:", request.query.tipo)
             parametersFind["tipo"] = request.query.tipo;
         }
-        if ("estatus" in request.query) {
-            // If "prioridad" is present in the query, filter by it
-            console.log("Filtering by Estatus:", request.query.estatus)
-            parametersFind["estatus"] = request.query.estatus;
-        }
         if ("aula" in request.query) {
             // If "prioridad" is present in the query, filter by it
             console.log("Filtering by Estatus:", request.query.aula)
@@ -315,7 +310,7 @@ app.get("/TicketsFinalizados", async (request, response) => {
             parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
         
-
+        parametersFind["estatus"] = "Terminado";
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
@@ -393,27 +388,20 @@ app.get("/TicketsFinalizados", async (request, response) => {
 // });
 app.get('/barChart', async (request, response) => {
 try {
-    const token = request.get('Authentication');
 
-    if (!token) {
-        response.status(401).json({ error: 'Authentication token missing' });
-        return;
-    }
+    let token = request.get("Authentication");
+    let verifiedToken = await jwt.verify(token, "secretKey");
+    let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
 
-    const verifiedToken = await jwt.verify(token, 'secretKey');
-    const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
-
-    if (!authData) {
-        response.status(401).json({ error: 'Invalid token' });
-        return;
-    }
-
-    // You can implement your authorization logic here based on authData
-
+    // let parametersFind = {};
+    // if (authData.rol === "Supervisor de Aula") {
+    //     parametersFind["aula"] = authData.aula.nombreAula;
+       
+    // }
     const ticketCounts = await db.collection('Tickets').aggregate([
         {
             $group: {
-                _id: '$tipo',
+                _id: '$aula',
                 tickets: { $sum: 1 }
             }
         }

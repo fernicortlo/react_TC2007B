@@ -104,19 +104,6 @@ const TicketFilters = [
         //<SelectInput source="tipo" label="Tipo" choices={tipoChoicesMapping[selectedClasificacion]} />
     ];
     
-    // export const PostFilterSidebar = () => (
-    //     <Card sx={{ order: -1, mr: 2, mt: 9, width: 500 }}>
-    //         <CardContent>
-    //             <FilterLiveSearch />
-    //             <FilterList label="Category" icon={<CategoryIcon />}>
-    //                 <FilterListItem label="ID" value={{ category: 'ID' }} />
-    //                 <FilterListItem label="Users" value={{ category: 'users' }} />
-    //                 <FilterListItem label="title" value={{ category: 'title' }} />
-    //                 <FilterListItem label="Body" value={{ category: 'body' }} />
-    //             </FilterList>
-    //         </CardContent>
-    //     </Card>
-    // )
     const TicketListActions = () => (
         <TopToolbar>
             <SelectColumnsButton />
@@ -157,31 +144,7 @@ export const TicketList = () => (
   </>
     );
     
-export const TicketTerminadoList = () => (
-    <>
-    <div style={{ display: 'flex', alignItems: 'center', marginBottom: 'px' }}>
-         <ThemedIcon />
-         <h1 style={{ marginLeft: '10px' }}>Tickets Archivados</h1>
-    </div>
-    <List filters={TicketFilters} actions={<TicketListActions />}>
-        <DatagridConfigurable bulkActionButtons={false}>
-         <TextField source="id" />
-        <TextField source="aula" />
-        <TextField source="autor" />
-        <TextField source="clasificacion" />
-        <TextField source="tipo" />
-        <TextField source="descripcion" />
-        <TextField source="estatus" />
-        <TextField source="prioridad" />
-        <TextField source="fechaCreacion" />
-        <TextField source="rol" />
-        <TextField source="folio" />
-        <TextField source="comentario" />
-        <EditButton label="Más" icon={<InfoIcon />} />
-        </DatagridConfigurable>
-    </List>
-    </>
-        );
+
 const TicketTitle = () => {
     const record = useRecordContext();
     return <span>Ticket {record ? `"${record.id}"` : ''}</span>;
