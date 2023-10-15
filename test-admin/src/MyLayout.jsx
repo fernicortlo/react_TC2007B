@@ -10,7 +10,7 @@ const ThemedLogoutButton = () => {
     return <ExitIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', }} />;
   };
 
-const MyLogoutButton = forwardRef((props, ref) => {
+export const MyLogoutButton = forwardRef((props, ref) => {
   const logout = useLogout();
   const handleClick = () => logout();
   return (
