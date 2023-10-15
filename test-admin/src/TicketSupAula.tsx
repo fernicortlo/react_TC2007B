@@ -30,6 +30,8 @@ import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMappin
 import { getUserId,getUserRol,getUserName } from "./authState";
 import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
+import { useTheme } from '@mui/material/styles';
+import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 
 export const TicketCreate = () => {
     const notify= useNotify();
@@ -60,10 +62,10 @@ export const TicketCreate = () => {
                 <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
-                <RadioButtonGroupInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
+                {/* <RadioButtonGroupInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/> */}
                 <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
                 <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="Creado" disabled />
-                <TextInput source="descripscion"  label="Descripsión del ticket" multiline rows={5} required={true}/>
+                <TextInput source="descripcion"  label="Descripción del ticket" multiline rows={5} required={true}/>
                 <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
                 <TextInput source="comentario"  label="Comentario" multiline rows={5}/>
                 
@@ -82,7 +84,7 @@ export const TicketCreate = () => {
                     <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
                     <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
                     <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="Creado" disabled/>
-                    <TextInput source="descripscion"  label="Descripsión del ticket" multiline rows={5} required={true}/>
+                    <TextInput source="descripción"  label="Descripción del ticket" multiline rows={5} required={true}/>
                     <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
                     <TextInput source="comentario"  label="Comentario" multiline rows={5} />
                     
@@ -124,27 +126,62 @@ const TicketFilters = [
         </TopToolbar>
     );
 
+
+const ThemedIcon = () => {
+    const theme = useTheme();
+    return <SpeakerNotesIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' }} />;
+  };
 export const TicketList = () => (
-        <List filters={TicketFilters} actions={<TicketListActions />}> 
-          <DatagridConfigurable bulkActionButtons={false}>
-                <TextField source="id" />
-                <TextField source="aula" />
-                <TextField source="autor" />
-                <TextField source="clasificacion" />
-                <TextField source="tipo" />
-                <TextField source="descripscion" />
-                <TextField source="estatus" />
-                <TextField source="prioridad" />
-                <TextField source="fechaCreacion" /> 
-                <TextField source="rol" />
-                <TextField source="folio" />
-                <TextField source="comentario" />
-                <EditButton label="Mas" icon={<InfoIcon/>}/>
-            </DatagridConfigurable>
-        </List>
+    <>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: 'px' }}>
+      <ThemedIcon />
+      <h1 style={{ marginLeft: '10px' }}>Tickets</h1>
+    </div>
+    <List filters={TicketFilters} actions={<TicketListActions />}>
+      <DatagridConfigurable bulkActionButtons={false}>
+        <TextField source="id" />
+        <TextField source="aula" />
+        <TextField source="autor" />
+        <TextField source="clasificacion" />
+        <TextField source="tipo" />
+        <TextField source="descripcion" />
+        <TextField source="estatus" />
+        <TextField source="prioridad" />
+        <TextField source="fechaCreacion" />
+        <TextField source="rol" />
+        <TextField source="folio" />
+        <TextField source="comentario" />
+        <EditButton label="Más" icon={<InfoIcon />} />
+      </DatagridConfigurable>
+    </List>
+  </>
     );
     
-
+export const TicketTerminadoList = () => (
+    <>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: 'px' }}>
+         <ThemedIcon />
+         <h1 style={{ marginLeft: '10px' }}>Tickets Archivados</h1>
+    </div>
+    <List filters={TicketFilters} actions={<TicketListActions />}>
+        <DatagridConfigurable bulkActionButtons={false}>
+         <TextField source="id" />
+        <TextField source="aula" />
+        <TextField source="autor" />
+        <TextField source="clasificacion" />
+        <TextField source="tipo" />
+        <TextField source="descripcion" />
+        <TextField source="estatus" />
+        <TextField source="prioridad" />
+        <TextField source="fechaCreacion" />
+        <TextField source="rol" />
+        <TextField source="folio" />
+        <TextField source="comentario" />
+        <EditButton label="Más" icon={<InfoIcon />} />
+        </DatagridConfigurable>
+    </List>
+    </>
+        );
 const TicketTitle = () => {
     const record = useRecordContext();
     return <span>Ticket {record ? `"${record.id}"` : ''}</span>;
@@ -170,8 +207,9 @@ export const TicketEdit = () => {
             <TabbedForm toolbar={null}> 
                 {/* {record && record.updateData.estatus !== 'Terminado' && (  */}
                 <TabbedForm.Tab label="Actualizar Ticket"> 
+                <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
                 <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} />
-                <TextInput source="descripscion"  label="Avance del ticket" multiline rows={5} />
+                <TextInput source="descripcion"  label="Avance del ticket" multiline rows={5} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
                 {/* <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   */}
                 <Toolbar>
@@ -184,7 +222,7 @@ export const TicketEdit = () => {
                     <Datagrid bulkActionButtons={false}>
                         <TextField source="id" />
                         <TextField source="updateData.aula" label="Aula" />
-                        <TextField source="updateData.fechaCreacion" label="Fecha de creación" />
+                        <TextField source="updateTimestamp" label="Fecha de actualización" />
                         <TextField source="updateData.autor" label="Actualizado por" />
                         <TextField source="updateData.descripscion" label="Avance del ticket" />
                         <TextField source="updateData.estatus" label="Estatus" />

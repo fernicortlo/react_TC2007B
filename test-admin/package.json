@@ -15,11 +15,15 @@
     "testEnvironment": "jsdom"
   },
   "dependencies": {
+    "axios": "^1.5.1",
+    "chart.js": "^4.4.0",
     "package.json": "^2.0.1",
     "ra-data-json-server": "^4.12.0",
     "react": "^18.2.0",
     "react-admin": "^4.12.0",
-    "react-dom": "^18.2.0"
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.8.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.20",

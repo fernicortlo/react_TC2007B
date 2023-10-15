@@ -44,7 +44,7 @@ app.get("/Tickets", async (request, response) => {
         if (authData.rol === "Supervisor de Aula") {
             parametersFind["aula"] = authData.aula.nombreAula;
         }
-
+        parametersFind["estatus"] = { $ne: "finalizado" };
         if ("prioridad" in request.query) {
             // If "prioridad" is present in the query, filter by it
             console.log("Filtering by Prioridad:", request.query.prioridad)
@@ -76,7 +76,7 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
         
-
+   
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
@@ -166,12 +166,13 @@ app.post("/Tickets", async (request, response)=>{
     }
 }) 
 
-//update
+
 //update
 app.put("/Tickets/:id", async (request, response)=>{
     try{
         let token=request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
+        console.log(verifiedToken)
         let addValue=request.body
         addValue["id"]=Number(request.params.id);
         let data=await db.collection("Tickets").updateOne({"id": addValue["id"]}, {"$set": addValue});
@@ -202,7 +203,7 @@ app.put("/Tickets/:id", async (request, response)=>{
 })
 
 
-//create
+//actualizaciones 
 app.get("/Historial", async (request, response) => {
     try {
         let token = request.get("Authentication");
@@ -226,6 +227,7 @@ app.get("/Historial", async (request, response) => {
             if ("updateData.id" in request.query) {
                 parametersFind["updateData.id"] = Number(request.query["updateData.id"]);
             }
+            parametersFind["estatus"] = { $ne: "Terminado" };
 
             const total = await db.collection('Actualizaciones').countDocuments(parametersFind);
             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
@@ -269,6 +271,203 @@ app.get("/Historial", async (request, response) => {
         response.sendStatus(401);
     }
 });
+
+app.get("/TicketsFinalizados", async (request, response) => {
+    try {
+        let token = request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+
+        let parametersFind = {};
+        if (authData.rol === "Supervisor de Aula") {
+            parametersFind["aula"] = authData.aula.nombreAula;
+           
+        }
+        parametersFind["estatus"] = "Terminado";
+        if ("prioridad" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Prioridad:", request.query.prioridad)
+            parametersFind["prioridad"] = request.query.prioridad;
+        }
+        if ("clasificacion" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Clasificacion:", request.query.clasificacion)
+            parametersFind["clasificacion"] = request.query.clasificacion;
+        }
+        if ("tipo" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Tipo:", request.query.tipo)
+            parametersFind["tipo"] = request.query.tipo;
+        }
+        if ("estatus" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Estatus:", request.query.estatus)
+            parametersFind["estatus"] = request.query.estatus;
+        }
+        if ("aula" in request.query) {
+            // If "prioridad" is present in the query, filter by it
+            console.log("Filtering by Estatus:", request.query.aula)
+            parametersFind["aula"] = request.query.aula;
+        }
+        if ("id" in request.query) {
+            // If "id" is present in the query, filter by it
+            console.log("Filtering by ID:", request.query.id);
+            parametersFind["id"] = Number(request.query.id); // Convert it to a number
+        }
+        
+
+        // Determine where the endpoint is
+        if ("_sort" in request.query) { // list
+            let sortBy = request.query._sort;
+            let sortOrder = request.query._order === "ASC" ? 1 : -1;
+            let start = Number(request.query._start);
+            let end = Number(request.query._end);
+            let sorter = {};
+            sorter[sortBy] = sortOrder;
+
+            const total = await db.collection('Tickets').countDocuments(parametersFind);
+            response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+            response.set('X-Total-Count', total);
+
+            const data = await db.collection('Tickets')
+                .find(parametersFind)
+                .sort(sorter)
+                .project({ _id: 0 })
+                .skip(start)
+                .limit(end - start)
+                .toArray();
+
+            response.json(data);
+        } 
+        else if ("id" in request.query) { // getMany
+            let data = [];
+            for (let index = 0; index < request.query.id.length; index++) {
+                let dataObtain = await db.collection('Tickets').find({ id: Number(request.query.id[index]) }).project({ _id: 0 }).toArray();
+                data = data.concat(dataObtain);
+            }
+            response.json(data);
+        } 
+        else { // getReference
+            let data = await db.collection('Tickets').find(parametersFind).project({ _id: 0 }).toArray();
+            response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+            response.set('X-Total-Count', data.length);
+            response.json(data);
+        }
+    } catch(error) {
+        console.error(error);
+        response.sendStatus(401);
+    }
+});
+
+
+// Add a new route for ticket counts per "aula"
+// app.get('/ticketAula', async (request, response) => {
+//     try {
+//         let token = request.get("Authentication");
+//         let verifiedToken = await jwt.verify(token, "secretKey");
+//         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+
+//         let parametersFind = {};
+//         if (authData.rol === "Supervisor de Aula") {
+//             parametersFind["aula"] = authData.aula.nombreAula;
+//         }
+//         const ticketCounts = await db.collection('Tickets').aggregate([
+//             {
+//                 $match: { "aula": parametersFind["aula"] }
+//             },
+//             {
+//                 $group: {
+//                     _id: '$aula',
+//                     tickets: { $sum: 1 }
+//                 }
+//             }
+//         ]).toArray();
+
+//         // Send the ticket counts as JSON response
+//         response.json(ticketCounts);
+//         console.log(ticketCounts)
+//     } catch (error) {
+//         console.error(error);
+//         response.status(500).send('Internal Server Error');
+//     }
+// });
+app.get('/barChart', async (request, response) => {
+try {
+    const token = request.get('Authentication');
+
+    if (!token) {
+        response.status(401).json({ error: 'Authentication token missing' });
+        return;
+    }
+
+    const verifiedToken = await jwt.verify(token, 'secretKey');
+    const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
+
+    if (!authData) {
+        response.status(401).json({ error: 'Invalid token' });
+        return;
+    }
+
+    // You can implement your authorization logic here based on authData
+
+    const ticketCounts = await db.collection('Tickets').aggregate([
+        {
+            $group: {
+                _id: '$tipo',
+                tickets: { $sum: 1 }
+            }
+        }
+    ]).toArray();
+
+    // Send the ticket counts as JSON response
+    response.json(ticketCounts);
+    console.log(ticketCounts);
+} catch (error) {
+    console.error(error);
+    response.status(500).send('Internal Server Error');
+}
+});
+
+
+// Add a new route for ticket counts per "aula"
+app.get('/problemaTickets', async (request, response) => {
+    try {
+        const token = request.get('Authentication');
+
+        if (!token) {
+            response.status(401).json({ error: 'Authentication token missing' });
+            return;
+        }
+
+        const verifiedToken = await jwt.verify(token, 'secretKey');
+        const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
+
+        if (!authData) {
+            response.status(401).json({ error: 'Invalid token' });
+            return;
+        }
+
+        // You can implement your authorization logic here based on authData
+
+        const ticketCounts = await db.collection('Tickets').aggregate([
+            {
+                $group: {
+                    _id: '$tipo',
+                    tickets: { $sum: 1 }
+                }
+            }
+        ]).toArray();
+
+        // Send the ticket counts as JSON response
+        response.json(ticketCounts);
+        console.log(ticketCounts);
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Internal Server Error');
+    }
+});
+
+
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
