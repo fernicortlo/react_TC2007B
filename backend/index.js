@@ -227,7 +227,7 @@ app.get("/Historial", async (request, response) => {
             if ("updateData.id" in request.query) {
                 parametersFind["updateData.id"] = Number(request.query["updateData.id"]);
             }
-            parametersFind["estatus"] = { $ne: "Terminado" };
+            //parametersFind["estatus"] = { $ne: "Terminado" };
 
             const total = await db.collection('Actualizaciones').countDocuments(parametersFind);
             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
@@ -261,7 +261,7 @@ app.get("/Historial", async (request, response) => {
             let filter = request.query.filter ? JSON.parse(request.query.filter) : {};
 
             console.log(filter);
-            // let data = await db.collection('Actualizaciones').find({parametersFind, ...filter }).project({ _id: 0 }).toArray();
+            let data = await db.collection('Actualizaciones').find({parametersFind, ...filter }).project({ _id: 0 }).toArray();
             response.set('Access-Control-Expose-Headers', 'X-Total-Count');
             response.set('X-Total-Count', data.length);
             response.json(data);
@@ -354,7 +354,23 @@ app.get("/Finalizado", async (request, response) => {
     }
 });
 
-
+//getOne
+app.get("/Finalizado/:id", async (request, response)=>{
+    try{
+        let token=request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
+        let parametersFind={"id": Number(request.params.id)}
+        if(authData.rol=="Supervisor de Aula"){
+            parametersFind["aula"]=authData.aula.nombreAula;
+        }
+        let data=await db.collection('Tickets').find(parametersFind).project({_id:0}).toArray();
+        log(verifiedToken.correo, "ver objeto", request.params.id)
+        response.json(data[0]);
+    }catch{
+        response.sendStatus(401);
+    }
+})
 // Add a new route for ticket counts per "aula"
 // app.get('/ticketAula', async (request, response) => {
 //     try {
