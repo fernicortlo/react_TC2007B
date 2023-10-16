@@ -406,6 +406,7 @@ app.get('/barChart', async (request, response) => {
 try {
 
     let token = request.get("Authentication");
+    console.log(token)
     let verifiedToken = await jwt.verify(token, "secretKey");
     let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
 
