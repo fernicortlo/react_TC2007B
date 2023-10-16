@@ -21,12 +21,14 @@ export const MyMenu = () => {
     <Menu>
         {rol !== "Administrador" &&
         <Menu.ResourceItem name="Tickets" />}
-        <Menu.ResourceItem name="Historial" />
+        {rol !== "Administrador" &&
+        <Menu.ResourceItem name="Finalizado" />}
         {rol==="Administrador" &&
         <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
         {rol!=="Administrador" &&
         <Menu.Item to="/Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>}
-
+        {rol!=="Administrador" &&
+        <Menu.Item to="/barChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
     </Menu>
     );
 };

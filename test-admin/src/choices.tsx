@@ -82,7 +82,7 @@ export const prioridadChoices: ChoiceOption[] = [
     ];
 
  export const estatusChoices: ChoiceOption[] = [
-        {id:'No iniciado', name:' No Iniciado'},
+        {id:'Creado', name:'Creado'},
         {id:'Iniciado', name:'Iniciado'},
         {id:'En proceso', name:'En proceso'},
         {id:'Terminado', name:'Terminado'}
