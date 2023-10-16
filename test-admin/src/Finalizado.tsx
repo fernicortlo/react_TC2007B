@@ -106,18 +106,7 @@ export const TicketFEdit = () => {
 
         return(
             <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
-            <TabbedForm toolbar={null}> 
-                {/* {record && record.updateData.estatus !== 'Terminado' && (  */}
-                <TabbedForm.Tab label="Actualizar Ticket"> 
-                <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
-                <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} />
-                <TextInput source="descripcion"  label="Avance del ticket" multiline rows={5} />
-                <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                {/* <TextInput source="folio"  label="Número de Oficio" multiline rows={1} />   */}
-                <Toolbar>
-                <SaveButton label="Actualizar" icon={<UpdateIcon/>}/>
-                 </Toolbar>
-            </TabbedForm.Tab>
+            <TabbedForm>
                 {/* )} */}
             <TabbedForm.Tab label="Historial de versiones"> 
                 <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
