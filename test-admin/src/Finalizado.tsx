@@ -32,6 +32,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useTheme } from '@mui/material/styles';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 
 const TicketFilters = [
@@ -47,7 +48,6 @@ const TicketListActions = () => (
     <TopToolbar>
         <SelectColumnsButton />
         <FilterButton />
-        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -55,7 +55,7 @@ const TicketListActions = () => (
 
 const ThemedIcon = () => {
 const theme = useTheme();
-return <SpeakerNotesIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' }} />;
+return <ArchiveIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' , fontSize:50}} />;
 };
 
 export const TicketTerminadoList = () => (

@@ -23,7 +23,8 @@ import {
     CreateButton,
     ExportButton,
     Toolbar,
-    SaveButton
+    SaveButton,
+    Button
 } from "react-admin";
 import { useState, useEffect} from 'react';
 import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
@@ -32,6 +33,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useTheme } from '@mui/material/styles';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import { redirect } from "react-router-dom";
 
 export const TicketCreate = () => {
     const notify= useNotify();
@@ -116,15 +119,32 @@ const TicketFilters = [
 
 const ThemedIcon = () => {
     const theme = useTheme();
-    return <SpeakerNotesIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' }} />;
+    return <SpeakerNotesIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', fontSize:50}} />;
   };
+  
+  function RedirectToFinalizadoButton() {
+    const redirect = useRedirect();
+  
+    const handleRedirectToFinalizado = () => {
+      redirect('/Finalizado');
+    };
+    const theme = useTheme();
+    return (
+      <Button label="Tickets finalizados" onClick={handleRedirectToFinalizado}  variant='contained' startIcon={< ArchiveIcon style={{fontSize:30}}/>} 
+      sx={{
+        height:'50px', fontsize:'16px', color:'White',background: theme.palette.mode === 'dark' ? '#b53f3f': 'green',}}/>
+    );
+  }
 export const TicketList = () => (
     <>
     <div style={{ display: 'flex', alignItems: 'center', marginBottom: 'px' }}>
       <ThemedIcon />
-      <h1 style={{ marginLeft: '10px' }}>Tickets</h1>
+      <h1 style={{ marginLeft: '10px', fontSize:'49px' }}>Tickets</h1>
     </div>
-    <List filters={TicketFilters} actions={<TicketListActions />}>
+    <div style={{position:'absolute',top:130, right:30}}>
+    <RedirectToFinalizadoButton />
+    </div>
+    <List filters={TicketFilters} actions={<TicketListActions/>}>
       <DatagridConfigurable bulkActionButtons={false}>
         <TextField source="id" />
         <TextField source="aula" />
@@ -149,6 +169,8 @@ const TicketTitle = () => {
     const record = useRecordContext();
     return <span>Ticket {record ? `"${record.id}"` : ''}</span>;
         };
+
+
 
 export const TicketEdit = () => {
     const recordId = useGetRecordId();
