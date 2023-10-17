@@ -1,7 +1,7 @@
 import React from "react";
 import { Admin, Resource, CustomRoutes,menu } from "react-admin";
 import {  Route} from 'react-router-dom';
-import { dataProvider } from "./dataProvider";
+import dataProvider from "./dataProvider";
 import {i18nProvider} from './i18nProvider';
 import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';

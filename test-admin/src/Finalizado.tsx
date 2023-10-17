@@ -75,6 +75,7 @@ export const TicketTerminadoList = () => (
         <TextField source="estatus" />
         <TextField source="prioridad" />
         <TextField source="fechaCreacion" />
+        <TextField source="fechafin" />
         <TextField source="rol" />
         <TextField source="folio" />
         <TextField source="comentario" />
