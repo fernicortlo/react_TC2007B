@@ -56,13 +56,15 @@ export const TicketCreate = () => {
     };
     
     let rol = localStorage.getItem('rol');
+    let aula = localStorage.getItem('aula');
+    let nombre = localStorage.getItem('nombreCompleto');
     if(rol === 'Supervisor de Aula'){
     return (
         <Create mutationOptions={{ onSuccess }}>
             <SimpleForm>
-                <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
-                <TextInput source="aula" label="Aula" defaultValue={getUserId()} disabled/>
-                <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
+                <TextInput source="rol" label="Rol" defaultValue={rol} disabled/>
+                <TextInput source="aula" label="Aula" defaultValue={aula} disabled/>
+                <TextInput source="autor" label="Autor" defaultValue={nombre} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
                 {/* <RadioButtonGroupInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/> */}
@@ -80,8 +82,8 @@ export const TicketCreate = () => {
         return (
             <Create mutationOptions={{ onSuccess }}>
                 <SimpleForm>
-                    <TextInput source="rol" label="Rol" defaultValue={getUserRol()} disabled/>
-                    <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
+                    <TextInput source="rol" label="Rol" defaultValue={rol} disabled/>
+                    <TextInput source="autor" label="Autor" defaultValue={nombre} disabled/>
                     <TextInput source="aula" label="Aula" required={true}/>
                     <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                     <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
@@ -190,6 +192,7 @@ export const TicketEdit = () => {
     const refresh= useRefresh();
     const redirect= useRedirect();
     const record = useRecordContext();
+    const username= localStorage.getItem('nombreCompleto')
       
     const onSuccess=()=>{
         notify('Cambios guardados',{undoable:true});
@@ -203,7 +206,7 @@ export const TicketEdit = () => {
             <TabbedForm toolbar={null}> 
                 {/* {record && record.updateData.estatus !== 'Terminado' && (  */}
                 <TabbedForm.Tab label="Actualizar Ticket"> 
-                <TextInput source="autor" label="Autor" defaultValue={getUserName()} disabled/>
+                <TextInput source="autor" label="Autor" defaultValue={username} disabled/>
                 <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} />
                 <TextInput source="descripcion"  label="Avance del ticket" multiline rows={5} />
                 <TextInput source="comentario"  label="Comentario" multiline rows={5} />
