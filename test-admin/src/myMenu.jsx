@@ -15,14 +15,13 @@ const ReportesIcon = () => {
     return <AssessmentIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' }} />;
   };
 
+
 export const MyMenu = () => {
-    const rol = getUserRol();
+    const rol = localStorage.getItem('rol');
     return(
     <Menu>
         {rol !== "Administrador" &&
         <Menu.ResourceItem name="Tickets" />}
-        {rol !== "Administrador" &&
-        <Menu.ResourceItem name="Finalizado" />}
         {rol==="Administrador" &&
         <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
         {rol!=="Administrador" &&

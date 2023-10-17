@@ -22,8 +22,10 @@ export const authProvider: AuthProvider = {
             setToken(auth.token)
             console.log('auth', auth);
             localStorage.setItem('identity',  JSON.stringify({"id": auth.id,  "fullName":auth.nombreCompleto, "rol":auth.rol,"aula":auth.aula}));
+            localStorage.setItem('rol', auth.rol);
+            localStorage.setItem('aula', auth.aula);
+            localStorage.setItem('nombreCompleto', auth.nombreCompleto);
             setUserId(auth.aula)
-            setUserRol(auth.rol)
             setUserName(auth.nombreCompleto)
             console.log("token",auth.token)
             return Promise.resolve()
