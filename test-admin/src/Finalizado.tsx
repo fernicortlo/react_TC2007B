@@ -5,43 +5,33 @@ import {
     TextField,
     ReferenceManyField,
     EditButton,
-    Create,
-    SimpleForm,
     TextInput,
     useRefresh,
     useRedirect,
     Edit,
     SelectInput,
     NumberInput,
-    RadioButtonGroupInput,
     TabbedForm,
     useGetRecordId,
     DatagridConfigurable,
     SelectColumnsButton,
     TopToolbar,
     FilterButton,
-    CreateButton,
     ExportButton,
-    Toolbar,
-    SaveButton
+
 } from "react-admin";
-import { useState, useEffect} from 'react';
-import { ChoiceOption, clasificacionChoices, prioridadChoices, tipoChoicesMapping, estatusChoices } from './choices';
-import { getUserId,getUserRol,getUserName } from "./authState";
+
+import {  clasificacionChoices, prioridadChoices } from './choices';
 import InfoIcon from '@mui/icons-material/Info';
-import UpdateIcon from '@mui/icons-material/Update';
 import { useTheme } from '@mui/material/styles';
-import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import ArchiveIcon from '@mui/icons-material/Archive';
 
 
 const TicketFilters = [
-    //<SearchInput source="q" alwaysOn />,
     <TextInput source="aula" label="Buscar Aula"/>,
     <NumberInput source="id" label="ID" />,
     <SelectInput source="prioridad" label="Prioridad" choices={prioridadChoices} />,
     <SelectInput source="clasificacion" label="Clasificacion" choices={clasificacionChoices} />,
-    //<SelectInput source="tipo" label="Tipo" choices={tipoChoicesMapping[selectedClasificacion]} />
 ];
 
 const TicketListActions = () => (
@@ -108,7 +98,6 @@ export const TicketFEdit = () => {
         return(
             <Edit title={<TicketTitle />} mutationOptions={{onSuccess}}>
             <TabbedForm>
-                {/* )} */}
             <TabbedForm.Tab label="Historial de versiones"> 
                 <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
                     <Datagrid bulkActionButtons={false}>

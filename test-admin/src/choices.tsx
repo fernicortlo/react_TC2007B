@@ -2,7 +2,6 @@ export interface ChoiceOption {
     id: string;
     name: string;
 }
-
 export const clasificacionChoices: ChoiceOption[] = [
     {id:'Servicios', name:'Servicios'},
     {id:'Digital', name:'Digital'},
