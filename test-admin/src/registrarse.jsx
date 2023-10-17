@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SimpleForm, TextInput, Button, SelectInput,useRedirect, useNotify, useUnique } from 'react-admin';
+import { SimpleForm, TextInput, Button, SelectInput,useRedirect, useNotify, useUnique, useRefresh} from 'react-admin';
 import { rolChoices } from "./choices";
 import SaveIcon from '@mui/icons-material/Save';
 
@@ -18,6 +18,7 @@ const Registrarse = () => {
     });
     const redirect = useRedirect();
     const notify=useNotify();
+    const refresh= useRefresh();
     const handleChange = (event) => {
         const { name, value } = event.target;
     
@@ -50,8 +51,10 @@ const Registrarse = () => {
         });
         try {
             const response = await fetch(request);
-            redirect('/login');
+            refresh()
+            redirect('/registrarse');
             notify('Usuario creado con éxito')
+            
             if (response.status < 200 || response.status >= 300) {
                 throw new Error(response.statusText);
             }
@@ -60,6 +63,7 @@ const Registrarse = () => {
             throw new Error('No se pudo registrar el usuario');
         }
     };
+    if(localStorage.getItem("rol")==="Administrador"){
     return (
         <div>
             <h2>Registro de nuevos usuarios</h2>
@@ -88,7 +92,14 @@ const Registrarse = () => {
             </SimpleForm>
             
         </div>
-    );
+    );}
+    else{
+        return(
+            <div>
+                <h2>No tienes permisos para acceder a esta página</h2>
+            </div>
+        );
+    }
 };
 
 export default Registrarse;

@@ -32,7 +32,7 @@ const MyLoginPage = () => {
         try {
             await authProvider.login({ correo: email, pass: password });
             notify('Inicio de sesión exitoso');
-            let rol = getUserRol();
+            let rol = localStorage.getItem('rol');
             if (rol === 'Administrador') {
                 redirect('/registrarse');
             } else {

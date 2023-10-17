@@ -55,7 +55,7 @@ export const TicketCreate = () => {
         refresh();
     };
     
-    let rol = getUserRol();
+    let rol = localStorage.getItem('rol');
     if(rol === 'Supervisor de Aula'){
     return (
         <Create mutationOptions={{ onSuccess }}>
@@ -135,7 +135,9 @@ const ThemedIcon = () => {
         height:'50px', fontsize:'16px', color:'White',background: theme.palette.mode === 'dark' ? '#b53f3f': 'green',}}/>
     );
   }
-export const TicketList = () => (
+export const TicketList = () => {
+    if(localStorage.getItem('rol') === 'Supervisor de Aula' || localStorage.getItem('rol') === 'Supervisor Nacional' || localStorage.getItem('rol') === 'Supervisor Ejecutivo'){
+    return(
     <>
     <div style={{ display: 'flex', alignItems: 'center', marginBottom: 'px' }}>
       <ThemedIcon />
@@ -162,7 +164,16 @@ export const TicketList = () => (
       </DatagridConfigurable>
     </List>
   </>
-    );
+    );}
+    else {
+            return(
+                <div>
+                    <h2>No tienes permisos para acceder a esta página</h2>
+                </div>
+            );
+    }
+};
+
     
 
 const TicketTitle = () => {
