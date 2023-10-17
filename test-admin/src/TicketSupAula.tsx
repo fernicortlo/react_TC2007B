@@ -35,6 +35,7 @@ import { useTheme } from '@mui/material/styles';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { redirect } from "react-router-dom";
+import { ImageInput, ImageField } from 'react-admin';
 
 export const TicketCreate = () => {
     const notify= useNotify();
@@ -89,9 +90,12 @@ export const TicketCreate = () => {
                     <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
                     <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
                     <RadioButtonGroupInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="Creado" disabled/>
-                    <TextInput source="descripción"  label="Descripción del ticket" multiline rows={5} required={true}/>
+                    <TextInput source="descripcion"  label="Descripción del ticket" multiline rows={5} required={true}/>
                     <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
                     <TextInput source="comentario"  label="Comentario" multiline rows={5} />
+                    <ImageInput source="pictures" label="Related pictures">
+                        <ImageField source="src" title="title" />
+                    </ImageInput>
                     
                 </SimpleForm>
             </Create>
@@ -219,11 +223,11 @@ export const TicketEdit = () => {
             <TabbedForm.Tab label="Historial de versiones"> 
                 <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
                     <Datagrid bulkActionButtons={false}>
-                        <TextField source="id" />
+                        <TextField source="idA" />
                         <TextField source="updateData.aula" label="Aula" />
                         <TextField source="updateTimestamp" label="Fecha de actualización" />
-                        <TextField source="updateData.autor" label="Actualizado por" />
-                        <TextField source="updateData.descripscion" label="Avance del ticket" />
+                        <TextField source="updatedBy" label="Actualizado por" />
+                        <TextField source="updateData.descripcion" label="Avance del ticket" />
                         <TextField source="updateData.estatus" label="Estatus" />
                         <TextField source="updateData.comentario" label="Comentario" />
                     </Datagrid>

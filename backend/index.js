@@ -175,13 +175,28 @@ app.put("/Tickets/:id", async (request, response)=>{
         console.log(verifiedToken)
         let addValue=request.body
         addValue["id"]=Number(request.params.id);
+        // let estatusfin=addValue.estatus;
+        // if(estatusfin==="Terminado"){
+        //     let addValue=request.body
+        //     fechaActual= new Date();
+        //     let fechafin= fechaActual.toLocaleString("en-US", {
+        //         day: "2-digit",
+        //         month: "2-digit",
+        //         year: "numeric",
+        //         hour: "2-digit",
+        //         minute: "2-digit",
+        //     });
+        //     addValue["fechafin"]=fechafin;
+        // }
         let data=await db.collection("Tickets").updateOne({"id": addValue["id"]}, {"$set": addValue});
+        
         //data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
         //response.json(data[0]);
 
          // Create a new Actualizaciones record
          let dataA=await db.collection('Actualizaciones').find({}).toArray();
          let idA=dataA.length+1;
+         console.log(idA)
          fechaActual = new Date();
          let formattedDateA = fechaActual.toLocaleString("en-US", {
             day: "2-digit",
@@ -194,13 +209,14 @@ app.put("/Tickets/:id", async (request, response)=>{
             id: idA,
             updatedBy: verifiedToken.correo,
             updateTimestamp: formattedDateA,
-            updateData: addValue, // You may want to structure this data as needed
+            updateData: addValue, 
         };
       await db.collection("Actualizaciones").insertOne(actualizacionesRecord);
     }catch{
         response.sendStatus(401);
     }
 })
+
 
 
 //actualizaciones 
