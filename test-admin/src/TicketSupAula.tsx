@@ -223,7 +223,7 @@ export const TicketEdit = () => {
             <TabbedForm.Tab label="Historial de versiones"> 
                 <ReferenceManyField reference="Historial" target="updateData.id" filter={{ "updateData.id": recordId }}label={false}>
                     <Datagrid bulkActionButtons={false}>
-                        <TextField source="idA" />
+                        <TextField source="idact" label="Número de actualización" />
                         <TextField source="updateData.aula" label="Aula" />
                         <TextField source="updateTimestamp" label="Fecha de actualización" />
                         <TextField source="updatedBy" label="Actualizado por" />
