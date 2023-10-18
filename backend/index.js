@@ -455,45 +455,100 @@ try {
 });
 
 
-// Add a new route for ticket counts per "aula"
+// // Contar tickets por problema
+// app.get('/problemaTickets', async (request, response) => {
+//     try {
+//         const token = request.get('Authentication');
+
+//         if (!token) {
+//             response.status(401).json({ error: 'Authentication token missing' });
+//             return;
+//         }
+//         const verifiedToken = await jwt.verify(token, 'secretKey');
+//         const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
+//         let parametersFind = {};
+        
+//         if (authData.rol === "Supervisor de Aula") {
+//             parametersFind["aula"] = authData.aula.nombreAula;
+//         }
+
+//         // You can implement your authorization logic here based on authData
+
+//         const aggregationPipeline = [
+//             {
+//                 $match: parametersFind // Filter by "aula" if the user is a Supervisor de Aula
+//             },
+//             {
+//                 $group: {
+//                     _id: '$tipo',
+//                     tickets: { $sum: 1 }
+//                 }
+//             }
+//         ];
+
+//         const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
+
+//         // Send the ticket counts as JSON response
+//         response.json(ticketCounts);
+//         console.log(ticketCounts);
+//     } catch (error) {
+//         console.error(error);
+//         response.status(500).send('Internal Server Error');
+//     }
+// });
+// Update your API route to accept startDate and endDate as query parameters
 app.get('/problemaTickets', async (request, response) => {
     try {
-        const token = request.get('Authentication');
-
-        if (!token) {
-            response.status(401).json({ error: 'Authentication token missing' });
-            return;
+      const token = request.get('Authentication');
+  
+      if (!token) {
+        response.status(401).json({ error: 'Authentication token missing' });
+        return;
+      }
+      const verifiedToken = await jwt.verify(token, 'secretKey');
+      const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
+      let parametersFind = {};
+  
+      if (authData.rol === "Supervisor de Aula") {
+        parametersFind["aula"] = authData.aula.nombreAula;
+      }
+  
+      // Extract startDate and endDate from query parameters
+      const startDate = request.query.startDate;
+      const endDate = request.query.endDate;
+  
+      // You can implement your authorization logic here based on authData
+  
+      const aggregationPipeline = [
+        {
+          $match: {
+            ...parametersFind, // Add any other conditions you need
+            // Filter by date range
+            date: {
+              $gte: new Date(startDate), // Greater than or equal to startDate
+              $lte: new Date(endDate),   // Less than or equal to endDate
+            },
+          }
+        },
+        {
+          $group: {
+            _id: '$tipo',
+            tickets: { $sum: 1 }
+          }
         }
-
-        const verifiedToken = await jwt.verify(token, 'secretKey');
-        const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
-
-        if (!authData) {
-            response.status(401).json({ error: 'Invalid token' });
-            return;
-        }
-
-        // You can implement your authorization logic here based on authData
-
-        const ticketCounts = await db.collection('Tickets').aggregate([
-            {
-                $group: {
-                    _id: '$tipo',
-                    tickets: { $sum: 1 }
-                }
-            }
-        ]).toArray();
-
-        // Send the ticket counts as JSON response
-        response.json(ticketCounts);
-        console.log(ticketCounts);
+      ];
+  
+      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
+  
+      // Send the ticket counts as JSON response
+      response.json(ticketCounts);
+      console.log(ticketCounts);
     } catch (error) {
-        console.error(error);
-        response.status(500).send('Internal Server Error');
+      console.error(error);
+      response.status(500).send('Internal Server Error');
     }
-});
-
-
+  });
+  
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;

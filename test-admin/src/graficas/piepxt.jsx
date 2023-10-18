@@ -3,24 +3,17 @@ import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-// const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-//   // const RADIAN = Math.PI / 180;
-  // const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  // const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  // const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-//   return (
-//     <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-//       {`${(percent * 100).toFixed(0)}%`}
-//     </text>
-//   );
-// };
-
 const CustomPieChart = () => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:1337/problemaTickets')
+    fetch('http://localhost:1337/problemaTickets', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authentication': localStorage.getItem("auth"), // Add the token to the Authorization header
+      },
+    })
       .then((response) => response.json())
       .then((ticketCounts) => {
         // Process the data from the API and format it as needed
@@ -57,3 +50,28 @@ const CustomPieChart = () => {
 };
 
 export default CustomPieChart;
+
+
+// const CustomPieChart = ({ chartData }) => {
+//   return (
+//     <PieChart width={600} height={400}>
+//       <Pie
+//         data={chartData}
+//         dataKey="value"
+//         cx={300}
+//         cy={200}
+//         labelLine={false}
+//         outerRadius={100}
+//         fill="#8884d8"
+//       >
+//         {chartData.map((entry, index) => (
+//           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+//         ))}
+//       </Pie>
+//       <Tooltip />
+//       <Legend />
+//     </PieChart>
+//   );
+// };
+
+// export default CustomPieChart;

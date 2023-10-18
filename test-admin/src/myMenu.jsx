@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import { getUserRol } from './authState';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 
 
 const ThemedIcon = () => {
@@ -14,6 +15,12 @@ const ReportesIcon = () => {
     const theme = useTheme();
     return <AssessmentIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' }} />;
   };
+
+const Graficas = () => {
+    const theme = useTheme();
+    return <AnalyticsIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f' }} />;
+  };
+
 
 
 export const MyMenu = () => {
@@ -27,7 +34,11 @@ export const MyMenu = () => {
         {rol!=="Administrador" &&
         <Menu.Item to="/Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>}
         {rol!=="Administrador" &&
-        <Menu.Item to="/barChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
+        // <Menu.Item to="/barChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
+        // {rol!=="Administrador" &&
+        // <Menu.Item to="/pieChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
+        //  {rol!=="Administrador" &&
+        <Menu.Item to="/graficas" primaryText="Graficas" leftIcon={<Graficas/>}/>}
     </Menu>
     );
 };
