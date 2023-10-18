@@ -46,7 +46,7 @@ const ThemedIcon = () => {
 };
 
 const MyDashboard = () => {
-  const embeddedDashboardUrl = "https://charts.mongodb.com/charts-seguridad-nzbdy/embed/dashboards?id=a3b6519c-d802-4f16-adc6-905b6f305872&theme=light&autoRefresh=true&maxDataAge=60&showTitleAndDesc=false&scalingWidth=fixed&scalingHeight=fixed";
+  const embeddedDashboardUrl = "https://charts.mongodb.com/charts-seguridad-nzbdy/embed/dashboards?id=a3b6519c-d802-4f16-adc6-905b6f305872&theme=light&autoRefresh=true&maxDataAge=3600&showTitleAndDesc=false&scalingWidth=scale&scalingHeight=fixed";
   if(localStorage.getItem('rol') === 'Supervisor Nacional' || localStorage.getItem('rol') === 'Supervisor Ejecutivo'){
     return (
       <div>
