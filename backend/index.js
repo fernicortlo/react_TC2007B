@@ -508,27 +508,43 @@ app.get('/problemaTickets', async (request, response) => {
       const verifiedToken = await jwt.verify(token, 'secretKey');
       const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
       let parametersFind = {};
-  
+
+
       if (authData.rol === "Supervisor de Aula") {
         parametersFind["aula"] = authData.aula.nombreAula;
       }
+      const currentDate = new Date();
+      const oneWeekAgo = new Date(currentDate);
+     oneWeekAgo.setDate(currentDate.getDate() - 7);
   
-      // Extract startDate and endDate from query parameters
-      const startDate = request.query.startDate;
-      const endDate = request.query.endDate;
-  
+        parametersFind.$or = [
+        { fechaCreación: { $gte: oneWeekAgo, $lte: currentDate } },
+        { fechafin: { $gte: oneWeekAgo, $lte: currentDate } }
+      ];
       // You can implement your authorization logic here based on authData
   
-      const aggregationPipeline = [
+    //   const aggregationPipeline = [
+    //     {
+    //       $match: {
+    //         ...parametersFind, // Add any other conditions you need
+    //         // Filter by date range
+    //         // date: {
+    //         //   $gte: new Date(startDate), // Greater than or equal to startDate
+    //         //   $lte: new Date(endDate),   // Less than or equal to endDate
+    //         // },
+    //       }
+          
+    //     },
+    //     {
+    //       $group: {
+    //         _id: '$tipo',
+    //         tickets: { $sum: 1 }
+    //       }
+    //     }
+    //   ];
+    const aggregationPipeline = [
         {
-          $match: {
-            ...parametersFind, // Add any other conditions you need
-            // Filter by date range
-            date: {
-              $gte: new Date(startDate), // Greater than or equal to startDate
-              $lte: new Date(endDate),   // Less than or equal to endDate
-            },
-          }
+          $match: parametersFind,
         },
         {
           $group: {
