@@ -17,7 +17,9 @@ import  {MyMenu} from "./myMenu";
 import Reportes from "./Reportes";
 import {HistorialList} from "./Historial";
 import MyBarChart from "./graficas/barratxa";
-import MyPieChart from "./graficas/piepxt";
+import CustomPieChart from "./graficas/piepxt";
+import Graphs from "./graficas/graficas";
+
 
 
 
@@ -64,7 +66,8 @@ export const App = () => (
           <Route path="/registrarse"  element={<Registrarse />}/>
           <Route path="/Reportes"  element={<Reportes />}/>
           <Route path="/barChart" element={<MyBarChart />} />
-          <Route path="/pieChart" element={<MyPieChart />} />
+          <Route path="/pieChart" element={<CustomPieChart />} />
+          <Route path="/graficas" element={<Graphs />} />
      </CustomRoutes>
   </Admin>
 );

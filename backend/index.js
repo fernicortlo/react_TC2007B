@@ -423,77 +423,188 @@ app.get("/Finalizado/:id", async (request, response)=>{
 //         response.status(500).send('Internal Server Error');
 //     }
 // });
+// app.get('/barChart', async (request, response) => {
+// try {
+
+//     let token = request.get("Authentication");
+//     console.log(token)
+//     let verifiedToken = await jwt.verify(token, "secretKey");
+//     let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+
+  
+//     const currentDate = new Date();
+//     const oneWeekAgo = new Date(currentDate);
+//     oneWeekAgo.setDate(currentDate.getDate() - 7);
+//     const formattedOneWeekAgo = oneWeekAgo.toLocaleString("en-US", {
+//         day: "2-digit",
+//         month: "2-digit",
+//         year: "numeric",
+//         hour: "2-digit",
+//         minute: "2-digit",
+//       });
+  
+//       const formattedCurrentDate = currentDate.toLocaleString("en-US", {
+//         day: "2-digit",
+//         month: "2-digit",
+//         year: "numeric",
+//         hour: "2-digit",
+//         minute: "2-digit",
+//       });
+
+//     const aggregationPipeline = [
+//         {
+//           $match: {
+//             $and: [
+//               parametersFind,
+//               {
+//                 $or: [
+//                   {
+//                     $expr: {
+//                       $and: [
+//                         { $gte: ["$fechaCreacion", oneWeekAgo] },
+//                         { $lte: ["$fechaCreacion", currentDate] }
+//                       ]
+//                     }
+//                   },
+//                   {
+//                     $expr: {
+//                       $and: [
+//                         { $gte: ["$fechafin", oneWeekAgo] },
+//                         { $lte: ["$fechafin", currentDate] }
+//                       ]
+//                     }
+//                   }
+//                 ]
+//               }
+//             ]
+//           }
+//         },
+//         {
+//           $group: {
+//             _id: '$tipo',
+//             tickets: { $sum: 1 }
+//           }
+//         }
+//       ];
+//       const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
+    
+
+//     // Send the ticket counts as JSON response
+//     response.json(ticketCounts);
+//     console.log(ticketCounts);
+// } catch (error) {
+//     console.error(error);
+//     response.status(500).send('Internal Server Error');
+// }
+// });
+
 app.get('/barChart', async (request, response) => {
-try {
-
-    let token = request.get("Authentication");
-    console.log(token)
-    let verifiedToken = await jwt.verify(token, "secretKey");
-    let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-    // let parametersFind = {};
-    // if (authData.rol === "Supervisor de Aula") {
-    //     parametersFind["aula"] = authData.aula.nombreAula;
-       
-    // }
-    const ticketCounts = await db.collection('Tickets').aggregate([
+    try {
+      const token = request.get("Authentication");
+      const verifiedToken = await jwt.verify(token, "secretKey");
+      const authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+  
+      const currentDate = new Date();
+      const oneWeekAgo = new Date(currentDate);
+      oneWeekAgo.setDate(currentDate.getDate() - 7);
+  
+      const formattedOneWeekAgo = oneWeekAgo.toLocaleString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+  
+      const formattedCurrentDate = currentDate.toLocaleString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+  
+      const aggregationPipeline = [
         {
-            $group: {
-                _id: '$aula',
-                tickets: { $sum: 1 }
-            }
+          $match: {
+            $or: [
+              {
+                fechaCreacion: {
+                  $gte: formattedOneWeekAgo,
+                  $lte: formattedCurrentDate
+                }
+              },
+              {
+                fechafin: {
+                  $gte: formattedOneWeekAgo,
+                  $lte: formattedCurrentDate
+                }
+              }
+            ]
+          }
+        },
+        {
+          $group: {
+            _id: '$aula',
+            tickets: { $sum: 1 }
+          }
         }
-    ]).toArray();
+      ];
+  
+      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
+  
+      // Send the ticket counts as JSON response
+      response.json(ticketCounts);
+      console.log(ticketCounts);
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('Internal Server Error');
+    }
+  });
+  
 
-    // Send the ticket counts as JSON response
-    response.json(ticketCounts);
-    console.log(ticketCounts);
-} catch (error) {
-    console.error(error);
-    response.status(500).send('Internal Server Error');
-}
-});
 
-
-// Add a new route for ticket counts per "aula"
+// Update your API route to accept startDate and endDate as query parameters
 app.get('/problemaTickets', async (request, response) => {
     try {
-        const token = request.get('Authentication');
+      const token = request.get('Authentication');
+  
+      if (!token) {
+        response.status(401).json({ error: 'Authentication token missing' });
+        return;
+      }
+      const verifiedToken = await jwt.verify(token, 'secretKey');
+      const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
+      let parametersFind = {};
 
-        if (!token) {
-            response.status(401).json({ error: 'Authentication token missing' });
-            return;
+
+      if (authData.rol === "Supervisor de Aula") {
+        parametersFind["aula"] = authData.aula.nombreAula;
+      }
+
+    const aggregationPipeline = [
+        {
+          $match: parametersFind,
+        },
+        {
+          $group: {
+            _id: '$tipo',
+            tickets: { $sum: 1 }
+          }
         }
-
-        const verifiedToken = await jwt.verify(token, 'secretKey');
-        const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
-
-        if (!authData) {
-            response.status(401).json({ error: 'Invalid token' });
-            return;
-        }
-
-        // You can implement your authorization logic here based on authData
-
-        const ticketCounts = await db.collection('Tickets').aggregate([
-            {
-                $group: {
-                    _id: '$tipo',
-                    tickets: { $sum: 1 }
-                }
-            }
-        ]).toArray();
-
-        // Send the ticket counts as JSON response
-        response.json(ticketCounts);
-        console.log(ticketCounts);
+      ];
+  
+      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
+  
+      // Send the ticket counts as JSON response
+      response.json(ticketCounts);
+      console.log(ticketCounts);
     } catch (error) {
-        console.error(error);
-        response.status(500).send('Internal Server Error');
+      console.error(error);
+      response.status(500).send('Internal Server Error');
     }
-});
-
-
+  });
+  
 
 app.post("/registrarse", async(request, response)=>{
     let correo=request.body.correo;
