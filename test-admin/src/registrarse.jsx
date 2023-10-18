@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { SimpleForm, TextInput, Button, SelectInput,useRedirect, useNotify, useUnique, useRefresh} from 'react-admin';
 import { rolChoices } from "./choices";
 import SaveIcon from '@mui/icons-material/Save';
@@ -38,13 +38,17 @@ const Registrarse = () => {
             }));
         }
     };
-
+    // const useUnique = () => {   
+    //     const emailUnique = useCallback(async(correo) => {
+    //         try{
+    //             const response=await fetch ()
+    //         }
   
     
     const isSupervisorAula = datos.rol === 'Supervisor de Aula'
 
     const handleSendData = async () => {
-        const request = await new Request('http://127.0.0.1:1337/registrarse', {
+        const request = await new Request('https://127.0.0.1:1337/registrarse', {
             method: 'POST',
             body: JSON.stringify(datos),
             headers: new Headers({ 'Content-Type': 'application/json' }),
