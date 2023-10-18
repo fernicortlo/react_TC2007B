@@ -2,7 +2,6 @@ import { Menu } from 'react-admin';
 import { useTheme } from '@mui/material/styles';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import { getUserRol } from './authState';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 
 
@@ -31,13 +30,9 @@ export const MyMenu = () => {
         <Menu.ResourceItem name="Tickets" />}
         {rol==="Administrador" &&
         <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
-        {rol!=="Administrador" &&
+        {rol === 'Supervisor Nacional' || rol=== 'Supervisor Ejecutivo' &&
         <Menu.Item to="/Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>}
-        {rol!=="Administrador" &&
-        // <Menu.Item to="/barChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
-        // {rol!=="Administrador" &&
-        // <Menu.Item to="/pieChart" primaryText="Barras" leftIcon={<ReportesIcon/>}/>}
-        //  {rol!=="Administrador" &&
+        {rol === 'Supervisor Nacional' || rol=== 'Supervisor Ejecutivo' &&
         <Menu.Item to="/graficas" primaryText="Graficas" leftIcon={<Graficas/>}/>}
     </Menu>
     );

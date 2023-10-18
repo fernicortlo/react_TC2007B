@@ -27,78 +27,86 @@ const Terminados = () => {
 
 
 const Graphs = () => {
-  return (
-    <Box
-    sx={{
-      display: { xs: 'flex', md: 'grid' },
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gridAutoRows: 'minmax(100px, auto)',
-      gap: 5,
-      textAlign: 'center',
-      flexDirection: 'column',
-    }}
-    >
-    <Paper elevation={3} sx={{ p: 3 }}>
-    <Typography variant="h3">Tickets creados</Typography>
-    <Box
+    if(localStorage.getItem('rol') === 'Supervisor Nacional' || localStorage.getItem('rol') === 'Supervisor Ejecutivo'){
+    return (
+        <Box
         sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: { xs: 'flex', md: 'grid' },
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridAutoRows: 'minmax(100px, auto)',
+        gap: 5,
+        textAlign: 'center',
+        flexDirection: 'column',
         }}
-    >
-        <Creados sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} />
-        <Ticketscreados />
-    </Box>
-        </Paper>
+        >
         <Paper elevation={3} sx={{ p: 3 }}>
-    <Typography variant="h3">Tickets resueltos</Typography>
-    <Box
-        sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        }}
-    >
-        <Terminados sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} />
-        <TicketsFinalizados />
-    </Box>
-        </Paper>
-        <Paper elevation={3} sx={{ p: 3 }}>
-    <Typography variant="h3">Tickets por aula</Typography>
-    <Box
-        sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        }}
-    >
-        {/* <MapsHomeWork sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} /> */}
-        <BarTA />
-    </Box>
-        </Paper>
-        <Paper elevation={3} sx={{ p: 3 }}>
-    <Typography variant="h3">Tickets por tipo</Typography>
-    <Box
-        sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        }}
-    >
-        {/* <MapsHomeWork sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} /> */}
-        <CustomPieChart />
-    </Box>
-        </Paper>
-        
+        <Typography variant="h3">Tickets creados</Typography>
+        <Box
+            sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+        >
+            <Creados sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} />
+            <Ticketscreados />
         </Box>
-        // <div>
-        // <div style={{ display: 'flex', justifyContent: 'center' }}>
-        //     <BarTA />
-        //     <CustomPieChart />
-        // </div>
-        // </div>
-  );
+            </Paper>
+            <Paper elevation={3} sx={{ p: 3 }}>
+        <Typography variant="h3">Tickets resueltos</Typography>
+        <Box
+            sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+        >
+            <Terminados sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} />
+            <TicketsFinalizados />
+        </Box>
+            </Paper>
+            <Paper elevation={3} sx={{ p: 3 }}>
+        <Typography variant="h3">Tickets por aula</Typography>
+        <Box
+            sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+        >
+            {/* <MapsHomeWork sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} /> */}
+            <BarTA />
+        </Box>
+            </Paper>
+            <Paper elevation={3} sx={{ p: 3 }}>
+        <Typography variant="h3">Tickets por tipo</Typography>
+        <Box
+            sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+        >
+            {/* <MapsHomeWork sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} /> */}
+            <CustomPieChart />
+        </Box>
+            </Paper>
+            
+            </Box>
+            // <div>
+            // <div style={{ display: 'flex', justifyContent: 'center' }}>
+            //     <BarTA />
+            //     <CustomPieChart />
+            // </div>
+            // </div>
+    );}
+    else{
+        return(
+            <div>
+              <h1>No tienes permisos para ver esta pagina</h1>
+            </div>
+             )
+    }
 };
 
 export default Graphs;
