@@ -93,9 +93,6 @@ export const TicketCreate = () => {
                     <TextInput source="descripcion"  label="Descripción del ticket" multiline rows={5} required={true}/>
                     <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
                     <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                    <ImageInput source="pictures" label="Related pictures">
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
                     
                 </SimpleForm>
             </Create>

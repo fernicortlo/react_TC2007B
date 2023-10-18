@@ -74,7 +74,6 @@ const Graphs = () => {
             justifyContent: 'center',
             }}
         >
-            {/* <MapsHomeWork sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} /> */}
             <BarTA />
         </Box>
             </Paper>
@@ -87,18 +86,10 @@ const Graphs = () => {
             justifyContent: 'center',
             }}
         >
-            {/* <MapsHomeWork sx={{ height: 100, width: 100, opacity: 0.3, mr: 1 }} /> */}
             <CustomPieChart />
         </Box>
-            </Paper>
-            
-            </Box>
-            // <div>
-            // <div style={{ display: 'flex', justifyContent: 'center' }}>
-            //     <BarTA />
-            //     <CustomPieChart />
-            // </div>
-            // </div>
+        </Paper>        
+    </Box>       
     );}
     else{
         return(

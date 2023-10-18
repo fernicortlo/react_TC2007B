@@ -12,7 +12,7 @@ function BarTA() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authentication': localStorage.getItem("auth"), // Add the token to the Authorization header
+        'Authentication': localStorage.getItem("auth"), 
       },
     })
       .then((response) => response.json())
