@@ -66,6 +66,7 @@ app.get("/Tickets", async (request, response) => {
             console.log("Filtering by Tipo:", request.query.tipo)
             parametersFind["tipo"] = request.query.tipo;
         }
+        parametersFind["estatus"] = { $ne: "Terminado" };
         if ("estatus" in request.query) {
             // If "prioridad" is present in the query, filter by it
             console.log("Filtering by Estatus:", request.query.estatus)
@@ -82,7 +83,7 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
         
-        parametersFind["estatus"] = { $ne: "Terminado" };
+        
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
@@ -789,15 +790,15 @@ app.post("/login", async(request, response)=>{
 //       }
 //     });
 
-// https.createServer({
-//     cert: fs.readFileSync("backend.cer"),
-//     key: fs.readFileSync("backend.key"),
-// }, app).listen(1337, ()=>{
-//     connectDB();
-//     console.log("Servidor escuchando en puerto 1337")
-// })
-
-app.listen(1337, ()=>{
+https.createServer({
+    cert: fs.readFileSync("backend.cer"),
+    key: fs.readFileSync("backend.key"),
+}, app).listen(1337, ()=>{
     connectDB();
     console.log("Servidor escuchando en puerto 1337")
 })
+
+// app.listen(1337, ()=>{
+//     connectDB();
+//     console.log("Servidor escuchando en puerto 1337")
+// })
