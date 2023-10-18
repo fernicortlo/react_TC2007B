@@ -65,8 +65,6 @@ export const App = () => (
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>
           <Route path="/Reportes"  element={<Reportes />}/>
-          <Route path="/barChart" element={<MyBarChart />} />
-          <Route path="/pieChart" element={<CustomPieChart />} />
           <Route path="/graficas" element={<Graphs />} />
      </CustomRoutes>
   </Admin>

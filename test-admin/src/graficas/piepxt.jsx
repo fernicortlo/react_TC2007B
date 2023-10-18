@@ -11,12 +11,11 @@ const CustomPieChart = () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authentication': localStorage.getItem("auth"), // Add the token to the Authorization header
+        'Authentication': localStorage.getItem("auth"),
       },
     })
       .then((response) => response.json())
       .then((ticketCounts) => {
-        // Process the data from the API and format it as needed
         const formattedData = ticketCounts.map((item) => ({
           name: item._id,
           value: item.tickets,
@@ -28,15 +27,15 @@ const CustomPieChart = () => {
   }, []);
 
   return (
-    <PieChart width={600} height={400}> {/* Adjust width and height here */}
+    <PieChart width={600} height={400}> 
       <Pie
         data={chartData}
         dataKey="value"
-        cx={300} // Adjust the center x-coordinate if necessary
-        cy={200} // Adjust the center y-coordinate if necessary
+        cx={300} 
+        cy={200} 
         labelLine={false}
         // label={renderCustomizedLabel}
-        outerRadius={100} // Adjust the outer radius as needed
+        outerRadius={100} 
         fill="#8884d8"
       >
         {chartData.map((entry, index) => (
