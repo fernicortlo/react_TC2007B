@@ -48,7 +48,7 @@ export const tipoChoicesMapping: Record<string, ChoiceOption[]> = {
         {id:'Asistencias', name:'Asistencias'},
         {id:'Documentación', name:'Documentación'},
         {id:'Apoyo académico', name:'Apoyo académico'},
-        {id:'Salud', name:'Seguridad, bulling'}
+        {id:'Salud', name:'Seguridad, bullying'}
     ],
     'Mobiliario': [
         {id:'Sillas, butacas', name:'Sillas, butacas'},
@@ -60,7 +60,7 @@ export const tipoChoicesMapping: Record<string, ChoiceOption[]> = {
     'Seguridad': [
         {id:'Delincuencia', name:'Delincuencia'},
         {id:'Robos', name:'Robos'},
-        {id:'Bandalismo', name:'Bandalismo'},
+        {id:'Vandalismo', name:'Vandalismo'},
         {id:'Imagen institucional', name:'Imagen institucional'}
     ],
     'Materiales': [

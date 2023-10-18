@@ -21,10 +21,6 @@ import CustomPieChart from "./graficas/piepxt";
 import Graphs from "./graficas/graficas";
 
 
-
-
-
-
 const ThemedIconF = () => {
   const theme = useTheme();
   return <PlaylistAddCheckCircleIcon style={{ color: theme.palette.mode === 'dark' ? '#b4d5b1' : '#b53f3f', }} />;

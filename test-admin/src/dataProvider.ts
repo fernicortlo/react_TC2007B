@@ -30,7 +30,7 @@ const fetchJsonUtil = (url: string, options: Options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-const baseDataProvider = jsonServerProvider("http://127.0.0.1:1337", fetchJsonUtil);
+const baseDataProvider = jsonServerProvider("https://127.0.0.1:1337", fetchJsonUtil);
 
 const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
