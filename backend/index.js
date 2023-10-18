@@ -20,9 +20,9 @@ async function connectDB(){
     try {
         await client.connect();
         db = client.db();
-        console.log("Connected to the database");
+        console.log("Conectado a la base de datos");
     } catch(err) {
-        console.error("Failed to connect to the database", err);
+        console.error("Error en la conexión a la base de datos", err);
     }
 }
 async function log(sujeto, accion, objeto){
@@ -39,12 +39,6 @@ app.get("/Tickets", async (request, response) => {
         let token = request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); // Forbidden
-          return;
-        }
-
 
         let parametersFind = {};
         if (authData.rol === "Supervisor de Aula") {
@@ -133,12 +127,6 @@ app.get("/Tickets/:id", async (request, response)=>{
         let token=request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); 
-          return;
-      }
-
-
         let parametersFind={"id": Number(request.params.id)}
         if(authData.rol=="Supervisor de Aula"){
             parametersFind["aula"]=authData.aula.nombreAula;
@@ -156,14 +144,6 @@ app.post("/Tickets", async (request, response)=>{
     try{
         let token=request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
-        let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
-
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); 
-          return;
-      }
-
-
         let addValue=request.body
         let data=await db.collection('Tickets').find({}).toArray();
         let id=data.length+1;
@@ -181,33 +161,6 @@ app.post("/Tickets", async (request, response)=>{
         addValue["fechaCreacion"]=formattedDate;
         data=await db.collection('Tickets').insertOne(addValue);
         response.json(data);
-
-
-        //Insert Actualización
-         // Create a new Actualizaciones record
-         let dataA=await db.collection('Actualizaciones').find({}).toArray();
-         let idA=dataA.length+1;
-         console.log(idA)
-         let idZ = 1
-
-         fechaActual = new Date();
-         let formattedDateA = fechaActual.toLocaleString("en-US", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-         let actualizacionesRecord = {
-            id: idA,
-            updatedBy: authData.nombreCompleto,
-            updateTimestamp: formattedDateA,
-            updateData: addValue, 
-            idact: idZ,
-        };
-      await db.collection("Actualizaciones").insertOne(actualizacionesRecord);
-
-        
     }catch{
         response.sendStatus(401);
     }
@@ -220,12 +173,7 @@ app.put("/Tickets/:id", async (request, response)=>{
         let token=request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
-        
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); 
-          return;
-      }
-
+        console.log(verifiedToken)
         let addValue=request.body
         addValue["id"]=Number(request.params.id);
         parametersFind={"id": Number(request.params.id)}
@@ -243,11 +191,15 @@ app.put("/Tickets/:id", async (request, response)=>{
             addValue["fechafin"]=fechafin;
         }
         let data=await db.collection("Tickets").updateOne({"id": addValue["id"]}, {"$set": addValue});
+        
+        //data=await db.collection('Tickets').find({"id": Number(request.params.id)}).project({_id:0}).toArray();
+        //response.json(data[0]);
+
          // Create a new Actualizaciones record
          let dataA=await db.collection('Actualizaciones').find({}).toArray();
          let idA=dataA.length+1;
          console.log(idA)
-         let dataZ = await db.collection('Actualizaciones').find({ "updateData.id": Number(request.params.id) }).toArray();
+         let dataZ = await db.collection('Actualizaciones').find({ "updateData.id": Number(request.params.id) }).project({ _id: 0 }).toArray();
          let idZ=dataZ.length+1;
          fechaActual = new Date();
          let formattedDateA = fechaActual.toLocaleString("en-US", {
@@ -278,12 +230,6 @@ app.get("/Historial", async (request, response) => {
         let token = request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); 
-          return;
-      }
-
         
 
         let parametersFind = {};
@@ -352,12 +298,6 @@ app.get("/Finalizado", async (request, response) => {
         let token = request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); 
-          return;
-      }
-
 
         let parametersFind = {};
         if (authData.rol === "Supervisor de Aula") {
@@ -441,12 +381,6 @@ app.get("/Finalizado/:id", async (request, response)=>{
         let token=request.get("Authentication");
         let verifiedToken = await jwt.verify(token, "secretKey");
         let authData=await db.collection("Usuarios").findOne({"correo": verifiedToken.correo})
-
-        if (authData.rol === "Administrador") {
-          response.sendStatus(403); 
-          return;
-      }
-
         let parametersFind={"id": Number(request.params.id)}
         if(authData.rol=="Supervisor de Aula"){
             parametersFind["aula"]=authData.aula.nombreAula;
@@ -458,262 +392,103 @@ app.get("/Finalizado/:id", async (request, response)=>{
         response.sendStatus(401);
     }
 })
+// Add a new route for ticket counts per "aula"
+// app.get('/ticketAula', async (request, response) => {
+//     try {
+//         let token = request.get("Authentication");
+//         let verifiedToken = await jwt.verify(token, "secretKey");
+//         let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
 
+//         let parametersFind = {};
+//         if (authData.rol === "Supervisor de Aula") {
+//             parametersFind["aula"] = authData.aula.nombreAula;
+//         }
+//         const ticketCounts = await db.collection('Tickets').aggregate([
+//             {
+//                 $match: { "aula": parametersFind["aula"] }
+//             },
+//             {
+//                 $group: {
+//                     _id: '$aula',
+//                     tickets: { $sum: 1 }
+//                 }
+//             }
+//         ]).toArray();
 
-//Cuenta tickets por aula
+//         // Send the ticket counts as JSON response
+//         response.json(ticketCounts);
+//         console.log(ticketCounts)
+//     } catch (error) {
+//         console.error(error);
+//         response.status(500).send('Internal Server Error');
+//     }
+// });
 app.get('/barChart', async (request, response) => {
-    try {
-      const token = request.get("Authentication");
-      const verifiedToken = await jwt.verify(token, "secretKey");
-      const authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+try {
 
-      if (authData.rol === "Administrador" || authData.rol === "Supervisor de Aula") {
-        response.sendStatus(403); 
-        return;
-    }
+    let token = request.get("Authentication");
+    console.log(token)
+    let verifiedToken = await jwt.verify(token, "secretKey");
+    let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
 
-  
-      const currentDate = new Date();
-      const oneWeekAgo = new Date(currentDate);
-      oneWeekAgo.setDate(currentDate.getDate() - 7);
-  
-      const formattedOneWeekAgo = oneWeekAgo.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const formattedCurrentDate = currentDate.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const aggregationPipeline = [
+    // let parametersFind = {};
+    // if (authData.rol === "Supervisor de Aula") {
+    //     parametersFind["aula"] = authData.aula.nombreAula;
+       
+    // }
+    const ticketCounts = await db.collection('Tickets').aggregate([
         {
-          $match: {
-            $or: [
-              {
-                fechaCreacion: {
-                  $gte: formattedOneWeekAgo,
-                  $lte: formattedCurrentDate
-                }
-              },
-              {
-                fechafin: {
-                  $gte: formattedOneWeekAgo,
-                  $lte: formattedCurrentDate
-                }
-              }
-            ]
-          }
-        },
-        {
-          $group: {
-            _id: '$aula',
-            tickets: { $sum: 1 }
-          }
+            $group: {
+                _id: '$aula',
+                tickets: { $sum: 1 }
+            }
         }
-      ];
-  
-      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
-  
-      // Send the ticket counts as JSON response
-      response.json(ticketCounts);
-      console.log(ticketCounts);
-    } catch (error) {
-      console.error(error);
-      response.status(500).send('Internal Server Error');
-    }
-  });
-  
+    ]).toArray();
+
+    // Send the ticket counts as JSON response
+    response.json(ticketCounts);
+    console.log(ticketCounts);
+} catch (error) {
+    console.error(error);
+    response.status(500).send('Internal Server Error');
+}
+});
 
 
-// Cuenta tickets por problema
+// Add a new route for ticket counts per "aula"
 app.get('/problemaTickets', async (request, response) => {
     try {
-      const token = request.get('Authentication');
-      const verifiedToken = await jwt.verify(token, "secretKey");
-      const authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+        const token = request.get('Authentication');
 
-      if (authData.rol === "Administrador" || authData.rol === "Supervisor de Aula") {
-        response.sendStatus(403); 
-        return;
-    }
-      const currentDate = new Date();
-      const oneWeekAgo = new Date(currentDate);
-      oneWeekAgo.setDate(currentDate.getDate() - 7);
-  
-      const formattedOneWeekAgo = oneWeekAgo.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const formattedCurrentDate = currentDate.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const aggregationPipeline = [
-        {
-          $match: {
-            $or: [
-              {
-                fechaCreacion: {
-                  $gte: formattedOneWeekAgo,
-                  $lte: formattedCurrentDate
+        if (!token) {
+            response.status(401).json({ error: 'Authentication token missing' });
+            return;
+        }
+
+        const verifiedToken = await jwt.verify(token, 'secretKey');
+        const authData = await db.collection('Usuarios').findOne({ correo: verifiedToken.correo });
+
+        if (!authData) {
+            response.status(401).json({ error: 'Invalid token' });
+            return;
+        }
+
+        const ticketCounts = await db.collection('Tickets').aggregate([
+            {
+                $group: {
+                    _id: '$tipo',
+                    tickets: { $sum: 1 }
                 }
-              },
-              {
-                fechafin: {
-                  $gte: formattedOneWeekAgo,
-                  $lte: formattedCurrentDate
-                }
-              }
-            ]
-          }
-        },
-        {
-          $group: {
-            _id: '$tipo',
-            tickets: { $sum: 1 }
-          }
-        }
-      ];
-  
-      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
-  
-      // Send the ticket counts as JSON response
-      response.json(ticketCounts);
-      console.log(ticketCounts);
-    } catch (error) {
-      console.error(error);
-      response.status(500).send('Internal Server Error');
-    }
-  });
-  
+            }
+        ]).toArray();
 
-//Cuenta tickets creados en los últimos 7 días
-app.get('/ticketscreados', async (request, response) => {
-    try {
-      const token = request.get("Authentication");
-      const verifiedToken = await jwt.verify(token, "secretKey");
-      const authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-      if (authData.rol === "Administrador" || authData.rol === "Supervisor de Aula") {
-        response.sendStatus(403); 
-        return;
-    }
-  
-      const currentDate = new Date();
-      const oneWeekAgo = new Date(currentDate);
-      oneWeekAgo.setDate(currentDate.getDate() - 7);
-  
-      const formattedOneWeekAgo = oneWeekAgo.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const formattedCurrentDate = currentDate.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const aggregationPipeline = [
-        {
-          $match: {
-            fechaCreacion: {
-                $gte: formattedOneWeekAgo,
-                $lte: formattedCurrentDate
-              }
-          }
-        },
-        {
-          $count: "ticketsCreated"
-        }
-      ];
-      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
-  
-      // Send the ticket counts per "aula" created in the last 7 days as JSON response
-      response.json(ticketCounts);
-      console.log(ticketCounts);
+        response.json(ticketCounts);
+        console.log(ticketCounts);
     } catch (error) {
-      console.error(error);
-      response.status(500).send('Internal Server Error');
+        console.error(error);
+        response.status(500).send('Internal Server Error');
     }
-  });
-  
-//Cuenta cuantos tickets terminados hay en los últimos 7 días
-app.get('/ticketsfin', async (request, response) => {
-    try {
-      const token = request.get("Authentication");
-      const verifiedToken = await jwt.verify(token, "secretKey");
-      const authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
-
-      if (authData.rol === "Administrador" || authData.rol === "Supervisor de Aula") {
-        response.sendStatus(403); 
-        return;
-    }
-  
-      const currentDate = new Date();
-      const oneWeekAgo = new Date(currentDate);
-      oneWeekAgo.setDate(currentDate.getDate() - 7);
-  
-      const formattedOneWeekAgo = oneWeekAgo.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const formattedCurrentDate = currentDate.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
-      const aggregationPipeline = [
-        {
-          $match: {
-            fechafin: {
-                $gte: formattedOneWeekAgo,
-                $lte: formattedCurrentDate
-              }
-          }
-        },
-        {
-          $count: "ticketsFin"
-        }
-      ];
-      const ticketCounts = await db.collection('Tickets').aggregate(aggregationPipeline).toArray();
-  
-      // Send the ticket counts per "aula" created in the last 7 days as JSON response
-      response.json(ticketCounts);
-      console.log(ticketCounts);
-    } catch (error) {
-      console.error(error);
-      response.status(500).send('Internal Server Error');
-    }
-  });  
+});
 
 
 
@@ -789,15 +564,64 @@ app.post("/login", async(request, response)=>{
 //       }
 //     });
 
-// https.createServer({
-//     cert: fs.readFileSync("backend.cer"),
-//     key: fs.readFileSync("backend.key"),
-// }, app).listen(1337, ()=>{
-//     connectDB();
-//     console.log("Servidor escuchando en puerto 1337")
-// })
+app.get("/Usuarios", async (request, response) => {
+    try {
+        let token = request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+        let parametersFind = {};
+        if (authData.rol === "Supervisor de Aula") {
+            parametersFind["aula"] = authData.aula.nombreAula;
+           
+        }
+        // // Determine where the endpoint is
+        if ("_sort" in request.query) { // list
+            let sortBy = request.query._sort;
+            let sortOrder = request.query._order === "ASC" ? 1 : -1;
+            let start = Number(request.query._start);
+            let end = Number(request.query._end);
+            let sorter = {};
+            sorter[sortBy] = sortOrder;
 
-app.listen(1337, ()=>{
+            const total = await db.collection('Usuarios').countDocuments(parametersFind);
+            response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+            response.set('X-Total-Count', total);
+
+            const data = await db.collection('Usuarios')
+                .find(parametersFind)
+                .sort(sorter)
+                .project({ _id: 0 })
+                .skip(start)
+                .limit(end - start)
+                .toArray();
+
+            response.json(data);
+        } 
+        else if ("id" in request.query) { // getMany
+            let data = [];
+            for (let index = 0; index < request.query.id.length; index++) {
+                let dataObtain = await db.collection('Usuarios').find({ id: Number(request.query.id[index]) }).project({ _id: 0 }).toArray();
+                data = data.concat(dataObtain);
+            }
+            response.json(data);
+        } 
+        else { // getReference
+            let data = await db.collection('Usuarios').find(parametersFind).project({ _id: 0 }).toArray();
+            response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+            response.set('X-Total-Count', data.length);
+            response.json(data);
+        }
+    } catch(error) {
+        console.error(error);
+        response.sendStatus(401);
+    }
+});
+
+
+https.createServer({
+    cert: fs.readFileSync("backend.cer"),
+    key: fs.readFileSync("backend.key"),
+}, app).listen(1337, ()=>{
     connectDB();
     console.log("Servidor escuchando en puerto 1337")
 })
