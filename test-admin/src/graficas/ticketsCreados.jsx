@@ -4,7 +4,7 @@ const Ticketscreados = () => {
   const [createdTicketCount, setCreatedTicketCount] = useState(0);
 
   useEffect(() => {
-    fetch('http://localhost:1337/ticketscreados', {
+    fetch('https://localhost:1337/ticketscreados', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

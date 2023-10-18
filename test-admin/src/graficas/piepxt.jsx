@@ -7,7 +7,7 @@ const CustomPieChart = () => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:1337/problemaTickets', {
+    fetch('https://localhost:1337/problemaTickets', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

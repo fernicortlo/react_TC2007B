@@ -4,7 +4,7 @@ const TicketsFinalizados = () => {
   const [finishedTicketCount, setFinishedTicketCount] = useState(0);
 
   useEffect(() => {
-    fetch('http://localhost:1337/ticketsfin', {
+    fetch('https://localhost:1337/ticketsfin', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

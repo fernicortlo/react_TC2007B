@@ -8,7 +8,7 @@ function BarTA() {
 
 
   useEffect(() => {
-    fetch('http://localhost:1337/barChart', {
+    fetch('https://localhost:1337/barChart', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
