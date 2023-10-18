@@ -6,6 +6,7 @@ const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
 const https=require("https")
 const fs=require("fs")
+const { Console } = require('console')
 //security applied
 const uri = "mongodb+srv://Fer:1234@pruebas.1e0thqh.mongodb.net/pruebas";
 let db;
@@ -66,7 +67,6 @@ app.get("/Tickets", async (request, response) => {
             console.log("Filtering by Tipo:", request.query.tipo)
             parametersFind["tipo"] = request.query.tipo;
         }
-        parametersFind["estatus"] = { $ne: "Terminado" };
         if ("estatus" in request.query) {
             // If "prioridad" is present in the query, filter by it
             console.log("Filtering by Estatus:", request.query.estatus)
@@ -83,7 +83,7 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
         
-        
+        parametersFind["estatus"] = { $ne: "Terminado" };
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
@@ -327,12 +327,6 @@ app.get("/Historial", async (request, response) => {
             }
             response.json(data);
         } 
-        // else { // getReference
-        //     let data = await db.collection('Actualizaciones').find(parametersFind).project({ _id: 0 }).toArray();
-        //     response.set('Access-Control-Expose-Headers', 'X-Total-Count');
-        //     response.set('X-Total-Count', data.length);
-        //     response.json(data);
-        // }
         else { // getReference
             let filter = request.query.filter ? JSON.parse(request.query.filter) : {};
 
@@ -460,7 +454,85 @@ app.get("/Finalizado/:id", async (request, response)=>{
     }
 })
 
+//GETUsuarios
+app.get("/Usuarios", async (request, response) => {
+  try {
+      let token = request.get("Authentication");
+      let verifiedToken = await jwt.verify(token, "secretKey");
+      let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
 
+      if (authData.rol !== "Administrador") {
+        response.sendStatus(403); // Forbidden
+        return;
+      }
+
+      // Determine where the endpoint is
+      if ("_sort" in request.query) { // list
+          let sortBy = request.query._sort;
+          let sortOrder = request.query._order === "ASC" ? 1 : -1;
+          let start = Number(request.query._start);
+          let end = Number(request.query._end);
+          let sorter = {};
+          sorter[sortBy] = sortOrder;
+          let parametersFind={};
+
+          const total = await db.collection('Usuarios').countDocuments(parametersFind);
+          response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+          response.set('X-Total-Count', total);
+
+          const data = await db.collection('Usuarios')
+              .find(parametersFind)
+              .sort(sorter)
+              .project({ _id: 0 })
+              .skip(start)
+              .limit(end - start)
+              .toArray();
+
+          response.json(data);
+          console.log(data)
+      } 
+      else if ("id" in request.query) { // getMany
+          let data = [];
+          for (let index = 0; index < request.query.id.length; index++) {
+              let dataObtain = await db.collection('Usuarios').find({ id: Number(request.query.id[index]) }).project({ _id: 0 }).toArray();
+              data = data.concat(dataObtain);
+          }
+          response.json(data);
+      } 
+      else { // getReference
+          let data = await db.collection('Usuarios').find(parametersFind).project({ _id: 0 }).toArray();
+          response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+          response.set('X-Total-Count', data.length);
+          response.json(data);
+      }
+  } catch(error) {
+      console.error(error);
+      response.sendStatus(401);
+  }
+});
+
+//DELETEUsuarios
+//delete
+app.delete("/Usuarios/:id", async (request, response)=>{
+  try{
+      let token=request.get("Authentication");
+      let verifiedToken = await jwt.verify(token, "secretKey");
+      let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+
+      if (authData.rol !== "Administrador") {
+        response.sendStatus(403); // Forbidden
+        return;
+      }
+      let data=await db.collection('Usuarios').deleteOne({"id": Number(request.params.id)});
+      response.json(data);
+  }catch{
+      response.sendStatus(401);
+  }
+})
+
+
+
+//GRAFICAS
 //Cuenta tickets por aula
 app.get('/barChart', async (request, response) => {
     try {
@@ -727,12 +799,16 @@ app.post("/registrarse", async(request, response)=>{
     let lugarAula=request.body.aula.lugarAula;
     let sponsorAula=request.body.aula.sponsorAula;
     console.log(request.body)
+
+    let dataU=await db.collection('Usuarios').find({}).toArray();
+    let idU=dataU.length+1;
+
     let data= await db.collection("Usuarios").findOne({"Usuario": correo});
     if(data==null){
         try{
             bcrypt.genSalt(10, (error, salt)=>{
                 bcrypt.hash(pass, salt, async(error, hash)=>{
-                    let usuarioAgregar={"correo": correo, "pass": hash, "nombreCompleto": fname, "rol": rol, "aula": {"nombreAula": nombreAula, "lugarAula": lugarAula, "sponsorAula": sponsorAula}};
+                    let usuarioAgregar={"id":idU,"correo": correo, "pass": hash, "nombreCompleto": fname, "rol": rol, "aula": {"nombreAula": nombreAula, "lugarAula": lugarAula, "sponsorAula": sponsorAula}};
                     data= await db.collection("Usuarios").insertOne(usuarioAgregar);
                     response.sendStatus(201);
                 })
@@ -771,24 +847,6 @@ app.post("/login", async(request, response)=>{
         })
     }
 })
-// app.get('Tickets/:id/count', async (req, res) => {
-//     try {
-//       // Asegúrate de que la conexión esté establecida antes de hacer cualquier operación de la base de datos.
-//       if (!client.isConnected()) await client.connect();
-  
-//       const ticketId = Number(req.params.id);
-  
-//       // Contar el número de documentos que tienen el id especificado.
-//       const updatesCount = await db.collection('Actualizaciones')
-//         .countDocuments({ id: ticketId });
-  
-//       // Enviar la cuenta como respuesta.
-//       res.json({ updatesCount: updatesCount });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Internal Server Error');
-//       }
-//     });
 
 https.createServer({
     cert: fs.readFileSync("backend.cer"),

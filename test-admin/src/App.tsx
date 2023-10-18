@@ -16,9 +16,8 @@ import {useTheme} from '@mui/material/styles';
 import  {MyMenu} from "./myMenu";
 import Reportes from "./Reportes";
 import {HistorialList} from "./Historial";
-import MyBarChart from "./graficas/barratxa";
-import CustomPieChart from "./graficas/piepxt";
 import Graphs from "./graficas/graficas";
+import { UsuarioslList } from "./Ususarios";
 
 
 
@@ -54,6 +53,11 @@ export const App = () => (
     <Resource
         name="Historial"
         list={HistorialList}
+        icon={ThemedIcon}
+    />
+    <Resource
+        name="Usuarios"
+        list={UsuarioslList}
         icon={ThemedIcon}
     />
     <Resource
