@@ -68,7 +68,6 @@ export const TicketCreate = () => {
                 <TextInput source="autor" label="Autor" defaultValue={nombre} disabled/>
                 <SelectInput source="clasificacion" label="Clasificación" choices={clasificacionChoices} onChange={handleClasificacionChange} required={true}/>
                 <SelectInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/>
-                {/* <RadioButtonGroupInput source="tipo" label="Tipo" choices={tipoChoices} required={true}/> */}
                 <RadioButtonGroupInput source="prioridad" label="Prioridad" choices={prioridadChoices} required={true}/>
                 <SelectInput source="estatus" label="Estatus" choices={estatusChoices} defaultValue="Creado" disabled />
                 <TextInput source="descripcion"  label="Descripción del ticket" multiline rows={5} required={true}/>
@@ -93,9 +92,6 @@ export const TicketCreate = () => {
                     <TextInput source="descripcion"  label="Descripción del ticket" multiline rows={5} required={true}/>
                     <TextInput source="folio"  label="Número de Oficio" multiline rows={1}/>
                     <TextInput source="comentario"  label="Comentario" multiline rows={5} />
-                    <ImageInput source="pictures" label="Related pictures">
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
                     
                 </SimpleForm>
             </Create>

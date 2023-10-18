@@ -1,7 +1,7 @@
 import React from "react";
 import { Admin, Resource, CustomRoutes,menu } from "react-admin";
 import {  Route} from 'react-router-dom';
-import dataProvider from "./dataProvider";
+import {dataProvider} from "./dataProvider";
 import {i18nProvider} from './i18nProvider';
 import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
@@ -18,6 +18,7 @@ import Reportes from "./Reportes";
 import {HistorialList} from "./Historial";
 import MyBarChart from "./graficas/barratxa";
 import MyPieChart from "./graficas/piepxt";
+import { usuarioList } from "./usuarios";
 
 
 
@@ -59,6 +60,13 @@ export const App = () => (
         list={TicketTerminadoList}
         edit={TicketFEdit}
         icon={ThemedIconF}/>
+     
+     <Resource
+        name="Usuarios"
+        list={usuarioList}
+        icon={ThemedIconF}/>
+        
+
 
     <CustomRoutes>
           <Route path="/registrarse"  element={<Registrarse />}/>

@@ -2,7 +2,7 @@ import { Menu } from 'react-admin';
 import { useTheme } from '@mui/material/styles';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import { getUserRol } from './authState';
+
 
 
 const ThemedIcon = () => {
@@ -23,7 +23,10 @@ export const MyMenu = () => {
         {rol !== "Administrador" &&
         <Menu.ResourceItem name="Tickets" />}
         {rol==="Administrador" &&
-        <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/> }
+        <Menu.Item to="/registrarse" primaryText="Registrarse" leftIcon={<ThemedIcon/>}/>
+        }
+        {rol === "Administrador" &&
+        <Menu.ResourceItem name="Usuarios" />}
         {rol!=="Administrador" &&
         <Menu.Item to="/Reportes" primaryText="Reportes" leftIcon={<ReportesIcon/>}/>}
         {rol!=="Administrador" &&

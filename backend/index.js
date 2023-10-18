@@ -574,6 +574,60 @@ app.post("/login", async(request, response)=>{
 //     connectDB();
 //     console.log("Servidor escuchando en puerto 1337")
 // })
+app.get("/Usuarios", async (request, response) => {
+    try {
+        let token = request.get("Authentication");
+        let verifiedToken = await jwt.verify(token, "secretKey");
+        let authData = await db.collection("Usuarios").findOne({ "correo": verifiedToken.correo });
+
+        let parametersFind = {};
+        if (authData.rol === "Supervisor de Aula") {
+            parametersFind["aula"] = authData.aula.nombreAula;
+           
+        }
+        // // Determine where the endpoint is
+        if ("_sort" in request.query) { // list
+            let sortBy = request.query._sort;
+            let sortOrder = request.query._order === "ASC" ? 1 : -1;
+            let start = Number(request.query._start);
+            let end = Number(request.query._end);
+            let sorter = {};
+            sorter[sortBy] = sortOrder;
+
+            const total = await db.collection('Usuarios').countDocuments(parametersFind);
+            response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+            response.set('X-Total-Count', total);
+
+            const data = await db.collection('Usuarios')
+                .find(parametersFind)
+                .sort(sorter)
+                .project({ _id: 0 })
+                .skip(start)
+                .limit(end - start)
+                .toArray();
+
+            response.json(data);
+        } 
+        else if ("id" in request.query) { // getMany
+            let data = [];
+            for (let index = 0; index < request.query.id.length; index++) {
+                let dataObtain = await db.collection('Usuarios').find({ id: Number(request.query.id[index]) }).project({ _id: 0 }).toArray();
+                data = data.concat(dataObtain);
+            }
+            response.json(data);
+        } 
+        else { // getReference
+            let data = await db.collection('Usuarios').find(parametersFind).project({ _id: 0 }).toArray();
+            response.set('Access-Control-Expose-Headers', 'X-Total-Count');
+            response.set('X-Total-Count', data.length);
+            response.json(data);
+        }
+    } catch(error) {
+        console.error(error);
+        response.sendStatus(401);
+    }
+});
+
 
 app.listen(1337, ()=>{
     connectDB();

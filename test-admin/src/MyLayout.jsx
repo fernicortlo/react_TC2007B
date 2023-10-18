@@ -1,9 +1,8 @@
 import React, { forwardRef } from 'react';
-import { AppBar, Layout, Sidebar, useLogout, UserMenu, MenuItemLink } from 'react-admin';
+import { AppBar, Layout, useLogout, UserMenu} from 'react-admin';
 import { useTheme } from '@mui/material/styles';
 import { MenuItem } from '@mui/material';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 
 const ThemedLogoutButton = () => {
     const theme = useTheme();

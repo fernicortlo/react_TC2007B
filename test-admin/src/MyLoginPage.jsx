@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useLogin, useNotify, Notification, Button, useRedirect} from 'react-admin';
+import { useLogin, useNotify, Button, useRedirect} from 'react-admin';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
 import authProvider from './authProvider';
-import { getUserRol } from './authState';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
@@ -16,8 +15,8 @@ const MyLoginPage = () => {
     const login = useLogin();
     const notify = useNotify();
     const redirect = useRedirect();
-    const theme = useTheme(); // using useTheme hook to access the current theme
-    const [showPassword, setShowPassword] = useState(false); // New state variable
+    const theme = useTheme(); 
+    const [showPassword, setShowPassword] = useState(false); 
 
     
     useEffect(() => {
@@ -49,8 +48,6 @@ const MyLoginPage = () => {
     };
 
     return (
-        // <Container component="main" maxWidth="xs" backgroundColor="red" >
-       
         <Box
           sx={{
             marginTop: 8,
@@ -65,10 +62,9 @@ const MyLoginPage = () => {
             component="form"
             onSubmit={handleSubmit}  
             sx={{
-                //'& .MuiTextField-root': { m: 1, width: '25ch' },
                 '& .MuiButton-root': {
-                    backgroundColor: 'green', // Button background color
-                    color: 'white', // Button text color
+                    backgroundColor: 'green', 
+                    color: 'white', 
                 },
             }}
             noValidate
@@ -93,7 +89,7 @@ const MyLoginPage = () => {
             required
             fullWidth
             onChange={e => setPassword(e.target.value)}
-            InputProps={{ // This is where the magic happens!
+            InputProps={{ 
                 endAdornment: (
                     <InputAdornment position="end">
                         <IconButton
@@ -114,7 +110,6 @@ const MyLoginPage = () => {
                 fullWidth>Iniciar Sesión</Button>
         </Box>
         </Box>
-        // </Container>
     );
 };
 
