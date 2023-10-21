@@ -4,8 +4,8 @@ import { setUserId,setUserRol,setUserName, setToken } from "./authState";
 export const authProvider: AuthProvider = {
     // called when the user attempts to log in
     login: async ({ correo, pass }) => {
-        console.log('Correo:', correo);
-        console.log('Pass:', pass);
+        // console.log('Correo:', correo);
+        // console.log('Pass:', pass);
         const request = new Request('https://127.0.0.1:1337/login', {
             method: 'POST',
             body: JSON.stringify({ "correo": correo, "pass": pass }),
@@ -20,14 +20,14 @@ export const authProvider: AuthProvider = {
             const auth = await response.json();
             localStorage.setItem('auth', auth.token);
             setToken(auth.token)
-            console.log('auth', auth);
+            // console.log('auth', auth);
             localStorage.setItem('identity',  JSON.stringify({"id": auth.id,  "fullName":auth.nombreCompleto, "rol":auth.rol,"aula":auth.aula}));
             localStorage.setItem('rol', auth.rol);
             localStorage.setItem('aula', auth.aula);
             localStorage.setItem('nombreCompleto', auth.nombreCompleto);
             setUserId(auth.aula)
             setUserName(auth.nombreCompleto)
-            console.log("token",auth.token)
+            // console.log("token",auth.token)
             return Promise.resolve()
         } catch {
             throw new Error('Error en correo o password');
