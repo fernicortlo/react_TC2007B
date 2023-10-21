@@ -188,7 +188,6 @@ const TicketTitle = () => {
 
 export const TicketEdit = () => {
     const recordId = useGetRecordId();
-    console.log(recordId);
     const notify= useNotify();
     const refresh= useRefresh();
     const redirect= useRedirect();

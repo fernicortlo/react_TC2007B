@@ -247,7 +247,6 @@ app.put("/Tickets/:id", async (request, response)=>{
          // Create a new Actualizaciones record
          let dataA=await db.collection('Actualizaciones').find({}).toArray();
          let idA=dataA.length+1;
-         console.log(idA)
          let dataZ = await db.collection('Actualizaciones').find({ "updateData.id": Number(request.params.id) }).toArray();
          let idZ=dataZ.length+1;
          fechaActual = new Date();
@@ -266,6 +265,7 @@ app.put("/Tickets/:id", async (request, response)=>{
             idact: idZ,
         };
       await db.collection("Actualizaciones").insertOne(actualizacionesRecord);
+      log(verifiedToken.correo, "actualizar objeto", request.params.id)
     }catch{
         response.sendStatus(401);
     }
@@ -489,7 +489,7 @@ app.get("/Usuarios", async (request, response) => {
               .toArray();
 
           response.json(data);
-          console.log(data)
+          // console.log(data)
       } 
       else if ("id" in request.query) { // getMany
           let data = [];
@@ -524,6 +524,7 @@ app.delete("/Usuarios/:id", async (request, response)=>{
         return;
       }
       let data=await db.collection('Usuarios').deleteOne({"id": Number(request.params.id)});
+      log(verifiedToken.correo, "borrar usuario", request.params.id)
       response.json(data);
   }catch{
       response.sendStatus(401);
@@ -597,7 +598,7 @@ app.get('/barChart', async (request, response) => {
   
       // Send the ticket counts as JSON response
       response.json(ticketCounts);
-      console.log(ticketCounts);
+
     } catch (error) {
       console.error(error);
       response.status(500).send('Internal Server Error');
@@ -668,7 +669,7 @@ app.get('/problemaTickets', async (request, response) => {
   
       // Send the ticket counts as JSON response
       response.json(ticketCounts);
-      console.log(ticketCounts);
+
     } catch (error) {
       console.error(error);
       response.status(500).send('Internal Server Error');
@@ -725,7 +726,7 @@ app.get('/ticketscreados', async (request, response) => {
   
       // Send the ticket counts per "aula" created in the last 7 days as JSON response
       response.json(ticketCounts);
-      console.log(ticketCounts);
+
     } catch (error) {
       console.error(error);
       response.status(500).send('Internal Server Error');
@@ -781,7 +782,7 @@ app.get('/ticketsfin', async (request, response) => {
   
       // Send the ticket counts per "aula" created in the last 7 days as JSON response
       response.json(ticketCounts);
-      console.log(ticketCounts);
+
     } catch (error) {
       console.error(error);
       response.status(500).send('Internal Server Error');
@@ -798,7 +799,7 @@ app.post("/registrarse", async(request, response)=>{
     let nombreAula=request.body.aula.nombreAula;
     let lugarAula=request.body.aula.lugarAula;
     let sponsorAula=request.body.aula.sponsorAula;
-    console.log(request.body)
+    // console.log(request.body)
 
     let dataU=await db.collection('Usuarios').find({}).toArray();
     let idU=dataU.length+1;
