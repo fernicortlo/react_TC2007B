@@ -67,10 +67,13 @@ app.get("/Tickets", async (request, response) => {
             console.log("Filtering by Tipo:", request.query.tipo)
             parametersFind["tipo"] = request.query.tipo;
         }
+        parametersFind["estatus"] = { $ne: "Terminado" };
         if ("estatus" in request.query) {
             // If "prioridad" is present in the query, filter by it
+            if(request.query.estatus!=="Terminado"){
             console.log("Filtering by Estatus:", request.query.estatus)
             parametersFind["estatus"] = request.query.estatus;
+            }
         }
         if ("aula" in request.query) {
             // If "prioridad" is present in the query, filter by it
@@ -83,7 +86,7 @@ app.get("/Tickets", async (request, response) => {
             parametersFind["id"] = Number(request.query.id); // Convert it to a number
         }
         
-        parametersFind["estatus"] = { $ne: "Terminado" };
+      
         // Determine where the endpoint is
         if ("_sort" in request.query) { // list
             let sortBy = request.query._sort;
